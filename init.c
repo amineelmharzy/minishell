@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:42:59 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/01/29 18:05:50 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/01/30 13:12:32 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,12 @@ char	*get_real_command(t_shell *shell)
 	char	*env;
 	char	*save;
 
-	i = -1;
 	real = ft_calloc(1, 1);
 	str = ft_strdup(shell->command);
 	save = str;
 	while (*str != 0)
 	{
+		/*
 		i = -1;
 		if (*str && *str == '$' && *(str + 1) != 0 && *(str + 1) != ' ')
 		{
@@ -44,7 +44,9 @@ char	*get_real_command(t_shell *shell)
 		{
 			real = ft_joinchar(real, *str);
 			str++;
-		}
+		}*/
+		real = ft_joinchar(real, *str);
+		str++;
 	}
 	free(save);
 	free(shell->command);
@@ -59,12 +61,13 @@ void	run_command(t_shell *shell)
 	if (!shell->command[0])
 		return ;
 	shell->command = get_real_command(shell);
+	//printf("%s\n", shell->command);
+	/*
 	if (is_fine_with_quotes(shell->command) == -1)
 	{
 		printf("quote error\n");
 		return ;
 	}
-	//parse_infiles(shell);
 	while (*shell->command && shell->command[ft_strlen(shell->command) -1] == '\\')
 	{
 		shell->cmd = readline("> ");
@@ -74,19 +77,17 @@ void	run_command(t_shell *shell)
 			printf("quote error\n");
 			return ;
 		}
-		//printf("%s\t%s\n", shell->command, shell->cmd);
 		shell->command = ft_joinstr(shell->command, shell->cmd);
-	}
-	printf("%s\n", shell->command);
+	}*/
+	//printf("%s\n", shell->command);
 	//printf("%s", shell->command);
 	//while (1);
-	//shell->commands = ft_split_semicolon(ft_strdup(shell->command));
-	/*
+	shell->commands = ft_split_semicolon(ft_strdup(shell->command));
 	while (shell->commands[i] != 0)
 	{
 		printf("%s\n", shell->commands[i]);
 		i++;
-	}*/
+	}
 	/*
 	while (shell->commands[i] != 0)
 	{

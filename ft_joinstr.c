@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 12:00:52 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/01/29 17:22:42 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/01/30 13:13:57 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	*ft_joinstr(char *s1, char *s2)
 	if (!s1 || !s2)
 		return (NULL);
 	length = ft_strlen((char *)s1) + ft_strlen((char *)s2);
-	newstr = (char *)malloc(sizeof(char) * (length + 1));
+	newstr = (char *)ft_calloc(sizeof(char) * (length + 1), 1);
 	if (!newstr)
 		return (NULL);
 	while (s1[i] != 0)
