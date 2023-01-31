@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 16:28:54 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/01/29 17:19:02 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/01/31 15:37:12 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ typedef struct s_shell
 	char			**commands;
 	char			**parsed_command;
 	char			**real_command;
+	char			**infiles;
+	char			**outfiles;
 	struct s_env	*env;
 }					t_shell;
 
@@ -68,5 +70,6 @@ char				*is_env(t_shell *shell, char *s, int n);
 int					ft_isalnum(int c);
 int					is_fine_with_quotes(char *command);
 void				free_env(t_shell *shell);
+int					parse_infiles(t_shell *shell);
 
 #endif

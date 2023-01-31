@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:42:59 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/01/31 12:09:48 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/01/31 15:12:17 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void	run_command(t_shell *shell)
 	i = 0;
 	if (!shell->command[0])
 		return ;
+	/*
 	shell->command = get_real_command(shell);
 	if (is_fine_with_quotes(shell->command) == -1)
 	{
@@ -71,12 +72,21 @@ void	run_command(t_shell *shell)
 			shell->command = ft_joinstr(shell->command, shell->cmd);
 	}
 	shell->commands = ft_split_semicolon(shell->command);
-	/*
 	while (shell->commands[i] != 0)
 	{
 		printf("%s\n", shell->commands[i]);
 		i++;
 	}*/
+	if (parse_infiles(shell) == -1)
+	{
+		printf("parse error '<' \n");
+		return;
+	}
+	while (shell->infiles[i])
+	{
+		printf("%s\n", shell->infiles[i]);
+		i++;
+	}
 	/*
 	while (shell->commands[i] != 0)
 	{
@@ -128,6 +138,6 @@ int	main(int ac, char **av, char **envp)
 		if (!shell.command)
 			exit(0);
 	}
-	free_env(&shell);
-	while (1);
+	//free_env(&shell);
+	//while (1);
 }

@@ -1,38 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_infiles.c                                    :+:      :+:    :+:   */
+/*   parse_outfiles.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 13:16:02 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/01/31 15:23:39 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/01/31 15:36:53 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*get_infile(char *str)
+char	*get_outfile(char *str)
 {
 	int		i;
-	char	*infile;
+	char	*outfile;
 
 	while (*str != 0 && *str == ' ')
 		str++;
 	i = 0;
 	while (str[i] != 0 && str[i] != ' ' && str[i] != '<' && str[i] != '>')
 		i++;
-	infile = ft_calloc(i + 1, 1);
-	if (!infile)
+	outfile = ft_calloc(i + 1, 1);
+	if (!outfile)
 		return (NULL);
 	i = 0;
 	while (str[i] != 0 && str[i] != ' ' && str[i] != '<' && str[i] != '>')
 	{
-		infile[i] = str[i];
+		outfile[i] = str[i];
 		i++;
 	}
-	infile[i] = 0;
-	return (infile);
+	outfile[i] = 0;
+	return (outfile);
 }
 
 void	init_vars(int *var1, int *var2)
@@ -41,7 +41,7 @@ void	init_vars(int *var1, int *var2)
 	*var2 = 0;
 }
 
-int	count_infiles(char *str)
+int	count_outfiles(char *str)
 {
 	int	i;
 	int	count;
@@ -51,7 +51,7 @@ int	count_infiles(char *str)
 	{
 		while (str[i] != 0 && str[i] == '\\' && str[i + 1] != 0)
 			i += 2;
-		if (str[i] == '<')
+		if (str[i] == '>')
 		{
 			i++;
 			while (str[i] != 0 && (str[i] == ' ' || str[i] == '<'
@@ -71,19 +71,19 @@ int	count_infiles(char *str)
 	return (count);
 }
 
-int	parse_infiles(t_shell *shell)
+int	parse_outfiles(t_shell *shell)
 {
-	char	*infile;
+	char	*outfile;
 	int		i;
 	int		j;
 
-	if (count_infiles(shell->command) == -1)
+	if (count_outfiles(shell->command) == -1)
 		return (-1);
-	else if (count_infiles(shell->command) == 0)
+	else if (count_outfiles(shell->command) == 0)
 		return (0);
-	shell->infiles = ft_calloc(count_infiles(shell->command) + 1,
+	shell->outfiles = ft_calloc(count_outfiles(shell->command) + 1,
 			sizeof(char *));
-	if (!shell->infiles)
+	if (!shell->outfiles)
 		return (0);
 	init_vars(&i, &j);
 	while (shell->command[++i] != 0)
@@ -91,10 +91,10 @@ int	parse_infiles(t_shell *shell)
 		if (shell->command[i] == '<')
 		{
 			i++;
-			infile = get_infile(&shell->command[i]);
-			shell->infiles[j++] = infile;
+			outfile = get_outfile(&shell->command[i]);
+			shell->outfiles[j++] = outfile;
 		}
 	}
-	shell->infiles[j] = 0;
+	shell->outfiles[j] = 0;
 	return (1);
 }
