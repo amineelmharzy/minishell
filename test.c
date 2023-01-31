@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_split_semicolon.c                               :+:      :+:    :+:   */
+/*   test.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ael-mhar <ael-mhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 14:48:09 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/01/31 11:02:03 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/01/31 09:13:27 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,31 +81,6 @@ char	*get_command(char *command)
 				i++;
 			}
 		}
-		if (command[i] && command[i] == ';')
-		{
-			cmd = ft_calloc(i + 1, 1);
-			j = 0;
-			while (command[j] && j < i)
-			{
-				cmd[j] = command[j];
-				j++;
-			}
-			cmd[j] = 0;
-			return (cmd);
-		}
-		else if (command[i] && command[i + 1] == 0)
-		{
-			cmd = ft_calloc(ft_strlen(command) + 1, 1);
-			j = 0;
-			while (command[j] != 0)
-			{
-				cmd[j] = command[j];
-				j++;
-			}
-			cmd[j] = 0;
-			//printf("%s\n", cmd);
-			return (cmd);
-		}
 		i++;
 	}
 	return (0);
@@ -115,8 +90,9 @@ char	**ft_split_semicolon(char *str)
 {
 	char	**array;
 	char	*temp;
+	char	*s;
+	char	*save;
 	int		i;
-	int		len;
 
 	if (!str)
 		return (NULL);
@@ -124,19 +100,21 @@ char	**ft_split_semicolon(char *str)
 	if (!array)
 		return (NULL);
 	i = 0;
-	len = count_commands(str) + 1;
-	while (i < len)
+	s = ft_strdup(str);
+	save = s;
+	temp = get_command(s);
+	while (temp)
 	{
-		temp = get_command(str);
 		array[i] = temp;
-		str += ft_strlen(array[i]) + 1;
+		s += ft_strlen(array[i]) + 1;
+		temp = get_command(s);
 		i++;
 	}
 	array[i] = 0;
+	free(save);
 	return (array);
 }
 
-/*
 int	main()
 {
 	char *cmd;
@@ -152,8 +130,6 @@ int	main()
 			printf("%s\n", s[i]);
 			i++;
 		}
-	while(1);
 	}
 	return (0);
 }
-*/
