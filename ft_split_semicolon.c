@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 14:48:09 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/01/31 11:02:03 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/01/31 12:04:09 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,6 @@ char	*get_command(char *command)
 				j++;
 			}
 			cmd[j] = 0;
-			//printf("%s\n", cmd);
 			return (cmd);
 		}
 		i++;

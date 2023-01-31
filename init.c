@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:42:59 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/01/31 11:50:14 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/01/31 12:09:48 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,12 +70,13 @@ void	run_command(t_shell *shell)
 		if (shell->cmd)
 			shell->command = ft_joinstr(shell->command, shell->cmd);
 	}
-	shell->commands = ft_split_semicolon(ft_strdup(shell->command));
+	shell->commands = ft_split_semicolon(shell->command);
+	/*
 	while (shell->commands[i] != 0)
 	{
 		printf("%s\n", shell->commands[i]);
 		i++;
-	}
+	}*/
 	/*
 	while (shell->commands[i] != 0)
 	{
