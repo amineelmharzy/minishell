@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 16:28:54 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/01/31 15:37:12 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/10 08:37:21 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ typedef struct s_env
 
 typedef struct s_shell
 {
+	int				iofile_error;
 	char			*command;
 	char			*cmd;
 	char			*prompt;
@@ -46,6 +47,8 @@ typedef struct s_shell
 	char			**real_command;
 	char			**infiles;
 	char			**outfiles;
+	char			**afiles;
+	char			**herdocs;
 	struct s_env	*env;
 }					t_shell;
 
@@ -71,5 +74,6 @@ int					ft_isalnum(int c);
 int					is_fine_with_quotes(char *command);
 void				free_env(t_shell *shell);
 int					parse_infiles(t_shell *shell);
+int					implement_redirection(t_shell *shell);
 
 #endif

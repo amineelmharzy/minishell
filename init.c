@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:42:59 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/01/31 15:12:17 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/10 18:58:04 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,16 +26,35 @@ char	*get_real_command(t_shell *shell)
 	while (*str != 0)
 	{
 		i = -1;
-		if (*str && *str == '$' && *(str + 1) != 0 && *(str + 1) != ' ')
+		if (*str == '\'')
 		{
-			str++;
-			while (str[++i] != 0)
-				if (!ft_isalnum(str[i]))
-					break ;
-			env = is_env(shell, str, i);
-			if (env)
-				real = ft_strjoin(real, env);
-			str = str + i;
+			real = ft_joinchar(real, *str++);
+			while (*str != 0 && *str != '\'')
+			{
+				real = ft_joinchar(real, *str++);
+			}
+			if (!*str)
+				break;
+		}
+		else if (*str == '\"')
+		{
+			real = ft_joinchar(real, *str++);
+			while (*str != 0 && *str != '\"')
+			{
+				if (*str && *str == '$' && *(str + 1) != 0 && *(str + 1) != ' ')
+				{
+					str++;
+					while (str[++i] != 0)
+						if (!ft_isalnum(str[i]))
+							break ;
+					env = is_env(shell, str, i);
+					if (env)
+						real = ft_strjoin(real, env);
+					str = str + i;
+				}
+				else
+					real = ft_joinchar(real, *str++);
+			}
 		}
 		else
 			real = ft_joinchar(real, *str++);
@@ -52,41 +71,57 @@ void	run_command(t_shell *shell)
 	i = 0;
 	if (!shell->command[0])
 		return ;
-	/*
-	shell->command = get_real_command(shell);
 	if (is_fine_with_quotes(shell->command) == -1)
 	{
 		printf("quote error\n");
 		return ;
 	}
-	while (*shell->command && shell->command[ft_strlen(shell->command) -1] == '\\')
-	{
-		shell->cmd = readline("> ");
-		if (is_fine_with_quotes(shell->cmd) == -1)
+	//shell->command = get_real_command(shell);
+	if (!implement_redirection(shell))
+		return ;
+	i = 0;
+	printf("infiles\n");
+	if (shell->infiles)
+	{	
+		while (shell->infiles[i] != 0)
 		{
-			free(shell->cmd);
-			printf("quote error\n");
-			return ;
+			printf("%s\n", shell->infiles[i]);
+			i++;
 		}
-		if (shell->cmd)
-			shell->command = ft_joinstr(shell->command, shell->cmd);
 	}
-	shell->commands = ft_split_semicolon(shell->command);
-	while (shell->commands[i] != 0)
+	i = 0;
+	printf("\noutfiles\n");
+	if (shell->outfiles)
 	{
-		printf("%s\n", shell->commands[i]);
-		i++;
-	}*/
-	if (parse_infiles(shell) == -1)
-	{
-		printf("parse error '<' \n");
-		return;
+		while (shell->outfiles[i] != 0)
+		{
+			printf("%s\n", shell->outfiles[i]);
+			i++;
+		}
 	}
-	while (shell->infiles[i])
+	i = 0;
+	printf("\nafiles\n");
+	if (shell->afiles)
 	{
-		printf("%s\n", shell->infiles[i]);
-		i++;
+		while (shell->afiles[i] != 0)
+		{
+			printf("%s\n", shell->afiles[i]);
+			i++;
+		}
 	}
+	i = 0;
+	printf("\nherdocs\n");
+	if (shell->herdocs)
+	{
+		while (shell->herdocs[i] != 0)
+		{
+			printf("%s\n", shell->herdocs[i]);
+			i++;
+		}
+	}
+	/*
+	shell->command = get_real_command(shell);
+	*/
 	/*
 	while (shell->commands[i] != 0)
 	{
@@ -135,7 +170,7 @@ int	main(int ac, char **av, char **envp)
 		add_history(shell.command);
 		if (shell.command)
 			run_command(&shell);
-		if (!shell.command)
+		else
 			exit(0);
 	}
 	//free_env(&shell);
