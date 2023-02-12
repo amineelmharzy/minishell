@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:42:59 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/10 18:58:04 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/12 10:45:20 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,49 +76,10 @@ void	run_command(t_shell *shell)
 		printf("quote error\n");
 		return ;
 	}
-	//shell->command = get_real_command(shell);
+	shell->command = get_real_command(shell);
 	if (!implement_redirection(shell))
 		return ;
-	i = 0;
-	printf("infiles\n");
-	if (shell->infiles)
-	{	
-		while (shell->infiles[i] != 0)
-		{
-			printf("%s\n", shell->infiles[i]);
-			i++;
-		}
-	}
-	i = 0;
-	printf("\noutfiles\n");
-	if (shell->outfiles)
-	{
-		while (shell->outfiles[i] != 0)
-		{
-			printf("%s\n", shell->outfiles[i]);
-			i++;
-		}
-	}
-	i = 0;
-	printf("\nafiles\n");
-	if (shell->afiles)
-	{
-		while (shell->afiles[i] != 0)
-		{
-			printf("%s\n", shell->afiles[i]);
-			i++;
-		}
-	}
-	i = 0;
-	printf("\nherdocs\n");
-	if (shell->herdocs)
-	{
-		while (shell->herdocs[i] != 0)
-		{
-			printf("%s\n", shell->herdocs[i]);
-			i++;
-		}
-	}
+	printf("\nCommand ==> %s\n", shell->command);
 	/*
 	shell->command = get_real_command(shell);
 	*/

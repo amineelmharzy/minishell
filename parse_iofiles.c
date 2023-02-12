@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 13:16:02 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/11 14:45:50 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/12 11:38:32 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,21 @@ void	init_vars(int *var1, int *var2)
 int	count_iofiles(char *str, char *set)
 {
 	int	i;
+	int	start;
 	int	count;
 
 	init_vars(&i, &count);
+	start = 0;
 	while (str[i] != 0)
 	{
+		while (str[i] == '\"' || str[i] == '\'')
+		{
+			start = str[i];
+			i++;
+			while (str[i] != 0 && str[i] != start)
+				i++;
+			i++;
+		}
 		if (ft_strlen(&str[i]) >= ft_strlen(set) && ft_strncmp(&str[i], set,
 				ft_strlen(set)) == 0)
 		{
@@ -97,6 +107,7 @@ char	*parse_iofiles(t_shell *shell, char *set)
 {
 	char	*files;
 	char	*save;
+	int		start;
 	int		i;
 	int		j;
 
@@ -105,9 +116,18 @@ char	*parse_iofiles(t_shell *shell, char *set)
 		return (NULL);
 	save = ft_calloc(1, 1);
 	files = ft_calloc(1, 1);
+	start = 0;
 	while (shell->command[i] != 0)
 	{
-		if (ft_strlen(&shell->command[i]) >= ft_strlen(set)
+		while (shell->command[i] && (shell->command[i] == '\"' || shell->command[i] == '\"'))
+		{
+			start = shell->command[i];
+			save = ft_joinchar(save, shell->command[i++]);
+			while (shell->command[i] && shell->command[i] != start)
+				save = ft_joinchar(save, shell->command[i++]);
+			save = ft_joinchar(save, shell->command[i++]);
+		}
+		if (shell->command[i] && ft_strlen(&shell->command[i]) >= ft_strlen(set)
 			&& !ft_strncmp(&shell->command[i], set, ft_strlen(set)))
 		{
 			i += ft_strlen(set);
@@ -119,8 +139,10 @@ char	*parse_iofiles(t_shell *shell, char *set)
 			files = ft_joinchar(files, ' ');
 		}
 		else
-			save = ft_joinchar(save, shell->command[i++]);
+			if (shell->command[i] != 0)
+				save = ft_joinchar(save, shell->command[i++]);
 	}
+	free(shell->command);
 	shell->command = save;
 	return (files);
 }

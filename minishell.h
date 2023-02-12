@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 16:28:54 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/10 08:37:21 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/12 10:44:19 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,5 +75,6 @@ int					is_fine_with_quotes(char *command);
 void				free_env(t_shell *shell);
 int					parse_infiles(t_shell *shell);
 int					implement_redirection(t_shell *shell);
+char				**ft_split_with_space(char *command);
 
 #endif
