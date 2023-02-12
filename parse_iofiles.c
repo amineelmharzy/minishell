@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 13:16:02 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/12 11:38:32 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/12 13:17:06 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,9 +133,21 @@ char	*parse_iofiles(t_shell *shell, char *set)
 			i += ft_strlen(set);
 			while (shell->command[i] != 0 && shell->command[i] == ' ')
 				files = ft_joinchar(files, shell->command[i++]);
-			while (shell->command[i] != 0 && shell->command[i] != '<'
-				&& shell->command[i] != '>' && shell->command[i] != ' ')
-				files = ft_joinchar(files, shell->command[i++]);
+			start = shell->command[i];
+			if (start == '\"' || start == '\'')
+			{
+				i++;
+				while (shell->command[i] != 0 && shell->command[i] != '<'
+					&& shell->command[i] != '>' && shell->command[i] != start)
+					files = ft_joinchar(files, shell->command[i++]);
+				i++;
+			}
+			else
+			{
+				while (shell->command[i] != 0 && shell->command[i] != '<'
+					&& shell->command[i] != '>' && shell->command[i] != ' ')
+					files = ft_joinchar(files, shell->command[i++]);
+			}
 			files = ft_joinchar(files, ' ');
 		}
 		else
@@ -173,6 +185,35 @@ int	implement_redirection(t_shell *shell)
 		return (0);
 	}
 	shell->outfiles = ft_split(parse_iofiles(shell, ">"), ' ');
+	int	i = 0;
+	/*
+	printf("------------- Herdocs -----------\n");
+	if (shell->herdocs)
+	{
+		while (shell->herdocs[i])
+			printf("%s\n", shell->herdocs[i++]);
+	}
+	i = 0;
+	printf("\n------------- afiles -----------\n");
+	if (shell->afiles)
+	{
+		while (shell->afiles[i])
+			printf("%s\n", shell->afiles[i++]);
+	}
+	printf("\n------------- infiles -----------\n");
+	i = 0;
+	if (shell->infiles)
+	{
+		while (shell->infiles[i])
+			printf("%s\n", shell->infiles[i++]);
+	}
+	i = 0;
+	printf("\n------------- outfiles -----------\n");
+	if (shell->outfiles)
+	{
+		while (shell->outfiles[i])
+			printf("%s\n", shell->outfiles[i++]);
+	}*/
 	return (1);
 }
 
