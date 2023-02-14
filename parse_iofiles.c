@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 13:16:02 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/14 09:35:34 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/14 11:42:07 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,8 +207,8 @@ int	implement_redirection(t_shell *shell)
 		return (0);
 	}
 	shell->outfiles = ft_split(parse_iofiles(shell, ">"), ' ');
-	int	i = 0;
 	/*
+	int	i = 0;
 	printf("------------- Herdocs -----------\n");
 	if (shell->herdocs)
 	{

@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:42:59 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/14 09:36:34 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/14 11:33:41 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ void	run_command(t_shell *shell)
 		printf("quote error\n");
 		return ;
 	}
+	shell->outfile = 0;
 	shell->command = get_real_command(shell);
 	if (!implement_redirection(shell))
 		return ;
@@ -97,6 +98,8 @@ void	run_command(t_shell *shell)
 		return ;
 	if (shell->herdocs)
 		shell->herdoc_output = herdoc(shell);
+	if (shell->outfiles || shell->afiles)
+		init_outfiles(shell);
 	if (!shell->command[0])
 		return ;
 	shell->real_command = ft_split_with_space(shell->command);
@@ -129,6 +132,8 @@ int	main(int ac, char **av, char **envp)
 	shell.herdocs = 0;
 	shell.herdoc_output = 0;
 	shell.infiles = 0;
+	shell.outfiles= 0;
+	shell.afiles = 0;
 	shell.infile_output = 0;
 	shell.outfile = 0;
 	init_env(&shell);
