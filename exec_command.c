@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 16:48:20 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/14 11:30:01 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/14 11:55:16 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,9 @@ void	exec_command(t_shell *shell)
 			if (shell->ofile == 1)
 				fd = open(shell->outfile, O_WRONLY);
 			else
-				fd = open(shell->outfile, O_APPEND);
+				fd = open(shell->outfile, O_WRONLY | O_APPEND);
 			dup2(fd, 1);
 		}
-		printf("%s\n", shell->outfile);
 		if (shell->infiles)
 		{
 			shell->infile_output = read_infile(shell);
@@ -44,8 +43,6 @@ void	exec_command(t_shell *shell)
 		close(pfd[1]);
 		execve(shell->rcommand, shell->real_command, shell->envp);
 		close(pfd[0]);
-		if (fd)
-			close(fd);
 		exit(0);
 	}
 	wait(NULL);

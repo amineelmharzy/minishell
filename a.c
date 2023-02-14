@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 09:13:15 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/14 11:02:29 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/14 11:54:23 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 int main()
 {
 	char **a1 = ft_split("/usr/bin/awk {print$1} README.md", ' ');
-	int	fd = open("amine.txt", O_CREAT | O_WRONLY);
+	int	fd = open("amine.txt", O_CREAT | O_WRONLY | O_APPEND);
 	int	pid = fork();
 	if (pid == 0)
 	{

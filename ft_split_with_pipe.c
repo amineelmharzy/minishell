@@ -6,47 +6,49 @@
 /*   By: ael-mhar <ael-mhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 14:48:09 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/12 10:43:44 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/14 21:26:41 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	count_commands(char *command)
+int	count_pipes(char *str)
 {
 	int	i;
 	int	start;
 	int	count;
 
 	i = 0;
-	start = 0;
 	count = 0;
-	while (command[i] != 0)
+	start = 0;
+	while (str[i] != 0)
 	{
-		if (command[i] == '\"' || command[i] == '\'')
+		while (str[i] && (str[i] == '\"' || str[i] == '\''))
 		{
-			start = command[i];
+			start = str[i];
 			i++;
-			while (command[i] != 0 && command[i] != start)
+			while (str[i] != 0 && str[i] != start)
 				i++;
-			if (command[i] == start)
-				i++;
+			i++;
 		}
-		if (command[i] && command[i] == ' ')
+		if (str[i] == '|')
 		{
-			count++;
-			while (command[i] != 0 && command[i] == ' ')
+			i++;
+			while (str[i] != 0 && str[i] != '\'' && str[i] != '\"' && str[i] == ' ')
 				i++;
-			if (command[i] == 0)
-				count--;
+			if (!str[i] || str[i] == '|')
+				return (-1);
+			while (str[i] != 0 && str[i] != '|' && str[i] != '\"' && str[i] != '\'')
+				i++;
+			count++;
 		}
-		if (command[i] && command[i] != '\"' && command[i] != '\'')
+		if (str[i] && str[i] != '|' && str[i] != '\'' && str[i] != '\"')
 			i++;
 	}
 	return (count);
 }
 
-char	**ft_split_with_space(char *command)
+char	**ft_split_with_pipe(char *command)
 {
 	int		i;
 	int		j;
@@ -60,101 +62,38 @@ char	**ft_split_with_space(char *command)
 	j = 0;
 	start = 0;
 	cmd = ft_calloc(1, 1);
-	array = ft_calloc(count_commands(command) + 2, sizeof(char *));
+	array = ft_calloc(count_pipes(command) + 2, sizeof(char *));
 	if (!array)
 		return (0);
 	while (command[i] != 0)
 	{
-		while (command[i] != 0 && command[i] == ' ')
-			i++;
 		while (command[i] && (command[i] == '\"' || command[i] == '\''))
 		{
 			start = command[i];
-			i++;
+			cmd = ft_joinchar(cmd, command[i++]);
 			while (command[i] != 0 && command[i] != start)
 				cmd = ft_joinchar(cmd, command[i++]);
-			if (command[i] == start)
-				i++;
+			cmd = ft_joinchar(cmd, command[i++]);
 		}
-		if (command[i] != 0 && command[i] != ' ')
+		if (command[i] == '|')
 		{
-			while (command[i] != 0 && command[i] != ' ')
+			i++;
+			while (command[i] != 0 && command[i] != '\'' && command[i] != '\"' && command[i] == ' ')
+				cmd = ft_joinchar(cmd, command[i++]);
+			while (command[i] != 0 && command[i] != '|' && command[i] != '\"' && command[i] != '\'')
 				cmd = ft_joinchar(cmd, command[i++]);
 		}
-		array[j++] = cmd;
-		cmd = 0;
-		cmd = ft_calloc(1, 1);
-		if (command[i] && command[i] != '\"' && command[i] != '\'')
-			i++;
+		while (command[i] && command[i] != '|' && command[i] != '\'' && command[i] != '\"')
+			cmd = ft_joinchar(cmd, command[i++]);
+		if (command[i] != '\'' && command[i] != '\"')
+		{
+			array[j++] = cmd;
+			cmd = 0;
+			cmd = ft_calloc(1, 1);
+		}
 	}
 	array[j] = 0;
 	free(cmd);
 	free(command);
 	return (array);
 }
-
-/*
-char	**ft_split_semicolon(char *str)
-{
-	char	**array;
-	char	*temp;
-	int		i;
-	int		len;
-
-	if (!str)
-		return (NULL);
-	array = ft_calloc(sizeof(char *) * (count_commands(str) + 1) + 1, 1);
-	if (!array)
-		return (NULL);
-	i = 0;
-	len = count_commands(str) + 1;
-	while (i < len)
-	{
-		temp = get_command(str);
-		array[i] = temp;
-		str += ft_strlen(array[i]) + 1;
-		i++;
-	}
-	array[i] = 0;
-	return (array);
-}
-
-int	main(int ac, char **av)
-{
-	char	*s;
-	char	**array;
-	int	i;
-	i = 0;
-	while (array[i])
-	{
-		printf("%s\n",array[i]);
-		i++;
-	}
-   	s = readline(">> ");
-	array = get_command(s);
-	while (array[i] != 0)
-	{
-		printf("%s\n", array[i]);
-		i++;
-	}
-	while (s)
-	{
-		i = 0;
-   		s = readline(">> ");
-		array = get_command(s);
-		while (array[i] != 0)
-		{
-			printf("%s\n", array[i]);
-			i++;
-		}
-	}
-
-	char **array = ft_split_semicolon(ft_strdup(av[i]));
-	int	i = 0;
-	while (array[i] != 0)
-	{
-		printf("%s\n", array[i]);
-		i++;
-	}
-	return (0);
-}*/

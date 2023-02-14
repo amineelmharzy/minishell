@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:06:56 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/13 17:34:40 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/14 12:27:12 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,13 @@ void	env(t_shell *shell)
 
 int	get_path(t_shell *shell)
 {
-	int	i;
+	int		i;
 
+	if (access(shell->command, F_OK | X_OK) != -1)
+	{
+		shell->rcommand = shell->command;
+		return (1);
+	}
 	i = 0;
 	while (shell->path[i] != 0)
 	{
@@ -53,9 +58,7 @@ int	get_path(t_shell *shell)
 			(shell->command)++;
 		shell->rcommand = ft_strjoin(shell->rcommand, shell->command);
 		if (access(shell->rcommand, F_OK | X_OK) != -1)
-		{
 			return (1);
-		}
 		i++;
 	}
 	return (0);
