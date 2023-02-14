@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:06:56 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/01/27 16:41:42 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/13 17:34:40 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,6 @@ int	get_path(t_shell *shell)
 				|| (*(shell->command) == '\t')))
 			(shell->command)++;
 		shell->rcommand = ft_strjoin(shell->rcommand, shell->command);
-		shell->real_command = ft_split(shell->rcommand, ' ');
-		shell->rcommand = shell->real_command[0];
 		if (access(shell->rcommand, F_OK | X_OK) != -1)
 		{
 			return (1);

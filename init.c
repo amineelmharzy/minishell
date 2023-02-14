@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:42:59 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/12 10:45:20 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/14 09:36:34 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,21 @@ char	*get_real_command(t_shell *shell)
 			}
 		}
 		else
-			real = ft_joinchar(real, *str++);
+		{
+			if (*str && *str == '$' && *(str + 1) != 0 && *(str + 1) != ' ')
+			{
+				str++;
+				while (str[++i] != 0)
+					if (!ft_isalnum(str[i]))
+						break ;
+				env = is_env(shell, str, i);
+				if (env)
+					real = ft_strjoin(real, env);
+				str = str + i;
+			}
+			else
+				real = ft_joinchar(real, *str++);
+		}
 	}
 	free(save);
 	free(shell->command);
@@ -79,29 +93,18 @@ void	run_command(t_shell *shell)
 	shell->command = get_real_command(shell);
 	if (!implement_redirection(shell))
 		return ;
-	printf("\nCommand ==> %s\n", shell->command);
-	/*
-	shell->command = get_real_command(shell);
-	*/
-	/*
-	while (shell->commands[i] != 0)
-	{
-		printf("%s\n", shell->commands[i]);
-		shell->command = shell->commands[i];
-		shell->parsed_command = ft_split(shell->command, ' ');
-		if (get_path(shell))
-		{
-			if (!check_command(shell))
-				exec_command(shell);
-		}
-		else if (!check_command(shell))
-			return ;
-		i++;
-	}
-	//free(shell->command);
-	i = 0;
-	*/
-	//while (1);
+	if (!check_infiles(shell))
+		return ;
+	if (shell->herdocs)
+		shell->herdoc_output = herdoc(shell);
+	if (!shell->command[0])
+		return ;
+	shell->real_command = ft_split_with_space(shell->command);
+	shell->command = shell->real_command[0];
+	if (!get_path(shell))
+		return ;
+	shell->real_command[0] = shell->rcommand;
+	exec_command(shell);
 }
 
 void	handle(int sig)
@@ -123,8 +126,12 @@ int	main(int ac, char **av, char **envp)
 	shell.envp = envp;
 	shell.path = ft_split(getenv("PATH"), ':');
 	shell.prompt = "~ ";
+	shell.herdocs = 0;
+	shell.herdoc_output = 0;
+	shell.infiles = 0;
+	shell.infile_output = 0;
+	shell.outfile = 0;
 	init_env(&shell);
-	//free_env(&shell);
 	while (1)
 	{
 		shell.command = readline(shell.prompt);

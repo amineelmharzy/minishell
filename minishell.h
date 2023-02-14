@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 16:28:54 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/12 10:44:19 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/14 09:36:01 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,9 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <fcntl.h>
+
+# define BUFFER_SIZE 1
 
 char				**ft_split(char *str, char set);
 char				*ft_strjoin(char *s1, char *s2);
@@ -35,10 +38,13 @@ typedef struct s_env
 
 typedef struct s_shell
 {
-	int				iofile_error;
+	int				ofile;
 	char			*command;
 	char			*cmd;
 	char			*prompt;
+	char			*herdoc_output;
+	char			*infile_output;
+	char			*outfile;
 	char			*rcommand;
 	char			**path;
 	char			**envp;
@@ -52,7 +58,7 @@ typedef struct s_shell
 	struct s_env	*env;
 }					t_shell;
 
-t_env				*create_node(char *var);
+//t_env				*create_node(char *var);
 void				insert_node_to_end(t_env **head, t_env *new_node);
 void				init_env(t_shell *shell);
 void				add_env_var(t_shell *shell, char *var);
@@ -76,5 +82,10 @@ void				free_env(t_shell *shell);
 int					parse_infiles(t_shell *shell);
 int					implement_redirection(t_shell *shell);
 char				**ft_split_with_space(char *command);
+void				exec_command(t_shell *shell);
+int					check_infiles(t_shell *shell);
+char				*herdoc(t_shell *shell);
+char				*get_next_line(int fd);
+char				*read_infile(t_shell *shell);
 
 #endif
