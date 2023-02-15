@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 14:48:09 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/14 21:26:41 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/14 22:24:26 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ int	count_pipes(char *str)
 	start = 0;
 	while (str[i] != 0)
 	{
+		while (str[i] && str[i] == ' ')
+			i++;
 		while (str[i] && (str[i] == '\"' || str[i] == '\''))
 		{
 			start = str[i];

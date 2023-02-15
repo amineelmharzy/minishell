@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:42:59 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/14 11:48:25 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/15 10:53:57 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,29 +85,43 @@ void	run_command(t_shell *shell)
 	i = 0;
 	if (!shell->command[0])
 		return ;
+	shell->commands = ft_split_with_pipe(shell->command);
+	if (count_pipes(shell->command) == -1)
+	{
+		printf("syntax error near unexpected token | \n");
+		return ;
+	}
 	if (is_fine_with_quotes(shell->command) == -1)
 	{
 		printf("quote error\n");
 		return ;
 	}
-	shell->outfile = 0;
-	shell->command = get_real_command(shell);
-	if (!implement_redirection(shell))
-		return ;
-	if (!check_infiles(shell))
-		return ;
-	if (shell->herdocs)
-		shell->herdoc_output = herdoc(shell);
-	if (shell->outfiles || shell->afiles)
-		init_outfiles(shell);
-	if (!shell->command[0])
-		return ;
-	shell->real_command = ft_split_with_space(shell->command);
-	shell->command = shell->real_command[0];
-	if (!get_path(shell))
-		return ;
-	shell->real_command[0] = shell->rcommand;
-	exec_command(shell);
+	while (shell->commands[i] != 0)
+	{
+		shell->command = shell->commands[i];
+		shell->outfile = 0;
+		shell->command = get_real_command(shell);
+		if (!implement_redirection(shell))
+			return ;
+		if (!check_infiles(shell))
+			return ;
+		if (shell->herdocs)
+			shell->herdoc_output = herdoc(shell);
+		if (shell->outfiles || shell->afiles)
+			init_outfiles(shell);
+		if (!shell->command[0])
+			return ;
+		shell->real_command = ft_split_with_space(shell->command);
+		shell->command = shell->real_command[0];
+		if (!get_path(shell))
+			return ;
+		shell->real_command[0] = shell->rcommand;
+		if (shell->commands[i + 1] == 0)
+			break ;
+		exec_command(shell);
+		i++;
+	}
+	ecev_lastcommand(shell);
 }
 
 void	handle(int sig)
@@ -136,6 +150,7 @@ int	main(int ac, char **av, char **envp)
 	shell.afiles = 0;
 	shell.infile_output = 0;
 	shell.outfile = 0;
+	shell.stdin_fd = dup(0);
 	init_env(&shell);
 	while (1)
 	{
