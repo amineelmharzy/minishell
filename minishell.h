@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 16:28:54 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/15 10:32:35 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/15 18:33:04 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,14 @@ typedef struct s_env
 typedef struct s_shell
 {
 	int				stdin_fd;
+	int				stdout_fd;
 	int				ofile;
+	int				ifile;
 	char			*command;
 	char			*cmd;
 	char			*prompt;
 	char			*herdoc_output;
-	char			*infile_output;
+	char			*infile;
 	char			*outfile;
 	char			*rcommand;
 	char			**path;
@@ -87,10 +89,11 @@ void				exec_command(t_shell *shell);
 int					check_infiles(t_shell *shell);
 char				*herdoc(t_shell *shell);
 char				*get_next_line(int fd);
-char				*read_infile(t_shell *shell);
+char				*get_infile(t_shell *shell);
 int					init_outfiles(t_shell *shell);
 char				**ft_split_with_pipe(char *command);
 int					count_pipes(char *str);
 void				ecev_lastcommand(t_shell *shell);
+void				set_infile(t_shell *shell);
 
 #endif

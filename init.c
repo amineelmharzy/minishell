@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:42:59 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/15 10:53:57 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/15 18:33:53 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,18 +88,23 @@ void	run_command(t_shell *shell)
 	shell->commands = ft_split_with_pipe(shell->command);
 	if (count_pipes(shell->command) == -1)
 	{
-		printf("syntax error near unexpected token | \n");
+		printf("Minishell : syntax error near unexpected token | \n");
 		return ;
 	}
 	if (is_fine_with_quotes(shell->command) == -1)
 	{
-		printf("quote error\n");
+		printf("Minishell : quote error\n");
 		return ;
 	}
+	//shell->stdin_fd = dup(0);
 	while (shell->commands[i] != 0)
 	{
 		shell->command = shell->commands[i];
 		shell->outfile = 0;
+		shell->infiles = 0;
+		shell->herdocs = 0;
+		shell->outfiles = 0;
+		shell->afiles = 0;
 		shell->command = get_real_command(shell);
 		if (!implement_redirection(shell))
 			return ;
@@ -148,9 +153,10 @@ int	main(int ac, char **av, char **envp)
 	shell.infiles = 0;
 	shell.outfiles= 0;
 	shell.afiles = 0;
-	shell.infile_output = 0;
+	shell.infile = 0;
 	shell.outfile = 0;
 	shell.stdin_fd = dup(0);
+	shell.stdout_fd = dup(1);
 	init_env(&shell);
 	while (1)
 	{

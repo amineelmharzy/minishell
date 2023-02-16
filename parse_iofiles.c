@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 13:16:02 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/14 11:42:07 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/15 18:26:49 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,7 @@ char	*parse_iofiles(t_shell *shell, char *set)
 	return (files);
 }
 
-void	check_outfile(t_shell *shell)
+void	set_outfile(t_shell *shell)
 {
 	int	i;
 
@@ -182,7 +182,8 @@ void	check_outfile(t_shell *shell)
 
 int	implement_redirection(t_shell *shell)
 {
-	check_outfile(shell);
+	set_outfile(shell);
+	set_infile(shell);
 	if (check_error(shell, "<<"))
 	{
 		printf("syntax error near unexpected token `newline' or `<<'\n");

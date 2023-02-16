@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:06:56 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/14 12:27:12 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/15 20:03:00 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,13 @@ int	get_path(t_shell *shell)
 				|| (*(shell->command) == '\t')))
 			(shell->command)++;
 		shell->rcommand = ft_strjoin(shell->rcommand, shell->command);
-		if (access(shell->rcommand, F_OK | X_OK) != -1)
-			return (1);
+		if (access(shell->rcommand, F_OK) != -1)
+		{
+			if (access(shell->rcommand, X_OK) != -1)
+				return (1);
+			else
+				perror("Minishell ");
+		}
 		i++;
 	}
 	return (0);
