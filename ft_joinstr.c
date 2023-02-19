@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 12:00:52 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/01/30 13:13:57 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/20 00:34:42 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	*ft_joinstr(char *s1, char *s2)
 	while (s1[i] != 0)
 	{
 		if (s1[i] == '\\' && s1[i + 1] == 0)
-			break;
+			break ;
 		newstr[i] = s1[i];
 		i++;
 	}

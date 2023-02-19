@@ -1,18 +1,29 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/20 00:31:33 by ael-mhar          #+#    #+#             */
+/*   Updated: 2023/02/20 00:38:15 by ael-mhar         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include <errno.h>
+# include <fcntl.h>
+# include <limits.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
+# include <stdint.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include <unistd.h>
-# include <limits.h>
-# include <fcntl.h>
-# include <stdint.h>
 # include <string.h>
-# include <errno.h>
+# include <unistd.h>
 
 # define BUFFER_SIZE 1
 
@@ -111,6 +122,10 @@ int					expand_env(t_shell *shell, char *str, char **real);
 int					iofiles_errors(t_shell *shell, char *set);
 char				*parse_iofiles(t_shell *shell, char *set);
 void				print_error(t_shell *shell, char *target, char *error);
+int					check_identifier(t_shell *shell, char *str);
+char				*exported_key(char *var);
+void				ft_putstr_fd(char *s, int fd);
+int					init_outfd(t_shell *shell);
+char				*get_infile(t_shell *shell);
 
 #endif
-

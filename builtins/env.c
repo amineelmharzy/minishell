@@ -6,11 +6,11 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 22:25:31 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/19 22:28:25 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/19 23:35:08 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishel.h"
+#include "../minishell.h"
 
 void	env(t_shell *shell, int opt)
 {
@@ -19,12 +19,15 @@ void	env(t_shell *shell, int opt)
 
 	fd = init_outfd(shell);
 	temp = shell->env;
-	dup2(fd, 1);
+	if (fd != 1)
+		dup2(fd, 1);
 	while (temp)
 	{
 		if (opt == 0)
+		{
 			if (temp->value[0])
 				printf("%s=%s\n", temp->key, temp->value);
+		}
 		else
 		{
 			if (temp->value[0])

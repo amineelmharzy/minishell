@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 22:06:47 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/19 22:10:49 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/19 23:32:52 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ int	chk_newline(char *s)
 {
 	if (!s)
 		return (0);
-	if (ft_strlen(shell->real_command[1]) == 2)
+	if (ft_strlen(s) == 2)
 	{
-		if (ft_strncmp(shell->real_command[1], "-n", 2) == 0)
+		if (ft_strncmp(s, "-n", 2) == 0)
 			return (1);
 	}
 	return (0);
@@ -31,7 +31,7 @@ void	echo(t_shell *shell)
 	int	newline;
 
 	i = 1;
-	newline = chk_new_line(shell->real_command[1]);
+	newline = chk_newline(shell->real_command[1]);
 	fd = init_outfd(shell);
 	if (fd != 1)
 		dup2(fd, 1);

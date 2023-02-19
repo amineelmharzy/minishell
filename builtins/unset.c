@@ -6,11 +6,11 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 22:27:46 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/19 22:47:44 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/19 23:34:20 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 void	unset(t_shell *shell)
 {
