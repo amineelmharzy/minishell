@@ -1,0 +1,1 @@
+gcc init.c init_env.c  ft_split.c  ft_calloc.c  ft_strlen.c ft_strdup.c ft_strncmp.c  get_real_command.c expand_env.c ft_strlen_to_char.c  ft_joinstr.c ft_isalnum.c  ft_joinchar.c ft_itoa.c  -lreadline minishell.h 

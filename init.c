@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:42:59 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/19 08:53:30 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/19 15:17:01 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,22 +20,21 @@ void	run_command(t_shell *shell)
 	if (!shell->command[0])
 		return ;
 	shell->command = get_real_command(shell);
-	free(shell->command);
-	while (1);
-	/*
-	shell->commands = ft_split_with_pipe(shell->command);
 	if (count_pipes(shell->command) == -1)
 	{
 		printf("Minishell : syntax error near unexpected token | \n");
-		shell->exit_status = 258;
+		shell->exit_status = 2;
 		return ;
 	}
 	if (is_fine_with_quotes(shell->command) == -1)
 	{
 		printf("Minishell : quote error\n");
-		shell->exit_status = 258;
+		shell->exit_status = 1;
 		return ;
 	}
+	shell->commands = ft_split_with_pipe(shell->command);
+	free_all(shell, 0);
+	/*
 	while (shell->commands[i] != 0)
 	{
 		shell->command = shell->commands[i];
@@ -114,11 +113,11 @@ int	main(int ac, char **av, char **envp)
 		if (shell.command)
 			run_command(&shell);
 		else
+		{
+			free_all(&shell, 1);
 			exit(0);
+		}
 	}
-	while (shell.path[i])
-		free(shell.path[i++]);
-	free(shell.path);
-	free_env(&shell);
-	while (1);
+	free_all(&shell, 1);
+	return (0);
 }

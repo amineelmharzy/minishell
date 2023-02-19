@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/29 16:28:54 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/18 19:49:32 by ael-mhar         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -88,7 +77,7 @@ char				*ft_joinstr(char *s1, char *s2);
 char				*is_env(t_shell *shell, char *s, int n, int ret);
 int					ft_isalnum(int c);
 int					is_fine_with_quotes(char *command);
-void				free_env(t_shell *shell);
+void				free_all(t_shell *shell, int option);
 int					parse_infiles(t_shell *shell);
 int					implement_redirection(t_shell *shell);
 char				**ft_split_with_space(char *command);
@@ -105,5 +94,8 @@ void				set_infile(t_shell *shell);
 int					check_command(t_shell *shell);
 char				*ft_itoa(int n);
 char				*get_real_command(t_shell *shell);
+int					ft_strlen_to_char(char *str, char c);
+int					expand_env(t_shell *shell, char *str, char **real);
 
 #endif
+

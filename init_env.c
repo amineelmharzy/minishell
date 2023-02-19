@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 09:39:16 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/19 09:01:58 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/19 15:16:03 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void	init_env(t_shell *shell)
 {
 	int		i;
 	t_env	*new_node;
+	shell->env = 0;
 	i = 0;
 	while (shell->envp[i] != 0)
 	{
@@ -113,20 +114,35 @@ char	*is_env(t_shell *shell, char *s, int n, int ret)
 	return (NULL);
 }
 
-void	free_env(t_shell *shell)
+void	free_all(t_shell *shell, int option)
 {
 	t_env	*env;
 	t_env	*temp;
+	int		i;
 
 	env = shell->env;
-	temp = 0;
-	while (env)
+	i = 0;
+	if (shell->commands)
 	{
-		temp = env->next;
-		free(env->key);
-		free(env->value);
-		free(env);
-		env = temp;
+		while (shell->commands[i] != 0)
+			free(shell->commands[i++]);
+		free(shell->commands);
+		shell->commands = 0;
+		i = 0;
+	}
+	if (option == 1)
+	{
+		while (shell->path[i] != 0)
+			free(shell->path[i++]);
+		free(shell->path);
+		while (env)
+		{
+			temp = env->next;
+			free(env->key);
+			free(env->value);
+			free(env);
+			env = temp;
+		}
 	}
 }
 
