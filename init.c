@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:42:59 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/18 20:07:17 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/19 08:53:30 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ void	run_command(t_shell *shell)
 	if (!shell->command[0])
 		return ;
 	shell->command = get_real_command(shell);
-	printf("%s\n", shell->command);
 	free(shell->command);
+	while (1);
 	/*
 	shell->commands = ft_split_with_pipe(shell->command);
 	if (count_pipes(shell->command) == -1)
