@@ -11,8 +11,15 @@
 # include <limits.h>
 # include <fcntl.h>
 # include <stdint.h>
+# include <string.h>
+# include <errno.h>
 
 # define BUFFER_SIZE 1
+
+# define E_PERM "Permission denied"
+# define E_NOTF "No such file or directory"
+# define E_PIPE "syntax error near unexpected token `|'"
+# define E_REDR "syntax error near unexpected token `newline'"
 
 char				**ft_split(char *str, char set);
 char				*ft_strjoin(char *s1, char *s2);
@@ -89,13 +96,19 @@ char				*get_infile(t_shell *shell);
 int					init_outfiles(t_shell *shell);
 char				**ft_split_with_pipe(char *command);
 int					count_pipes(char *str);
+int					count_iofiles(char *str, char *set);
+int					count_args(char *command);
 void				ecev_lastcommand(t_shell *shell);
 void				set_infile(t_shell *shell);
+void				set_outfile(t_shell *shell);
 int					check_command(t_shell *shell);
 char				*ft_itoa(int n);
 char				*get_real_command(t_shell *shell);
 int					ft_strlen_to_char(char *str, char c);
 int					expand_env(t_shell *shell, char *str, char **real);
+int					iofiles_errors(t_shell *shell, char *set);
+char				*parse_iofiles(t_shell *shell, char *set);
+void				print_error(t_shell *shell, char *target, char *error);
 
 #endif
 

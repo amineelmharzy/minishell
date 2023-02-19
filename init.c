@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:42:59 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/19 15:17:01 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/19 19:01:59 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ void	run_command(t_shell *shell)
 	i = 0;
 	if (!shell->command[0])
 		return ;
-	shell->command = get_real_command(shell);
 	if (count_pipes(shell->command) == -1)
 	{
 		printf("Minishell : syntax error near unexpected token | \n");
@@ -33,30 +32,22 @@ void	run_command(t_shell *shell)
 		return ;
 	}
 	shell->commands = ft_split_with_pipe(shell->command);
-	free_all(shell, 0);
-	/*
 	while (shell->commands[i] != 0)
 	{
 		shell->command = shell->commands[i];
-		shell->outfile = 0;
-		shell->infiles = 0;
-		shell->herdocs = 0;
-		shell->outfiles = 0;
-		shell->afiles = 0;
 		shell->command = get_real_command(shell);
 		if (!implement_redirection(shell))
-		{
-			shell->exit_status = 258;
 			return ;
-		}
 		if (!check_infiles(shell))
 			return ;
 		if (shell->herdocs)
 			shell->herdoc_output = herdoc(shell);
+		free(shell->command);
 		if (shell->outfiles || shell->afiles)
 			if (!init_outfiles(shell))
 				return ;
 		shell->real_command = ft_split_with_space(shell->command);
+		/*
 		shell->command = shell->real_command[0];
 		if (check_command(shell))
 			return ;
@@ -66,10 +57,13 @@ void	run_command(t_shell *shell)
 		if (shell->commands[i + 1] == 0)
 			break ;
 		exec_command(shell);
+		*/
 		i++;
 	}
+	/*
 	ecev_lastcommand(shell);
 	*/
+	free_all(shell, 0);
 }
 
 /*

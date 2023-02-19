@@ -1,42 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_infiles.c                                    :+:      :+:    :+:   */
+/*   set_outfile.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/12 14:25:48 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/19 18:05:07 by ael-mhar         ###   ########.fr       */
+/*   Created: 2023/02/19 15:29:54 by ael-mhar          #+#    #+#             */
+/*   Updated: 2023/02/19 15:30:02 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	check_infiles(t_shell *shell)
+void	set_outfile(t_shell *shell)
 {
 	int	i;
 
-	i = 0;
-	if (!shell->infiles)
-		return (1);
-	while (shell->infiles[i] != 0)
+	i = ft_strlen(shell->command) - 1;
+	while (i >= 0)
 	{
-		if (access(shell->infiles[i], F_OK) != -1)
+		if (shell->command[i] == '>' && i > 0 && shell->command[i - 1] == '>')
 		{
-			if (access(shell->infiles[i], R_OK) == -1)
-			{
-				shell->exit_status = 1;
-				print_error(shell, shell->infiles[i], strerror(errno));
-				return (0);
-			}
+			shell->ofile = 2;
+			break ;
 		}
-		else
+		if (shell->command[i] == '>')
 		{
-			shell->exit_status = 1;
-			print_error(shell, shell->infiles[i], strerror(errno));
-			return (0);
+			shell->ofile = 1;
+			break ;
 		}
-		i++;
+		i--;
 	}
-	return (1);
 }

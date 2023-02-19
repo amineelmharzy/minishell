@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:48:28 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/19 11:34:21 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/19 18:30:24 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,8 @@ char	*get_real_command(t_shell *shell)
 	char	*real;
 	char	*save;
 
+	if (!shell->command || !shell->command[0])
+		return (NULL);
 	real = ft_calloc(1, 1);
 	str = ft_strdup(shell->command);
 	save = str;

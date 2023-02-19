@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 09:39:16 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/19 15:16:03 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/19 16:51:34 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,13 +122,38 @@ void	free_all(t_shell *shell, int option)
 
 	env = shell->env;
 	i = 0;
+	if (shell->infiles)
+	{
+		while (shell->infiles[i])
+			free(shell->infiles[i++]);
+		free(shell->infiles);
+		shell->infiles = 0;
+	}
+	if (shell->herdocs)
+	{
+		while (shell->herdocs[i])
+			free(shell->herdocs[i++]);
+		free(shell->herdocs);
+		shell->herdocs = 0;
+	}
+	if (shell->afiles)
+	{
+		while (shell->afiles[i])
+			free(shell->afiles[i++]);
+		free(shell->afiles);
+		shell->afiles = 0;
+	}
+	if (shell->outfiles)
+	{
+		while (shell->outfiles[i])
+			free(shell->outfiles[i++]);
+		free(shell->outfiles);
+		shell->outfiles = 0;
+	}
 	if (shell->commands)
 	{
-		while (shell->commands[i] != 0)
-			free(shell->commands[i++]);
 		free(shell->commands);
 		shell->commands = 0;
-		i = 0;
 	}
 	if (option == 1)
 	{
