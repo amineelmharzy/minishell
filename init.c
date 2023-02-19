@@ -6,77 +6,11 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:42:59 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/15 18:33:53 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/18 20:07:17 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char	*get_real_command(t_shell *shell)
-{
-	int		i;
-	char	*str;
-	char	*real;
-	char	*env;
-	char	*save;
-
-	real = ft_calloc(1, 1);
-	str = ft_strdup(shell->command);
-	save = str;
-	while (*str != 0)
-	{
-		i = -1;
-		if (*str == '\'')
-		{
-			real = ft_joinchar(real, *str++);
-			while (*str != 0 && *str != '\'')
-			{
-				real = ft_joinchar(real, *str++);
-			}
-			if (!*str)
-				break;
-		}
-		else if (*str == '\"')
-		{
-			real = ft_joinchar(real, *str++);
-			while (*str != 0 && *str != '\"')
-			{
-				if (*str && *str == '$' && *(str + 1) != 0 && *(str + 1) != ' ')
-				{
-					str++;
-					while (str[++i] != 0)
-						if (!ft_isalnum(str[i]))
-							break ;
-					env = is_env(shell, str, i);
-					if (env)
-						real = ft_strjoin(real, env);
-					str = str + i;
-				}
-				else
-					real = ft_joinchar(real, *str++);
-			}
-		}
-		else
-		{
-			if (*str && *str == '$' && *(str + 1) != 0 && *(str + 1) != ' ')
-			{
-				str++;
-				while (str[++i] != 0)
-					if (!ft_isalnum(str[i]))
-						break ;
-				env = is_env(shell, str, i);
-				if (env)
-					real = ft_strjoin(real, env);
-				str = str + i;
-			}
-			else
-				real = ft_joinchar(real, *str++);
-		}
-	}
-	free(save);
-	free(shell->command);
-	return (real);
-}
 
 void	run_command(t_shell *shell)
 {
@@ -85,18 +19,23 @@ void	run_command(t_shell *shell)
 	i = 0;
 	if (!shell->command[0])
 		return ;
+	shell->command = get_real_command(shell);
+	printf("%s\n", shell->command);
+	free(shell->command);
+	/*
 	shell->commands = ft_split_with_pipe(shell->command);
 	if (count_pipes(shell->command) == -1)
 	{
 		printf("Minishell : syntax error near unexpected token | \n");
+		shell->exit_status = 258;
 		return ;
 	}
 	if (is_fine_with_quotes(shell->command) == -1)
 	{
 		printf("Minishell : quote error\n");
+		shell->exit_status = 258;
 		return ;
 	}
-	//shell->stdin_fd = dup(0);
 	while (shell->commands[i] != 0)
 	{
 		shell->command = shell->commands[i];
@@ -107,17 +46,21 @@ void	run_command(t_shell *shell)
 		shell->afiles = 0;
 		shell->command = get_real_command(shell);
 		if (!implement_redirection(shell))
+		{
+			shell->exit_status = 258;
 			return ;
+		}
 		if (!check_infiles(shell))
 			return ;
 		if (shell->herdocs)
 			shell->herdoc_output = herdoc(shell);
 		if (shell->outfiles || shell->afiles)
-			init_outfiles(shell);
-		if (!shell->command[0])
-			return ;
+			if (!init_outfiles(shell))
+				return ;
 		shell->real_command = ft_split_with_space(shell->command);
 		shell->command = shell->real_command[0];
+		if (check_command(shell))
+			return ;
 		if (!get_path(shell))
 			return ;
 		shell->real_command[0] = shell->rcommand;
@@ -127,8 +70,10 @@ void	run_command(t_shell *shell)
 		i++;
 	}
 	ecev_lastcommand(shell);
+	*/
 }
 
+/*
 void	handle(int sig)
 {
 	if (sig == SIGINT)
@@ -140,6 +85,7 @@ void	handle(int sig)
 		(void) sig;
 	}
 }
+*/
 
 int	main(int ac, char **av, char **envp)
 {
@@ -147,6 +93,7 @@ int	main(int ac, char **av, char **envp)
 
 	shell.envp = envp;
 	shell.path = ft_split(getenv("PATH"), ':');
+	shell.exit_status = 0;
 	shell.prompt = "~ ";
 	shell.herdocs = 0;
 	shell.herdoc_output = 0;
@@ -158,6 +105,8 @@ int	main(int ac, char **av, char **envp)
 	shell.stdin_fd = dup(0);
 	shell.stdout_fd = dup(1);
 	init_env(&shell);
+	int	i;
+	i = 0;
 	while (1)
 	{
 		shell.command = readline(shell.prompt);
@@ -167,6 +116,9 @@ int	main(int ac, char **av, char **envp)
 		else
 			exit(0);
 	}
-	//free_env(&shell);
-	//while (1);
+	while (shell.path[i])
+		free(shell.path[i++]);
+	free(shell.path);
+	free_env(&shell);
+	while (1);
 }

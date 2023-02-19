@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 08:54:27 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/15 11:06:58 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/17 12:02:16 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,11 @@ int	init_outfiles(t_shell *shell)
 	{
 		while (shell->outfiles[i] != 0)
 		{
-			fd = open(shell->outfiles[i], O_CREAT, 0644);
+			fd = open(shell->outfiles[i], O_CREAT | O_TRUNC, 0644);
 			close(fd);
 			if (access(shell->outfiles[i], F_OK | W_OK) == -1)
 			{
+				shell->exit_status = 126;
 				perror("Minishell ");
 				return (0);
 			}
@@ -43,6 +44,7 @@ int	init_outfiles(t_shell *shell)
 			close(fd);
 			if (access(shell->afiles[i], F_OK | W_OK) == -1)
 			{
+				shell->exit_status = 126;
 				perror("Minishell ");
 				return (0);
 			}

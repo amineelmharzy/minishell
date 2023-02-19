@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 14:48:09 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/12 15:24:53 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/18 08:30:00 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ char	**ft_split(char *str, char set)
 	if (!str)
 		return (NULL);
 	i = 0;
-	array = malloc(sizeof(char *) * (count_strings(str, set) + 1));
+	array = ft_calloc(count_strings(str, set) + 1, sizeof(char *));
 	if (!array)
 		return (NULL);
 	while (*str != '\0')

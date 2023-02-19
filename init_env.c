@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 09:39:16 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/13 17:30:49 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/18 19:19:32 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,56 +14,62 @@
 
 t_env	*create_node(char *var)
 {
+	char	**array;
 	t_env	*node;
-	char	**env_var;
+	int		i;
 
-	node = malloc(sizeof(t_env *));
-	env_var = ft_split(var, '=');
+	node = malloc(sizeof(t_env));
 	if (!node)
-		return (0);
-	node->key = env_var[0];
-	node->value = env_var[1];
-	node->next = NULL;
+		return (NULL);
+	i = 1;
+	array = ft_split(var, '=');
+	node->key = ft_strdup(array[0]);
+	node->value = ft_calloc(1, 1);
+	free(array[0]);
+	while (array[i])
+	{
+		node->value = ft_joinstr(node->value, ft_strdup(array[i]));
+		free(array[i]);
+		i++;
+	}
+	node->next = 0;
+	free(array);
 	return (node);
 }
 
-void	insert_node_to_end(t_env **head, t_env *new_node)
+void	insert_node_to_end(t_shell *shell, t_env *new_node)
 {
 	t_env	*lst;
 
-	lst = *head;
-	if (!(*head) && new_node)
+	lst = shell->env;
+	if (!(shell->env) && new_node)
 	{
-		*head = new_node;
+		shell->env = new_node;
 		return ;
 	}
-	else if (!(*head) || !new_node)
+	else if (!(shell->env) || !new_node)
 	{
 		return ;
 	}
-	while ((*head)->next)
+	while ((shell->env)->next)
 	{
-		(*head) = (*head)->next;
+		(shell->env) = (shell->env)->next;
 	}
-	(*head)->next = new_node;
-	*head = lst;
+	(shell->env)->next = new_node;
+	shell->env = lst;
 }
 
 void	init_env(t_shell *shell)
 {
 	int		i;
 	t_env	*new_node;
-	t_env	*head;
-
 	i = 0;
-	head = NULL;
 	while (shell->envp[i] != 0)
 	{
 		new_node = create_node(shell->envp[i]);
-		insert_node_to_end(&head, new_node);
+		insert_node_to_end(shell, new_node);
 		i++;
 	}
-	shell->env = head;
 }
 
 void	add_env_var(t_shell *shell, char *var)
@@ -71,12 +77,14 @@ void	add_env_var(t_shell *shell, char *var)
 	t_env	*node;
 
 	node = create_node(var);
-	insert_node_to_end(&shell->env, node);
+	insert_node_to_end(shell, node);
 }
 
-char	*is_env(t_shell *shell, char *s, int n)
+char	*is_env(t_shell *shell, char *s, int n, int ret)
 {
 	t_env	*env;
+	t_env	*tmp1;
+	t_env	*tmp2;
 
 	env = shell->env;
 	while (env)
@@ -84,8 +92,22 @@ char	*is_env(t_shell *shell, char *s, int n)
 		if (ft_strlen(env->key) == n)
 		{
 			if (ft_strncmp(env->key, s, n) == 0)
-				return (env->value);
+			{
+				if (ret == 0)
+				{
+					tmp2 = env->next;
+					free(env->key);
+					free(env->value);
+					free(env);
+					tmp1->next = tmp2;
+					env = tmp2;
+					return (NULL);
+				}
+				else
+					return (env->value);
+			}
 		}
+		tmp1 = env;
 		env = env->next;
 	}
 	return (NULL);
@@ -97,13 +119,14 @@ void	free_env(t_shell *shell)
 	t_env	*temp;
 
 	env = shell->env;
+	temp = 0;
 	while (env)
 	{
+		temp = env->next;
 		free(env->key);
 		free(env->value);
-		temp = env;
 		free(env);
-		env = temp->next;
+		env = temp;
 	}
 }
 

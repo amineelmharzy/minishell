@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 16:28:54 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/15 18:33:04 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/18 19:49:32 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,9 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <limits.h>
 # include <fcntl.h>
+# include <stdint.h>
 
 # define BUFFER_SIZE 1
 
@@ -33,6 +35,7 @@ typedef struct s_env
 {
 	char			*key;
 	char			*value;
+	char			**key_val;
 	struct s_env	*next;
 }					t_env;
 
@@ -42,6 +45,8 @@ typedef struct s_shell
 	int				stdout_fd;
 	int				ofile;
 	int				ifile;
+	int				exit_status;
+	char			cwd[PATH_MAX];
 	char			*command;
 	char			*cmd;
 	char			*prompt;
@@ -62,15 +67,17 @@ typedef struct s_shell
 }					t_shell;
 
 //t_env				*create_node(char *var);
-void				insert_node_to_end(t_env **head, t_env *new_node);
+void				insert_node_to_end(t_shell *shell, t_env *new_node);
 void				init_env(t_shell *shell);
 void				add_env_var(t_shell *shell, char *var);
 void				ft_putstr_fd(char *s, int fd);
-void				env(t_shell *shell);
+void				env(t_shell *shell, int opt);
 int					get_path(t_shell *shell);
 void				echo(t_shell *shell);
 void				cd(t_shell *shell);
 void				export(t_shell *shell);
+void				pwd(t_shell *shell);
+void				unset(t_shell *shell);
 char				*ft_strchr(const char *s, int c);
 char				**ft_split_semicolon(char *str);
 char				*ft_strtrim(char *s1, char *set);
@@ -78,7 +85,7 @@ void				*ft_calloc(size_t elementCount, size_t elementSize);
 char				*ft_strdup(char *src);
 char				*ft_joinchar(char *s1, char c);
 char				*ft_joinstr(char *s1, char *s2);
-char				*is_env(t_shell *shell, char *s, int n);
+char				*is_env(t_shell *shell, char *s, int n, int ret);
 int					ft_isalnum(int c);
 int					is_fine_with_quotes(char *command);
 void				free_env(t_shell *shell);
@@ -95,5 +102,8 @@ char				**ft_split_with_pipe(char *command);
 int					count_pipes(char *str);
 void				ecev_lastcommand(t_shell *shell);
 void				set_infile(t_shell *shell);
+int					check_command(t_shell *shell);
+char				*ft_itoa(int n);
+char				*get_real_command(t_shell *shell);
 
 #endif

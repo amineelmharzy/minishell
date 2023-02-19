@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 16:48:20 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/15 19:49:51 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/16 08:20:07 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ void	exec_command(t_shell *shell)
 			dup2(pfd[0], 0);
 			close(pfd[1]);
 		}
-		execve(shell->rcommand, shell->real_command, shell->envp);
+		if (execve(shell->rcommand, shell->real_command, shell->envp) == -1)
+			shell->exit_status = 1;
 		exit(0);
 	}
 	else
@@ -95,7 +96,8 @@ void	ecev_lastcommand(t_shell *shell)
 			close(pfd[0]);
 			close(pfd[1]);
 		}
-		execve(shell->rcommand, shell->real_command, shell->envp);
+		if (execve(shell->rcommand, shell->real_command, shell->envp) == -1)
+			shell->exit_status = 1;
 		exit(0);
 	}
 	else
