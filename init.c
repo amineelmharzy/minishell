@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:42:59 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/19 19:01:59 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/19 22:55:43 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,10 @@ void	run_command(t_shell *shell)
 		return ;
 	}
 	shell->commands = ft_split_with_pipe(shell->command);
+	int	j = 0;
 	while (shell->commands[i] != 0)
 	{
+		 j = 0;
 		shell->command = shell->commands[i];
 		shell->command = get_real_command(shell);
 		if (!implement_redirection(shell))
@@ -42,15 +44,20 @@ void	run_command(t_shell *shell)
 			return ;
 		if (shell->herdocs)
 			shell->herdoc_output = herdoc(shell);
-		free(shell->command);
 		if (shell->outfiles || shell->afiles)
 			if (!init_outfiles(shell))
 				return ;
 		shell->real_command = ft_split_with_space(shell->command);
-		/*
 		shell->command = shell->real_command[0];
 		if (check_command(shell))
 			return ;
+		if (shell->real_command)
+		{
+			while (shell->real_command[j] != 0)
+				free(shell->real_command[j++]);
+			free(shell->real_command);
+		}
+		/*
 		if (!get_path(shell))
 			return ;
 		shell->real_command[0] = shell->rcommand;

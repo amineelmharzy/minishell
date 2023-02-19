@@ -20,6 +20,8 @@
 # define E_NOTF "No such file or directory"
 # define E_PIPE "syntax error near unexpected token `|'"
 # define E_REDR "syntax error near unexpected token `newline'"
+# define E_TOMR "too many arguments"
+# define E_NCMD "command not found"
 
 char				**ft_split(char *str, char set);
 char				*ft_strjoin(char *s1, char *s2);

@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 14:48:09 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/19 21:25:57 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/19 21:38:21 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,8 @@ char	**ft_split_with_space(char *command)
 	char	**array;
 	int		j;
 
+	if (!command || !command[0])
+		return (NULL);
 	array = ft_calloc(count_args(command) + 2, sizeof(char *));
 	if (!array)
 		return (NULL);

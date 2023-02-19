@@ -6,13 +6,13 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 16:47:42 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/17 17:59:46 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/19 22:04:57 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	check_command(t_shell *shell)
+int	_check_command(t_shell *shell)
 {
 	if (ft_strlen(shell->command) == 4)
 	{
@@ -24,9 +24,13 @@ int	check_command(t_shell *shell)
 		if (ft_strncmp(shell->command, "exit", 4) == 0)
 		{
 			exit(0);
-			return (1);
 		}
 	}
+	return (0);
+}
+
+int	__check_command(t_shell *shell)
+{
 	if (ft_strlen(shell->command) == 3)
 	{
 		if (ft_strncmp(shell->command, "env", 3) == 0)
@@ -48,6 +52,11 @@ int	check_command(t_shell *shell)
 			return (1);
 		}
 	}
+	return (0);
+}
+
+int	check_command(t_shell *shell)
+{
 	if (ft_strlen(shell->real_command[0]) == 5)
 	{
 		if (ft_strncmp(shell->real_command[0], "unset", 5) == 0)
@@ -64,5 +73,7 @@ int	check_command(t_shell *shell)
 			return (1);
 		}
 	}
+	if (_check_command(shell) || __check_command(shell))
+		return (1);
 	return (0);
 }
