@@ -6,11 +6,16 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 16:48:20 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/16 08:20:07 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/20 18:44:53 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	child(t_shell *shell, int **pfd1, int **pfd2)
+{
+
+}
 
 void	exec_command(t_shell *shell)
 {
