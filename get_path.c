@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 22:36:08 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/20 00:33:30 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/21 11:17:08 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,10 @@ int	check_absolute_path(t_shell *shell)
 				return (1);
 			}
 			else
-			{
-				print_error(shell, shell->command, strerror(errno));
-				shell->exit_status = 126;
-			}
+				print_error(shell, shell->command, strerror(errno), 126);
 		}
 		else
-		{
-			print_error(shell, shell->command, strerror(errno));
-			shell->exit_status = 127;
-		}
+			print_error(shell, shell->command, strerror(errno), 127);
 	}
 	return (0);
 }
@@ -48,8 +42,7 @@ int	check_rcommand(t_shell *shell)
 		if (access(shell->rcommand, X_OK) != -1)
 			return (1);
 		else
-			print_error(shell, shell->command, strerror(errno));
-		shell->exit_status = 126;
+			print_error(shell, shell->command, strerror(errno), 126);
 	}
 	return (0);
 }
@@ -76,7 +69,6 @@ int	get_path(t_shell *shell)
 		free (shell->rcommand);
 		i++;
 	}
-	print_error(shell, shell->command, E_NCMD);
-	shell->exit_status = 127;
+	print_error(shell, shell->command, E_NCMD, 127);
 	return (0);
 }

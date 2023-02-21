@@ -6,114 +6,129 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 16:48:20 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/20 18:44:53 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/21 12:41:39 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	child(t_shell *shell, int **pfd1, int **pfd2)
+void	child(t_shell *shell, int **pfd, int **pfd2, int *fd)
 {
+	if (shell->infiles && shell->ifile == 0)
+	{
+		shell->infile = get_infile(shell);
+		*fd = open(shell->infile, O_RDONLY);
+		dup2(*fd, 0);
+	}
+	if (shell->outfile)
+	{
+		if (shell->ofile == 1)
+			*fd = open(shell->outfile, O_WRONLY);
+		else
+			*fd = open(shell->outfile, O_WRONLY | O_APPEND);
+		dup2(*fd, 1);
+	}
+	else
+	{
+		dup2((*pfd2)[1], 1);
+		close((*pfd2)[0]);
+	}
+	if (shell->herdocs && shell->ifile == 2)
+	{
+		dup2((*pfd)[0], 0);
+		close((*pfd)[1]);
+	}
+}
 
+void	parent(t_shell *shell, int **pfd, int **pfd2)
+{
+	if (shell->herdocs && shell->ifile == 2)
+	{
+		write((*pfd)[1], shell->herdoc_output, ft_strlen(shell->herdoc_output));
+		close((*pfd)[1]);
+	}
+	dup2((*pfd2)[0], 0);
+	close((*pfd2)[1]);
 }
 
 void	exec_command(t_shell *shell)
 {
 	int	pid;
 	int	fd;
-	int	pfd[2];
-	int	pfd2[2];
+	int	*pfd;
+	int	*pfd2;
 
+	pfd = (int *)ft_calloc(2, sizeof(int));
+	pfd2 = (int *)ft_calloc(2, sizeof(int));
 	pipe(pfd);
 	pipe(pfd2);
 	fd = 0;
 	pid = fork();
 	if (pid == 0)
 	{
-		if (shell->infiles && shell->ifile == 0)
-		{
-			shell->infile = get_infile(shell);
-			fd = open(shell->infile, O_RDONLY);
-			dup2(fd, 0);
-		}
-		if (shell->outfile)
-		{
-			if (shell->ofile == 1)
-				fd = open(shell->outfile, O_WRONLY);
-			else
-				fd = open(shell->outfile, O_WRONLY | O_APPEND);
-			dup2(fd, 1);
-		}
-		else
-		{
-			dup2(pfd2[1], 1);
-			close(pfd2[0]);
-		}
-		if (shell->herdocs && shell->ifile == 2)
-		{
-			dup2(pfd[0], 0);
-			close(pfd[1]);
-		}
-		if (execve(shell->rcommand, shell->real_command, shell->envp) == -1)
+		child(shell, &pfd, &pfd2, &fd);
+		if (execve(shell->rcommand, shell->parsed_command, shell->envp) == -1)
 			shell->exit_status = 1;
 		exit(0);
 	}
 	else
 	{
-		if (shell->herdocs && shell->ifile == 2)
-		{
-			write(pfd[1], shell->herdoc_output, ft_strlen(shell->herdoc_output));
-			close(pfd[1]);
-		}
-		dup2(pfd2[0], 0);
-		close(pfd2[1]);
+		parent(shell, &pfd, &pfd2);
 		waitpid(-1, NULL, 0);
 	}
 }
 
-void	ecev_lastcommand(t_shell *shell)
+void	last_child(t_shell *shell, int **pfd, int *fd)
+{
+	if (shell->outfile)
+	{
+		if (shell->ofile == 1)
+			*fd = open(shell->outfile, O_WRONLY);
+		else
+			*fd = open(shell->outfile, O_WRONLY | O_APPEND);
+		dup2(*fd, 1);
+	}
+	if (shell->infiles && shell->ifile == 1)
+	{
+		shell->infile = get_infile(shell);
+		*fd = open(shell->infile, O_RDONLY);
+		dup2(*fd, 0);
+	}
+	if (shell->herdocs && shell->ifile == 2)
+	{
+		dup2(*pfd[0], 0);
+		close(*pfd[0]);
+		close(*pfd[1]);
+	}
+	if (execve(shell->rcommand, shell->parsed_command, shell->envp) == -1)
+		shell->exit_status = 1;
+}
+
+void	exec_lastcommand(t_shell *shell)
 {
 	int	pid;
-	int	pfd[2];
+	int	*pfd;
 	int	fd;
 
+	pfd = (int *)ft_calloc(2, sizeof(int));
 	pipe(pfd);
 	pid = fork();
 	if (pid == 0)
 	{
-		if (shell->outfile)
-		{
-			if (shell->ofile == 1)
-				fd = open(shell->outfile, O_WRONLY);
-			else
-				fd = open(shell->outfile, O_WRONLY | O_APPEND);
-			dup2(fd, 1);
-		}
-		if (shell->infiles && shell->ifile == 1)
-		{
-			shell->infile = get_infile(shell);
-			fd = open(shell->infile, O_RDONLY);
-			dup2(fd, 0);
-		}
-		if (shell->herdocs && shell->ifile == 2)
-		{
-			dup2(pfd[0], 0);
-			close(pfd[0]);
-			close(pfd[1]);
-		}
-		if (execve(shell->rcommand, shell->real_command, shell->envp) == -1)
-			shell->exit_status = 1;
+		last_child(shell, &pfd, &fd);
 		exit(0);
 	}
 	else
 	{
 		if (shell->herdocs && shell->ifile == 2)
 		{
-			write(pfd[1], shell->herdoc_output, ft_strlen(shell->herdoc_output));
+			write(pfd[1], shell->herdoc_output,
+				ft_strlen(shell->herdoc_output));
 			close(pfd[1]);
 		}
 		waitpid(-1, NULL, 0);
 		close(0);
 		dup2(shell->stdin_fd, 0);
 	}
+	free_all(shell, 0);
 }

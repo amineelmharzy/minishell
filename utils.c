@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 09:39:16 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/19 16:51:34 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/20 19:44:33 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,26 +59,22 @@ void	insert_node_to_end(t_shell *shell, t_env *new_node)
 	shell->env = lst;
 }
 
-void	init_env(t_shell *shell)
-{
-	int		i;
-	t_env	*new_node;
-	shell->env = 0;
-	i = 0;
-	while (shell->envp[i] != 0)
-	{
-		new_node = create_node(shell->envp[i]);
-		insert_node_to_end(shell, new_node);
-		i++;
-	}
-}
-
 void	add_env_var(t_shell *shell, char *var)
 {
 	t_env	*node;
 
 	node = create_node(var);
 	insert_node_to_end(shell, node);
+}
+
+void	free_env(t_env **tmp1, t_env **tmp2, t_env *env)
+{
+	*tmp2 = env->next;
+	free(env->key);
+	free(env->value);
+	free(env);
+	(*tmp1)->next = *tmp2;
+	env = *tmp2;
 }
 
 char	*is_env(t_shell *shell, char *s, int n, int ret)
@@ -96,12 +92,7 @@ char	*is_env(t_shell *shell, char *s, int n, int ret)
 			{
 				if (ret == 0)
 				{
-					tmp2 = env->next;
-					free(env->key);
-					free(env->value);
-					free(env);
-					tmp1->next = tmp2;
-					env = tmp2;
+					free_env(&tmp1, &tmp2, env);
 					return (NULL);
 				}
 				else
@@ -113,76 +104,3 @@ char	*is_env(t_shell *shell, char *s, int n, int ret)
 	}
 	return (NULL);
 }
-
-void	free_all(t_shell *shell, int option)
-{
-	t_env	*env;
-	t_env	*temp;
-	int		i;
-
-	env = shell->env;
-	i = 0;
-	if (shell->infiles)
-	{
-		while (shell->infiles[i])
-			free(shell->infiles[i++]);
-		free(shell->infiles);
-		shell->infiles = 0;
-	}
-	if (shell->herdocs)
-	{
-		while (shell->herdocs[i])
-			free(shell->herdocs[i++]);
-		free(shell->herdocs);
-		shell->herdocs = 0;
-	}
-	if (shell->afiles)
-	{
-		while (shell->afiles[i])
-			free(shell->afiles[i++]);
-		free(shell->afiles);
-		shell->afiles = 0;
-	}
-	if (shell->outfiles)
-	{
-		while (shell->outfiles[i])
-			free(shell->outfiles[i++]);
-		free(shell->outfiles);
-		shell->outfiles = 0;
-	}
-	if (shell->commands)
-	{
-		free(shell->commands);
-		shell->commands = 0;
-	}
-	if (option == 1)
-	{
-		while (shell->path[i] != 0)
-			free(shell->path[i++]);
-		free(shell->path);
-		while (env)
-		{
-			temp = env->next;
-			free(env->key);
-			free(env->value);
-			free(env);
-			env = temp;
-		}
-	}
-}
-
-/*
-void	del_env_var(t_shell *shell, char *var)
-{
-	t_env	*temp;
-
-	if (ft_strlen(shell->env->key) == ft_strlen(var))
-	{
-		if (strncmp(shell->env->key, var, ft_strlen(var)) == 0)
-		{
-			free(shell->env);
-			shell->env = shell->env->next;
-		}
-	}
-}
-*/

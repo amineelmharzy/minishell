@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 12:00:52 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/20 00:34:42 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/20 19:12:10 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ char	*ft_joinstr(char *s1, char *s2)
 	char	*newstr;
 	int		length;
 
-	i = 0;
+	i = -1;
 	j = 0;
 	if (!s1 || !s2)
 		return (NULL);
@@ -27,12 +27,11 @@ char	*ft_joinstr(char *s1, char *s2)
 	newstr = (char *)ft_calloc(sizeof(char) * (length + 1), 1);
 	if (!newstr)
 		return (NULL);
-	while (s1[i] != 0)
+	while (s1[++i] != 0)
 	{
 		if (s1[i] == '\\' && s1[i + 1] == 0)
 			break ;
 		newstr[i] = s1[i];
-		i++;
 	}
 	while (s2[j])
 		newstr[i++] = s2[j++];

@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 16:47:42 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/19 22:04:57 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/21 12:37:59 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,9 @@ int	__check_command(t_shell *shell)
 			return (1);
 		}
 	}
-	if (ft_strlen(shell->real_command[0]) == 2)
+	if (ft_strlen(shell->parsed_command[0]) == 2)
 	{
-		if (ft_strncmp(shell->real_command[0], "cd", 2) == 0)
+		if (ft_strncmp(shell->parsed_command[0], "cd", 2) == 0)
 		{
 			cd(shell);
 			return (1);
@@ -55,19 +55,22 @@ int	__check_command(t_shell *shell)
 	return (0);
 }
 
-int	check_command(t_shell *shell)
+int	check_command(t_shell *shell, int i)
 {
-	if (ft_strlen(shell->real_command[0]) == 5)
+	shell->is_pipe = 0;
+	if (shell->commands[i + 1])
+		shell->is_pipe = 1;
+	if (ft_strlen(shell->parsed_command[0]) == 5)
 	{
-		if (ft_strncmp(shell->real_command[0], "unset", 5) == 0)
+		if (ft_strncmp(shell->parsed_command[0], "unset", 5) == 0)
 		{
 			unset(shell);
 			return (1);
 		}
 	}
-	if (ft_strlen(shell->real_command[0]) == 6)
+	if (ft_strlen(shell->parsed_command[0]) == 6)
 	{
-		if (ft_strncmp(shell->real_command[0], "export", 6) == 0)
+		if (ft_strncmp(shell->parsed_command[0], "export", 6) == 0)
 		{
 			export(shell);
 			return (1);

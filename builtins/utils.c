@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:06:56 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/19 23:34:10 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/21 12:35:02 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ int	init_outfd(t_shell *shell)
 		else
 			fd = open(shell->outfile, O_WRONLY | O_APPEND);
 	}
+	if (fd == 1 && shell->is_pipe)
+		fd = 0;
 	return (fd);
 }
 

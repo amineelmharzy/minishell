@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 14:25:48 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/19 18:05:07 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/21 11:15:07 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,13 @@ int	check_infiles(t_shell *shell)
 		{
 			if (access(shell->infiles[i], R_OK) == -1)
 			{
-				shell->exit_status = 1;
-				print_error(shell, shell->infiles[i], strerror(errno));
+				print_error(shell, shell->infiles[i], strerror(errno), 1);
 				return (0);
 			}
 		}
 		else
 		{
-			shell->exit_status = 1;
-			print_error(shell, shell->infiles[i], strerror(errno));
+			print_error(shell, shell->infiles[i], strerror(errno), 1);
 			return (0);
 		}
 		i++;

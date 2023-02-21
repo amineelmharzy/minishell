@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 08:54:27 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/19 19:00:40 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/21 11:15:33 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,7 @@ int	init_afiles(t_shell *shell)
 			close(fd);
 			if (access(shell->afiles[i], F_OK | W_OK) == -1)
 			{
-				shell->exit_status = 1;
-				print_error(shell, shell->afiles[i], strerror(errno));
+				print_error(shell, shell->afiles[i], strerror(errno), 1);
 				return (0);
 			}
 			if (!shell->afiles[i + 1] && shell->ofile == 2)
@@ -53,8 +52,7 @@ int	init_outfiles(t_shell *shell)
 			close(fd);
 			if (access(shell->outfiles[i], F_OK | W_OK) == -1)
 			{
-				shell->exit_status = 1;
-				print_error(shell, shell->outfiles[i], strerror(errno));
+				print_error(shell, shell->outfiles[i], strerror(errno), 1);
 				return (0);
 			}
 			if (!shell->outfiles[i + 1] && shell->ofile == 1)
