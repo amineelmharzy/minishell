@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 16:48:20 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/21 12:41:39 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/21 16:52:12 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,5 +130,4 @@ void	exec_lastcommand(t_shell *shell)
 		close(0);
 		dup2(shell->stdin_fd, 0);
 	}
-	free_all(shell, 0);
 }

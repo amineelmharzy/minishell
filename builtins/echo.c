@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 22:06:47 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/21 12:32:33 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/21 16:29:09 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ int	chk_newline(char *s)
 
 void	echo(t_shell *shell)
 {
-	int	i;
 	int	fd;
 	int	newline;
+	int	i;
 
 	i = 1;
 	newline = chk_newline(shell->parsed_command[1]);

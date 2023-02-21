@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 00:31:33 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/21 12:30:29 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/21 16:42:18 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,5 +131,7 @@ void				ft_putstr_fd(char *s, int fd);
 int					init_outfd(t_shell *shell);
 char				*get_infile(t_shell *shell);
 t_env				*create_node(char *var);
+void				run_builtin(t_shell *shell, void (*f)(t_shell *));
+void				run_env(t_shell *shell, void (*f)(t_shell *, int));
 
 #endif

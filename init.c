@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:42:59 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/21 12:46:51 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/21 18:13:14 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,12 @@ int	init_command(t_shell *shell, int i)
 	return (1);
 }
 
+void	_exec_l_cmd(t_shell *shell, int i)
+{
+	if (shell->commands[i])
+		exec_lastcommand(shell);
+}
+
 void	run_command(t_shell *shell)
 {
 	int	i;
@@ -37,36 +43,26 @@ void	run_command(t_shell *shell)
 	{
 		if (!init_command(shell, i))
 			return ;
-		if (shell->parsed_command)
+		shell->command = shell->parsed_command[0];
+		if (!check_command(shell, i))
 		{
-			shell->command = shell->parsed_command[0];
-			if (!check_command(shell, i))
-			{
-				if (!get_path(shell))
-					return ;
-				shell->parsed_command[0] = shell->rcommand;
-				if (shell->commands[i + 1] == 0)
-					break ;
-				exec_command(shell);
-			}
+			if (!get_path(shell))
+				return ;
+			shell->parsed_command[0] = shell->rcommand;
+			if (shell->commands[i + 1] == 0)
+				break ;
+			exec_command(shell);
 		}
 	}
-	if (shell->commands[i])
-		exec_lastcommand(shell);
-	else
-		free_all(shell, 0);
+	_exec_l_cmd(shell, i);
 }
 
 void	handler(int sig)
 {
-	if (sig == SIGINT)
-	{
-		(void)sig;
-	}
-	if (sig == SIGQUIT)
-	{
-		(void)sig;
-	}
+	printf("\n");
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
 }
 
 int	main(int ac, char **av, char **envp)
@@ -84,7 +80,6 @@ int	main(int ac, char **av, char **envp)
 			run_command(&shell);
 		else
 		{
-			free_all(&shell, 1);
 			exit(0);
 		}
 	}

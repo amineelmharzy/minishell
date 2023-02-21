@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 16:47:42 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/21 12:37:59 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/21 18:08:55 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	_check_command(t_shell *shell)
 	{
 		if (ft_strncmp(shell->command, "echo", 4) == 0)
 		{
-			echo(shell);
+			run_builtin(shell, echo);
 			return (1);
 		}
 		if (ft_strncmp(shell->command, "exit", 4) == 0)
@@ -35,12 +35,12 @@ int	__check_command(t_shell *shell)
 	{
 		if (ft_strncmp(shell->command, "env", 3) == 0)
 		{
-			env(shell, 0);
+			run_env(shell, env);
 			return (1);
 		}
 		else if (ft_strncmp(shell->command, "pwd", 3) == 0)
 		{
-			pwd(shell);
+			run_builtin(shell, pwd);
 			return (1);
 		}
 	}
@@ -58,7 +58,7 @@ int	__check_command(t_shell *shell)
 int	check_command(t_shell *shell, int i)
 {
 	shell->is_pipe = 0;
-	if (shell->commands[i + 1])
+	if (shell->commands[i + 1] != 0)
 		shell->is_pipe = 1;
 	if (ft_strlen(shell->parsed_command[0]) == 5)
 	{
@@ -72,7 +72,7 @@ int	check_command(t_shell *shell, int i)
 	{
 		if (ft_strncmp(shell->parsed_command[0], "export", 6) == 0)
 		{
-			export(shell);
+			run_builtin(shell, export);
 			return (1);
 		}
 	}
