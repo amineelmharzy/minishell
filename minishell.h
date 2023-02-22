@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 00:31:33 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/21 16:42:18 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/22 10:01:24 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ typedef struct s_shell
 	int				ifile;
 	int				exit_status;
 	int				is_pipe;
+	int				is_builtin;
 	char			cwd[PATH_MAX];
 	char			*command;
 	char			*cmd;
@@ -114,7 +115,7 @@ int					count_args(char *command);
 void				exec_lastcommand(t_shell *shell);
 void				set_infile(t_shell *shell);
 void				set_outfile(t_shell *shell);
-int					check_command(t_shell *shell, int i);
+int					check_command(t_shell *shell, int i, int option);
 char				*ft_itoa(int n);
 char				*get_real_command(t_shell *shell);
 int					ft_strlen_to_char(char *str, char c);
@@ -132,6 +133,7 @@ int					init_outfd(t_shell *shell);
 char				*get_infile(t_shell *shell);
 t_env				*create_node(char *var);
 void				run_builtin(t_shell *shell, void (*f)(t_shell *));
-void				run_env(t_shell *shell, void (*f)(t_shell *, int));
+void				run_env(t_shell *shell, int option,
+						void (*f)(t_shell *, int));
 
 #endif

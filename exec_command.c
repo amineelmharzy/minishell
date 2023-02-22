@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 16:48:20 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/21 16:52:12 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/22 09:14:02 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ void	child(t_shell *shell, int **pfd, int **pfd2, int *fd)
 
 void	parent(t_shell *shell, int **pfd, int **pfd2)
 {
+	int	status;
+
 	if (shell->herdocs && shell->ifile == 2)
 	{
 		write((*pfd)[1], shell->herdoc_output, ft_strlen(shell->herdoc_output));
@@ -49,6 +51,9 @@ void	parent(t_shell *shell, int **pfd, int **pfd2)
 	}
 	dup2((*pfd2)[0], 0);
 	close((*pfd2)[1]);
+	waitpid(-1, &status, 0);
+	if (WIFEXITED(status))
+		shell->exit_status = WEXITSTATUS(status);
 }
 
 void	exec_command(t_shell *shell)
@@ -67,15 +72,10 @@ void	exec_command(t_shell *shell)
 	if (pid == 0)
 	{
 		child(shell, &pfd, &pfd2, &fd);
-		if (execve(shell->rcommand, shell->parsed_command, shell->envp) == -1)
-			shell->exit_status = 1;
-		exit(0);
+		execve(shell->rcommand, shell->parsed_command, shell->envp);
 	}
 	else
-	{
 		parent(shell, &pfd, &pfd2);
-		waitpid(-1, NULL, 0);
-	}
 }
 
 void	last_child(t_shell *shell, int **pfd, int *fd)
@@ -106,6 +106,7 @@ void	last_child(t_shell *shell, int **pfd, int *fd)
 
 void	exec_lastcommand(t_shell *shell)
 {
+	int	status;
 	int	pid;
 	int	*pfd;
 	int	fd;
@@ -114,10 +115,7 @@ void	exec_lastcommand(t_shell *shell)
 	pipe(pfd);
 	pid = fork();
 	if (pid == 0)
-	{
 		last_child(shell, &pfd, &fd);
-		exit(0);
-	}
 	else
 	{
 		if (shell->herdocs && shell->ifile == 2)
@@ -126,7 +124,9 @@ void	exec_lastcommand(t_shell *shell)
 				ft_strlen(shell->herdoc_output));
 			close(pfd[1]);
 		}
-		waitpid(-1, NULL, 0);
+		waitpid(-1, &status, 0);
+		if (WIFEXITED(status))
+			shell->exit_status = WEXITSTATUS(status);
 		close(0);
 		dup2(shell->stdin_fd, 0);
 	}

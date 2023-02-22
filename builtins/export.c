@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 22:14:38 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/21 17:41:46 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/22 10:00:33 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	export(t_shell *shell)
 
 	if (!(shell->parsed_command[1]))
 	{
-		env(shell, 1);
+		run_env(shell, 1, env);
 		return ;
 	}
 	i = 0;
