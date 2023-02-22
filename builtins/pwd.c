@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 22:11:48 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/19 22:12:54 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/22 10:26:03 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	pwd(t_shell *shell)
 	fd = init_outfd(shell);
 	if (getcwd(shell->cwd, sizeof(shell->cwd)) == NULL)
 	{
-		perror("Minishell ");
+		perror("minishell");
 		shell->exit_status = 1;
 	}
 	else

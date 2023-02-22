@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 22:06:47 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/21 16:29:09 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/22 12:11:36 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	chk_newline(char *s)
 {
 	if (!s)
-		return (0);
+		return (1);
 	if (ft_strlen(s) == 2)
 	{
 		if (ft_strncmp(s, "-n", 2) == 0)
