@@ -6,13 +6,32 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 16:21:34 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/21 16:32:36 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/23 16:40:22 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	run_builtin(t_shell *shell, void (*f)(t_shell *))
+void	_exec_process(t_shell *shell, void (*f)(t_shell *), int flag,
+	int option)
+{
+	int	status;
+
+	if (option == 0)
+	{
+		if (flag)
+			f(shell);
+		exit(0);
+	}
+	else if (option == 1)
+	{
+		waitpid(-1, &status, 0);
+		if (!flag)
+			f(shell);
+	}
+}
+
+void	run_builtin(t_shell *shell, void (*f)(t_shell *), int flag)
 {
 	int	*pfd;
 	int	pid;
@@ -27,16 +46,16 @@ void	run_builtin(t_shell *shell, void (*f)(t_shell *))
 			dup2(pfd[1], 1);
 			close(pfd[0]);
 		}
-		f(shell);
-		exit(0);
+		_exec_process(shell, f, flag, 0);
 	}
 	else
 	{
-		waitpid(-1, NULL, 0);
+		_exec_process(shell, f, flag, 1);
 		if (shell->is_pipe)
 		{
 			dup2(pfd[0], 0);
 			close(pfd[1]);
 		}
+		free(pfd);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 16:48:20 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/22 09:14:02 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/23 18:08:48 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,11 @@ void	exec_command(t_shell *shell)
 		execve(shell->rcommand, shell->parsed_command, shell->envp);
 	}
 	else
+	{
 		parent(shell, &pfd, &pfd2);
+		free(pfd);
+		free(pfd2);
+	}
 }
 
 void	last_child(t_shell *shell, int **pfd, int *fd)
@@ -129,5 +133,6 @@ void	exec_lastcommand(t_shell *shell)
 			shell->exit_status = WEXITSTATUS(status);
 		close(0);
 		dup2(shell->stdin_fd, 0);
+		free(pfd);
 	}
 }

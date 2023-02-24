@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:06:56 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/21 15:08:38 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/23 15:16:40 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	init_outfd(t_shell *shell)
 	{
 		if (shell->ofile == 1)
 			fd = open(shell->outfile, O_TRUNC | O_WRONLY);
-		else
+		else if (shell->ofile == 2)
 			fd = open(shell->outfile, O_WRONLY | O_APPEND);
 	}
 	return (fd);
@@ -74,7 +74,7 @@ int	check_identifier(t_shell *shell, char *str)
 	if (!str[i] || str[i] < 65 || (str[i] < 97 && str[i] > 90 && str[i] != 95)
 		|| str[i] > 122)
 	{
-		write(2, "Minishell : not a valid identifier\n", 36);
+		write(2, "minishell: not a valid identifier\n", 35);
 		shell->exit_status = 1;
 		return (1);
 	}

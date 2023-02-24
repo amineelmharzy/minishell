@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 22:27:46 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/22 11:19:16 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/23 15:07:44 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,4 +23,5 @@ void	unset(t_shell *shell)
 			ft_strlen(shell->parsed_command[i]), 0);
 		i++;
 	}
+	shell->exit_status = 0;
 }

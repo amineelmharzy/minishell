@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 22:25:31 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/22 09:54:24 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/23 16:47:20 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,6 @@ void	env(t_shell *shell, int opt)
 		close(fd);
 		dup2(shell->stdout_fd, 1);
 	}
+	shell->exit_status = 0;
+	exit(0);
 }

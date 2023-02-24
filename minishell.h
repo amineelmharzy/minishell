@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 00:31:33 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/22 10:01:24 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/23 16:17:46 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
 # define E_REDR "syntax error near unexpected token `newline'"
 # define E_TOMR "too many arguments"
 # define E_NCMD "command not found"
+# define E_NFOD "No such file or directory"
 
 char				**ft_split(char *str, char set);
 char				*ft_strjoin(char *s1, char *s2);
@@ -127,13 +128,16 @@ void				print_error(t_shell *shell, char *target, char *error,
 						int status);
 void				_print_error(t_shell *shell, char *error, int status);
 int					check_identifier(t_shell *shell, char *str);
+int					check_empty_iofiles(char *command, char *set);
 char				*exported_key(char *var);
 void				ft_putstr_fd(char *s, int fd);
 int					init_outfd(t_shell *shell);
 char				*get_infile(t_shell *shell);
 t_env				*create_node(char *var);
-void				run_builtin(t_shell *shell, void (*f)(t_shell *));
+void				run_builtin(t_shell *shell, void (*f)(t_shell *), int flag);
 void				run_env(t_shell *shell, int option,
 						void (*f)(t_shell *, int));
+void				free_commands(t_shell *shell);
+void				init_prompt(t_shell *shell);
 
 #endif

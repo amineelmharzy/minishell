@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 13:16:02 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/19 18:24:11 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/23 17:58:25 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,9 +109,9 @@ char	*parse_iofiles(t_shell *shell, char *set)
 	char	*save;
 	int		i;
 
-	if (count_iofiles(shell->command, set) == 0)
+	if (!shell->command || !shell->command[0])
 		return (NULL);
-	if (!shell->command[0])
+	if (count_iofiles(shell->command, set) == 0)
 		return (NULL);
 	save = ft_calloc(1, 1);
 	files = ft_calloc(1, 1);

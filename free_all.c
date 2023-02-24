@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 19:56:36 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/20 20:07:59 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/23 10:19:25 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,11 @@ void	free_infiles(t_shell *shell)
 			free(shell->herdocs[i++]);
 		free(shell->herdocs);
 		shell->herdocs = 0;
+	}
+	if (shell->herdoc_output)
+	{
+		free(shell->herdoc_output);
+		shell->herdoc_output = 0;
 	}
 }
 
@@ -70,6 +75,20 @@ void	free_commands(t_shell *shell)
 	}
 }
 
+void	free_command(t_shell *shell)
+{
+	int	i;
+
+	i = 0;
+	if (shell->parsed_command)
+	{
+		while (shell->parsed_command[i] != 0)
+			free(shell->parsed_command[i++]);
+		free(shell->parsed_command);
+		shell->parsed_command = 0;
+	}
+}
+
 void	free_all(t_shell *shell, int option)
 {
 	t_env	*env;
@@ -80,7 +99,9 @@ void	free_all(t_shell *shell, int option)
 	env = shell->env;
 	free_infiles(shell);
 	free_outfiles(shell);
-	free_commands(shell);
+	free_command(shell);
+	if (option == 0)
+		free_commands(shell);
 	if (option == 1)
 	{
 		while (shell->path[i] != 0)

@@ -6,11 +6,17 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 22:14:38 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/22 10:14:47 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/23 16:44:41 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void	init_variables2(t_shell *shell, int *i)
+{
+	shell->exit_status = 0;
+	*i = 0;
+}
 
 void	export(t_shell *shell)
 {
@@ -22,7 +28,7 @@ void	export(t_shell *shell)
 		run_env(shell, 1, env);
 		return ;
 	}
-	i = 0;
+	init_variables2(shell, &i);
 	while (shell->parsed_command[++i] != 0)
 	{
 		if (!check_identifier(shell, shell->parsed_command[i]))
