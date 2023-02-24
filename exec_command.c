@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 16:48:20 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/23 18:08:48 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/24 15:41:10 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ void	exec_command(t_shell *shell)
 	pfd2 = (int *)ft_calloc(2, sizeof(int));
 	pipe(pfd);
 	pipe(pfd2);
-	fd = 0;
 	pid = fork();
 	if (pid == 0)
 	{
