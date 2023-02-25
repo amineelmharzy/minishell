@@ -4,7 +4,7 @@
 
 int main()
 {
-	char *ar[] = {"script.sh", NULL};
-	if (execve("script.sh", ar, NULL) < 0)
+	char *ar[] = {"ls", NULL};
+	if (execve("ls", ar, NULL) < 0)
 		perror("execve");
 }

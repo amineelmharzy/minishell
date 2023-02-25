@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 16:21:34 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/23 16:40:22 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/25 12:09:22 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 void	_exec_process(t_shell *shell, void (*f)(t_shell *), int flag,
 	int option)
 {
-	int	status;
-
 	if (option == 0)
 	{
 		if (flag)
@@ -25,7 +23,7 @@ void	_exec_process(t_shell *shell, void (*f)(t_shell *), int flag,
 	}
 	else if (option == 1)
 	{
-		waitpid(-1, &status, 0);
+		waitpid(-1, NULL, 0);
 		if (!flag)
 			f(shell);
 	}

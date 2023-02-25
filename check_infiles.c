@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 14:25:48 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/21 11:15:07 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/25 17:51:01 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,5 +36,7 @@ int	check_infiles(t_shell *shell)
 		}
 		i++;
 	}
+	close(0);
+	dup2(shell->stdin_fd, 0);
 	return (1);
 }

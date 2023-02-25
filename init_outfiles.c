@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 08:54:27 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/22 14:45:43 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/25 19:12:30 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ int	init_outfiles(t_shell *shell)
 	i = 0;
 	if (shell->outfiles)
 	{
+		close(0);
+		dup2(shell->stdin_fd, 0);
 		while (shell->outfiles[i] != 0)
 		{
 			fd = open(shell->outfiles[i], O_CREAT | O_TRUNC, 0644);

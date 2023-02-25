@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 16:48:20 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/25 09:46:05 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/25 18:30:50 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	child(t_shell *shell, int **pfd, int **pfd2, int *fd)
 		dup2((*pfd2)[1], 1);
 		close((*pfd2)[0]);
 	}
-	if (shell->is_infile && !shell->infile && !shell->herdoc_output)
+	if ((shell->is_infile && !shell->infile && !shell->herdoc_output) || shell->exit_status != 0)
 	{
 		dup2(pfd3[0], 0);
 		close(pfd3[1]);
@@ -86,8 +86,14 @@ void	exec_command(t_shell *shell)
 	pid = fork();
 	if (pid == 0)
 	{
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		child(shell, &pfd, &pfd2, &fd);
-		execve(shell->rcommand, shell->parsed_command, shell->envp);
+		if (execve(shell->rcommand, shell->parsed_command, shell->envp) < 0)
+		{
+			perror("minishell");
+			exit(1);
+		}
 	}
 	else
 	{
@@ -116,7 +122,12 @@ void	last_child(t_shell *shell, int **pfd, int *fd)
 		*fd = open(shell->infile, O_RDONLY);
 		dup2(*fd, 0);
 	}
-	if (shell->is_infile && !shell->infiles && !shell->herdocs)
+	if (shell->is_herdoc)
+	{
+		close(0);
+		dup2(shell->stdin_fd, 0);
+	}
+	if ((shell->is_infile && !shell->infiles && !shell->herdocs) || shell->exit_status != 0)
 	{
 		dup2(pfd2[0], 0);
 		close(pfd2[1]);
@@ -138,8 +149,12 @@ void	last_child(t_shell *shell, int **pfd, int *fd)
 			close(pfd2[1]);
 		}
 	}
-	if (execve(shell->rcommand, shell->parsed_command, shell->envp) == -1)
-		shell->exit_status = 1;
+	if (execve(shell->rcommand, shell->parsed_command, shell->envp) < 0)
+	{
+		perror("minishell");
+		exit(1);
+	}
+	exit(0);
 }
 
 void	exec_lastcommand(t_shell *shell)
@@ -153,7 +168,11 @@ void	exec_lastcommand(t_shell *shell)
 	pipe(pfd);
 	pid = fork();
 	if (pid == 0)
+	{
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		last_child(shell, &pfd, &fd);
+	}
 	else
 	{
 		waitpid(-1, &status, 0);

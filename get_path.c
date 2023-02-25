@@ -6,11 +6,20 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 22:36:08 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/24 19:30:47 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/25 16:04:56 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int is_dir(char *fileName)
+{
+    struct stat path;
+
+    stat(fileName, &path);
+
+    return S_ISREG(path.st_mode);
+}
 
 int	check_absolute_path(t_shell *shell)
 {
@@ -18,9 +27,14 @@ int	check_absolute_path(t_shell *shell)
 	{
 		if (access(shell->command, F_OK) != -1)
 		{
+			if (!is_dir(shell->command))
+			{
+				print_error(shell, shell->command, E_IDIR, 126);
+				return (-1);
+			}
 			if (access(shell->command, X_OK) != -1)
 			{
-				shell->rcommand = shell->command;
+				shell->rcommand = ft_strdup(shell->command);
 				return (1);
 			}
 			else
@@ -86,6 +100,5 @@ int	get_path(t_shell *shell)
 		print_error(shell, shell->command, E_NCMD, 127);
 	close(0);
 	dup2(shell->stdin_fd, 0);
-	free_all(shell, 0);
 	return (0);
 }

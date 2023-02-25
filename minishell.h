@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 00:31:33 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/25 08:21:12 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/25 15:57:27 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
+# include <sys/types.h>
+# include <sys/stat.h>
 
 # define BUFFER_SIZE 1
 
@@ -34,6 +36,7 @@
 # define E_TOMR "too many arguments"
 # define E_NCMD "command not found"
 # define E_NFOD "No such file or directory"
+# define E_IDIR "is a directory"
 
 char				**ft_split(char *str, char set);
 char				*ft_strjoin(char *s1, char *s2);
@@ -51,6 +54,7 @@ typedef struct s_env
 
 typedef struct s_shell
 {
+	int				err;
 	int				stdin_fd;
 	int				stdout_fd;
 	int				ofile;

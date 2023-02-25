@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 16:47:42 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/24 15:18:34 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/25 11:41:22 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,10 @@ int	check_command(t_shell *shell, int i, int option)
 	{
 		if (ft_strncmp(shell->parsed_command[0], "export", 6) == 0)
 		{
-			export(shell);
+			if (shell->parsed_command[1])
+				run_builtin(shell, export, 0);
+			else
+				export(shell);
 			close_builtin(shell, 1);
 			return (1);
 		}
