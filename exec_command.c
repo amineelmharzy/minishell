@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 16:48:20 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/24 15:41:10 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/25 09:46:05 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,11 @@
 
 void	child(t_shell *shell, int **pfd, int **pfd2, int *fd)
 {
-	if (shell->infiles && shell->ifile == 0)
+	int	pid;
+
+	int	pfd3[2];
+	pipe(pfd3);
+	if (shell->infiles && shell->ifile == 1)
 	{
 		shell->infile = get_infile(shell);
 		*fd = open(shell->infile, O_RDONLY);
@@ -33,10 +37,27 @@ void	child(t_shell *shell, int **pfd, int **pfd2, int *fd)
 		dup2((*pfd2)[1], 1);
 		close((*pfd2)[0]);
 	}
-	if (shell->herdocs && shell->ifile == 2)
+	if (shell->is_infile && !shell->infile && !shell->herdoc_output)
 	{
-		dup2((*pfd)[0], 0);
-		close((*pfd)[1]);
+		dup2(pfd3[0], 0);
+		close(pfd3[1]);
+	}
+	if (shell->herdocs && shell->herdoc_output && shell->ifile == 2)
+	{
+		pid = fork();
+		if (pid == 0)
+		{
+			dup2(pfd3[1], 1);
+			close(pfd3[0]);
+			printf("%s", shell->herdoc_output);
+			exit(0);
+		}
+		else
+		{
+			waitpid(pid, NULL, 0);
+			dup2(pfd3[0], 0);
+			close(pfd3[1]);
+		}
 	}
 }
 
@@ -44,11 +65,6 @@ void	parent(t_shell *shell, int **pfd, int **pfd2)
 {
 	int	status;
 
-	if (shell->herdocs && shell->ifile == 2)
-	{
-		write((*pfd)[1], shell->herdoc_output, ft_strlen(shell->herdoc_output));
-		close((*pfd)[1]);
-	}
 	dup2((*pfd2)[0], 0);
 	close((*pfd2)[1]);
 	waitpid(-1, &status, 0);
@@ -83,6 +99,9 @@ void	exec_command(t_shell *shell)
 
 void	last_child(t_shell *shell, int **pfd, int *fd)
 {
+	int	pid;
+	int	pfd2[2];
+	pipe(pfd2);
 	if (shell->outfile)
 	{
 		if (shell->ofile == 1)
@@ -97,11 +116,27 @@ void	last_child(t_shell *shell, int **pfd, int *fd)
 		*fd = open(shell->infile, O_RDONLY);
 		dup2(*fd, 0);
 	}
-	if (shell->herdocs && shell->ifile == 2)
+	if (shell->is_infile && !shell->infiles && !shell->herdocs)
 	{
-		dup2(*pfd[0], 0);
-		close(*pfd[0]);
-		close(*pfd[1]);
+		dup2(pfd2[0], 0);
+		close(pfd2[1]);
+	}
+	if ((shell->herdoc_output && shell->ifile == 2))
+	{
+		pid = fork();
+		if (pid == 0)
+		{
+			dup2(pfd2[1], 1);
+			close(pfd2[0]);
+			printf("%s", shell->herdoc_output);
+			exit(0);
+		}
+		else
+		{
+			waitpid(-1, NULL, 0);
+			dup2(pfd2[0], 0);
+			close(pfd2[1]);
+		}
 	}
 	if (execve(shell->rcommand, shell->parsed_command, shell->envp) == -1)
 		shell->exit_status = 1;
@@ -121,12 +156,6 @@ void	exec_lastcommand(t_shell *shell)
 		last_child(shell, &pfd, &fd);
 	else
 	{
-		if (shell->herdocs && shell->ifile == 2)
-		{
-			write(pfd[1], shell->herdoc_output,
-				ft_strlen(shell->herdoc_output));
-			close(pfd[1]);
-		}
 		waitpid(-1, &status, 0);
 		if (WIFEXITED(status))
 			shell->exit_status = WEXITSTATUS(status);

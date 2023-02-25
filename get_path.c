@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 22:36:08 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/23 14:05:16 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/24 19:30:47 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	check_rcommand(t_shell *shell, int i)
 
 int	check_errors(t_shell *shell)
 {
-	if (!shell->command)
+	if (!shell->command && !shell->herdocs)
 		return (0);
 	if (!shell->command[0])
 	{

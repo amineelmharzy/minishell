@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 00:31:33 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/23 16:17:46 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/25 08:21:12 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ typedef struct s_shell
 	int				exit_status;
 	int				is_pipe;
 	int				is_builtin;
+	int				is_herdoc;
+	int				is_infile;
 	char			cwd[PATH_MAX];
 	char			*command;
 	char			*cmd;

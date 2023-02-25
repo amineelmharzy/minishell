@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 13:30:11 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/19 18:46:42 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/25 08:07:12 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,12 @@
 
 void	read_herdoc(t_shell *shell, char **output, int *i)
 {
+	if (shell->is_herdoc)
+	{
+		close(0);
+		dup2(shell->stdin_fd, 0);
+		shell->is_herdoc = 0;
+	}
 	while (shell->herdocs[++(*i)] != 0)
 	{
 		shell->command = readline("> ");
