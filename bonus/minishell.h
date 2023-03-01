@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 00:31:33 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/28 13:24:36 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/02/28 20:04:18 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,8 @@ typedef struct s_shell
 	char			**path;
 	char			**envp;
 	char			**commands;
+	char			**fcommands;
+	char			**or_commands;
 	char			**parsed_command;
 	char			**infiles;
 	char			**outfiles;
@@ -91,6 +93,7 @@ typedef struct s_shell
 	struct s_env	*env;
 }					t_shell;
 
+char				**ft_split_with_set(char *command, char *set);
 int					ft_atoi(t_shell *shell, char *str, char *str2);
 void				init_shell(t_shell *shell, char **envp);
 void				insert_node_to_end(t_shell *shell, t_env *new_node);

@@ -6,38 +6,33 @@
 /*   By: ael-mhar <ael-mhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 14:48:09 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/28 19:05:51 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/03/01 09:56:06 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_counter(char *str, char *set, int *i, int *count)
+static int	ft_counter(char *str, char *set, int *i, int *count)
 {
-	int	j;
-
-	j = 0;
-	if (str[*i] && str[*i] == set[0] && str[*i + 1] && str[*i + 1] == set[0])
+	if (str[*i] && str[*i] == set[0] && str[*i + 1] && str[*i + 1] == set[1])
 	{
 		(*i) += 2;
 		while (str[*i] != 0 && str[*i] != '\'' && str[*i] != '\"'
 			&& str[*i] == ' ')
 			(*i)++;
-		if (!str[*i] || str[*i] == set[0])
+		if (!str[*i] || (str[*i] == set[0]))
 			return (-1);
-		while (str[*i] != 0 && str[*i] != set[0] && str[*i] != '\"'
+		while (str[*i] != 0 && !(str[*i] == set[0] && str[*i + 1] == set[1]) && str[*i] != '\"'
 			&& str[*i] != '\'')
 			(*i)++;
 		(*count)++;
 	}
-	if (str[*i] == set[0] && str[*i + 1] != set[0])
-		return (-1);
-	if (str[*i] && str[*i] != set[0] && str[*i] != '\'' && str[*i] != '\"')
+	else
 		(*i)++;
 	return (0);
 }
 
-int	count_set(char *str, char *set)
+static int	count_set(char *str, char *set)
 {
 	int	i;
 	int	start;
@@ -66,7 +61,7 @@ int	count_set(char *str, char *set)
 	return (count);
 }
 
-void	get_command(char **cmd, char *command, char *set, int *i)
+static void	get_command(char **cmd, char *command, char *set, int *i)
 {
 	int	start;
 
@@ -78,11 +73,11 @@ void	get_command(char **cmd, char *command, char *set, int *i)
 			*cmd = ft_joinchar(*cmd, command[(*i)++]);
 		*cmd = ft_joinchar(*cmd, command[(*i)++]);
 	}
-	while (command[*i] != 0 && command[*i] != set[0] && command[*i] != '\'' && command[*i] != '\"')
+	while (command[*i] != 0 && !(command[*i] == set[0] && command[*i + 1] == set[1]) && command[*i] != '\'' && command[*i] != '\"')
 		*cmd = ft_joinchar(*cmd, command[(*i)++]);
 }
 
-void	init_vars(int *i, int *j, char **cmd)
+static void	init_vars(int *i, int *j, char **cmd)
 {
 	*i = 0;
 	*j = 0;
@@ -125,7 +120,7 @@ int	main(int ac, char **av)
 	char *s = readline("> ");
 	char **array;
 	int	i;
-	array = ft_split_with_set(s, "&&");
+	array = ft_split_with_set(s, "||");
 	i = 0;
 	if (array)
 	{
