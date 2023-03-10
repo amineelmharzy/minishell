@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 22:06:47 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/26 07:59:56 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/03/07 18:38:22 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,15 @@ int	chk_newline(char *s)
 		}
 	}
 	return (1);
+}
+
+void	__close_fd(t_shell *shell, int fd)
+{
+	if (fd != 1)
+	{
+		close(fd);
+		dup2(shell->stdout_fd, 1);
+	}
 }
 
 void	echo(t_shell *shell)
@@ -58,9 +67,5 @@ void	echo(t_shell *shell)
 	}
 	if (newline == 1)
 		write(1, "\n", 1);
-	if (fd != 1)
-	{
-		close(fd);
-		dup2(shell->stdout_fd, 1);
-	}
+	__close_fd(shell, fd);
 }

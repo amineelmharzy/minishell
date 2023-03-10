@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 13:30:11 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/26 18:10:12 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/03/06 10:28:05 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,25 +28,22 @@ char	*remove_quotes(char *s)
 	return (res);
 }	
 
-void	read_herdoc(t_shell *shell, char **output, int *i)
+void	read_herdoc(t_shell *shell, char **output, char **cmp, int *i)
 {
-	char	*cmp;
-
 	while (shell->herdocs[++(*i)] != 0)
 	{
 		shell->command = readline("> ");
-		if (*output)
-			free(*output);
+		free(*output);
 		*output = ft_calloc(1, 1);
 		while (shell->command)
 		{
-			cmp = remove_quotes(shell->herdocs[*i]);
-			if (ft_strlen(shell->command) == ft_strlen(cmp)
-				&& ft_strncmp(shell->command, cmp,
+			*cmp = remove_quotes(shell->herdocs[*i]);
+			if (ft_strlen(shell->command) == ft_strlen(*cmp)
+				&& ft_strncmp(shell->command, *cmp,
 					ft_strlen(shell->command)) == 0)
 			{
 				free(shell->command);
-				free(cmp);
+				free(*cmp);
 				break ;
 			}
 			if (!shell->is_quoted_herdoc)
@@ -54,7 +51,7 @@ void	read_herdoc(t_shell *shell, char **output, int *i)
 			else
 				*output = ft_joinstr(*output, shell->command);
 			*output = ft_joinchar(*output, '\n');
-			free(cmp);
+			free(*cmp);
 			shell->command = readline("> ");
 		}
 	}
@@ -65,11 +62,12 @@ char	*herdoc(t_shell *shell)
 	int		i;
 	char	*output;
 	char	*save;
+	char	*cmp;
 
 	i = -1;
-	output = 0;
+	output = ft_calloc(1, 1);
 	save = ft_strdup(shell->command);
-	read_herdoc(shell, &output, &i);
+	read_herdoc(shell, &output, &cmp, &i);
 	shell->command = save;
 	return (output);
 }

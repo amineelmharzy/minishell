@@ -1,42 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   run_env.c                                          :+:      :+:    :+:   */
+/*   close_builtin.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/21 16:21:34 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/03/07 18:39:09 by ael-mhar         ###   ########.fr       */
+/*   Created: 2023/03/06 08:27:21 by ael-mhar          #+#    #+#             */
+/*   Updated: 2023/03/06 08:27:30 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "minishell.h"
 
-void	run_env(t_shell *shell, int option, void (*f)(t_shell *, int))
+void	_exit_(t_shell *shell)
 {
-	int	*pfd;
-	int	pid;
+	shell->exit_status = 0;
+}
 
-	pfd = (int *) ft_calloc(2, sizeof(int));
-	pipe(pfd);
-	pid = fork();
-	if (pid == 0)
+void	close_builtin(t_shell *shell, int option)
+{
+	if (option == 0 && shell->is_builtin)
 	{
-		if (shell->is_pipe)
-		{
-			dup2(pfd[1], 1);
-			close(pfd[0]);
-		}
-		f(shell, option);
+		close(0);
+		dup2(shell->stdin_fd, 0);
 	}
-	else
+	else if (option == 1 && !shell->is_pipe)
 	{
-		waitpid(-1, NULL, 0);
-		if (shell->is_pipe)
-		{
-			dup2(pfd[0], 0);
-			close(pfd[1]);
-		}
-		free(pfd);
+		close(0);
+		dup2(shell->stdin_fd, 0);
 	}
 }

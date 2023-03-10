@@ -14,6 +14,7 @@
 
 void	init_prompt(t_shell *shell)
 {
+	/*
 	if (shell->prompt)
 	{
 		free(shell->prompt);
@@ -25,6 +26,8 @@ void	init_prompt(t_shell *shell)
 	shell->prompt = ft_joinstr(shell->prompt,
 			ft_strdup(is_env(shell, "PWD", 3, 1)));
 	shell->prompt = ft_joinstr(shell->prompt, ft_strdup(" \x1B[36m# \x1B[0m"));
+	*/
+	shell->prompt = "~ ";
 }
 
 void	init_shell_variables(t_shell *shell, char **envp)

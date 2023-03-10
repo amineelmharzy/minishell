@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 22:27:46 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/26 13:14:45 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/03/07 18:39:31 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ void	unset(t_shell *shell)
 		j = 0;
 		is_env(shell, shell->parsed_command[i],
 			ft_strlen(shell->parsed_command[i]), 0);
-		if (ft_strlen(shell->parsed_command[i]) == 4 && 
-				!ft_strncmp(shell->parsed_command[i], "PATH", 4))
+		if (ft_strlen(shell->parsed_command[i]) == 4
+			&& !ft_strncmp(shell->parsed_command[i], "PATH", 4))
 		{
 			while (shell->path[j] != 0)
 				free(shell->path[j++]);

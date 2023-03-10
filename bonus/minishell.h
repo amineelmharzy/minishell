@@ -6,13 +6,14 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 00:31:33 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/28 20:04:18 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/03/09 18:21:12 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include <dirent.h>
 # include <errno.h>
 # include <fcntl.h>
 # include <limits.h>
@@ -23,10 +24,9 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
-# include <unistd.h>
-# include <sys/types.h>
 # include <sys/stat.h>
-# include <dirent.h>
+# include <sys/types.h>
+# include <unistd.h>
 
 # define BUFFER_SIZE 1
 
@@ -43,6 +43,8 @@
 # define E_QUOT "unexpected EOF while looking for matching"
 # define E_NOHS "HOME not set"
 
+int					g_status;
+
 char				**ft_split(char *str, char set);
 char				*ft_strjoin(char *s1, char *s2);
 int					ft_strlen(char *str);
@@ -56,6 +58,13 @@ typedef struct s_env
 	char			*value;
 	struct s_env	*next;
 }					t_env;
+
+typedef struct s_node
+{
+	char			*content;
+	int				index;
+	struct s_node	*next;
+}			t_node;
 
 typedef struct s_shell
 {
@@ -82,6 +91,7 @@ typedef struct s_shell
 	char			**envp;
 	char			**commands;
 	char			**fcommands;
+	char			**p_commands;
 	char			**or_commands;
 	char			**parsed_command;
 	char			**infiles;
@@ -142,6 +152,7 @@ int					expand_env(t_shell *shell, char *str, char **real);
 int					iofiles_errors(t_shell *shell, char *set);
 int					parse_error(t_shell *shell);
 char				*parse_iofiles(t_shell *shell, char *set);
+void				parse_file(t_shell *shell, char **files, char *set, int *i);
 void				print_error(t_shell *shell, char *target, char *error,
 						int status);
 void				_print_error(t_shell *shell, char *error, int status);
@@ -153,11 +164,20 @@ int					init_outfd(t_shell *shell);
 char				*get_infile(t_shell *shell);
 t_env				*create_node(char *var);
 void				run_builtin(t_shell *shell, void (*f)(t_shell *), int flag);
-void				run_env(t_shell *shell, int option,
-						void (*f)(t_shell *, int));
-void				free_commands(t_shell *shell);
+void				run_env(t_shell *shell, int option, void (*f)(t_shell *,
+							int));
+void				free_commands(t_shell *shell, int option);
 void				init_prompt(t_shell *shell);
 char				*remove_quotes(char *s);
 void				free_command(t_shell *shell);
-
+void				close_builtin(t_shell *shell, int option);
+void				_exit_(t_shell *shell);
+int					check_ambiguous_redirect(t_shell *shell, char *str,
+						char *iofile);
+int					check_empty_pipe(char *str, int i);
+void				run_command(t_shell *shell);
+void				__run_command(t_shell *shell, char	*command);
+t_node				*__astric_l(char *path, int is_hidden);
+char				*expand_astric(char **str);
+char				*ft_chardup(char c);
 #endif

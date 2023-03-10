@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 19:43:59 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/26 18:40:48 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/03/08 21:33:24 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ void	init_shell_variables(t_shell *shell, char **envp)
 	shell->path = ft_split(getenv("PATH"), ':');
 	shell->is_pipe = 0;
 	shell->is_builtin = 0;
+	shell->fcommands = 0;
+	shell->or_commands = 0;
 }
 
 void	init_shell(t_shell *shell, char **envp)

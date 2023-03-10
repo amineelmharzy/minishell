@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 19:56:36 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/26 13:15:10 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/03/08 21:35:42 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	free_infiles(t_shell *shell)
 			free(shell->infiles[i++]);
 		free(shell->infiles);
 		shell->infiles = 0;
+		shell->infile = 0;
 	}
 	if (shell->herdocs)
 	{
@@ -32,13 +33,9 @@ void	free_infiles(t_shell *shell)
 		free(shell->herdocs);
 		shell->herdocs = 0;
 	}
-	if (shell->infile)
-		shell->infile = 0;
 	if (shell->herdoc_output)
-	{
 		free(shell->herdoc_output);
-		shell->herdoc_output = 0;
-	}
+	shell->herdoc_output = 0;
 	shell->is_infile = 0;
 	shell->is_herdoc = 0;
 }
@@ -67,11 +64,30 @@ void	free_outfiles(t_shell *shell)
 		shell->outfile = 0;
 }
 
-void	free_commands(t_shell *shell)
+void	free_commands(t_shell *shell, int option)
 {
 	int	i;
 
 	i = 0;
+	if (option)
+	{
+		if (shell->fcommands)
+		{
+			while (shell->fcommands[i] != 0)
+				free(shell->fcommands[i++]);
+			free(shell->fcommands);
+			shell->fcommands = 0;
+			i = 0;
+		}
+		if (shell->or_commands)
+		{
+			while (shell->or_commands[i] != 0)
+				free(shell->or_commands[i++]);
+			free(shell->or_commands);
+			shell->or_commands = 0;
+			i = 0;
+		}
+	}
 	if (shell->commands)
 	{
 		while (shell->commands[i] != 0)
@@ -107,9 +123,10 @@ void	free_all(t_shell *shell, int option)
 	free_outfiles(shell);
 	free_command(shell);
 	if (option == 0)
-		free_commands(shell);
+		free_commands(shell, 0);
 	if (option == 1)
 	{
+		free_commands(shell, 1);
 		while (shell->path[i] != 0)
 			free(shell->path[i++]);
 		free(shell->path);

@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 16:15:30 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/26 20:09:30 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/03/07 15:47:44 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,13 @@ int	parse_error(t_shell *shell)
 	{
 		_print_error(shell, "syntax error near unexpected token |", 2);
 		free(shell->command);
-		return (0);
+		return (1);
 	}
 	if (is_fine_with_quotes(shell->command) == -1)
 	{
 		_print_error(shell, E_QUOT, 2);
 		free(shell->command);
-		return (0);
+		return (1);
 	}
-	return (1);
+	return (0);
 }

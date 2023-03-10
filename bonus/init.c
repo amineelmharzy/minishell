@@ -6,13 +6,11 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:42:59 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/03/01 07:36:14 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/03/09 19:06:12 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	g_status;
 
 int	init_command(t_shell *shell, int i)
 {
@@ -46,6 +44,63 @@ void	_exec_l_cmd(t_shell *shell, int i)
 	free_all(shell, 0);
 }
 
+int	__chk_empty_cmd(t_shell *shell)
+{
+	if (!shell->command)
+	{
+		shell->is_infile = 1;
+		free(shell->herdoc_output);
+		shell->herdoc_output = 0;
+		shell->outfile = 0;
+		return (1);
+	}
+	return (0);
+}
+
+void	__func_less_(t_shell *shell, int opt)
+{
+	if (!opt)
+	{
+		shell->is_builtin = 0;
+		free(shell->parsed_command[0]);
+		shell->parsed_command[0] = shell->rcommand;
+	}
+	else
+	{
+		shell->is_infile = 0;
+		//free_all(shell, 2);
+	}
+}
+
+void	__run_command(t_shell *shell, char *command)
+{
+	int	i;
+
+	i = -1;
+	shell->commands = ft_split_with_pipe(command);
+	while (shell->commands[++i] != 0)
+	{
+		if (init_command(shell, i) == 1)
+		{
+			if (!check_command(shell, i, 1))
+			{
+				if (__chk_empty_cmd(shell))
+					continue ;
+				if (!get_path(shell))
+					continue ;
+				__func_less_(shell, 0);
+				if (shell->commands[i + 1] == 0)
+					break ;
+				exec_command(shell);
+			}
+			else
+				shell->is_builtin = 1;
+		}
+		__func_less_(shell, 1);
+	}
+	_exec_l_cmd(shell, i);
+}
+/*
 void	run_command(t_shell *shell)
 {
 	int	i;
@@ -60,93 +115,14 @@ void	run_command(t_shell *shell)
 		z = 0;
 		while (shell->or_commands[z])
 		{
-			if (!parse_error(shell))
+			if (parse_error(shell))
 				return ;
-			shell->commands = ft_split_with_pipe(shell->or_commands[z]);
-			i = -1;
-			while (shell->commands[++i] != 0)
-			{
-				if (init_command(shell, i) == 1)
-				{
-					if (!check_command(shell, i, 1))
-					{
-						if (!shell->command)
-						{
-							shell->is_infile = 1;
-							free(shell->herdoc_output);
-							shell->herdoc_output = 0;
-							shell->outfile = 0;
-							continue ;
-						}
-						if (!get_path(shell))
-							continue ;
-						shell->is_builtin = 0;
-						free(shell->parsed_command[0]);
-						shell->parsed_command[0] = shell->rcommand;
-						if (shell->commands[i + 1] == 0)
-							break ;
-						exec_command(shell);
-					}
-					else
-						shell->is_builtin = 1;
-				}
-				shell->is_infile = 0;
-				free_all(shell, 2);
-			}
-			_exec_l_cmd(shell, i);
+			__run_command(shell, z);
 			z++;
 			if (shell->exit_status == 0)
-				break;
+				break ;
 		}
 		j++;
 	}
 }
-
-void	handler(int sig)
-{
-	if (sig == SIGINT)
-	{
-		g_status = 130;
-		printf("\n");
-	}
-	//rl_replace_line("", 0);
-	rl_on_new_line();
-	rl_redisplay();
-}
-
-int	main(int ac, char **av, char **envp)
-{
-	t_shell	shell;
-
-	init_shell(&shell, envp);
-	signal(SIGINT, handler);
-	signal(SIGQUIT, handler);
-	/*
-	if (isatty(0))
-	{
-		shell.command = get_next_line(0);
-		while (shell.command)
-		{
-			run_command(&shell);
-			free_all(&shell, 0);
-			shell.command = get_next_line(0);
-		}
-	}*/
-		while (1)
-		{
-			init_prompt(&shell);
-			shell.command = readline(shell.prompt);
-			add_history(shell.command);
-			if (shell.command)
-			{
-				run_command(&shell);
-				free_all(&shell, 0);
-			}
-			else
-			{
-				free_all(&shell, 1);
-				exit(shell.exit_status);
-			}
-		}
-	return (0);
-}
+*/

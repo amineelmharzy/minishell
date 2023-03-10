@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 13:16:02 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/27 18:54:14 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/03/06 15:43:14 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ int	check_empty_iofiles(char *command, char *set)
 			if (command[i] && (command[i] == '\"' || command[i] == '\''))
 			{
 				i++;
-				if (command[i] && (command[i] == '\"' || command[i] == '\'') && command[i + 1] != '$')
+				if (command[i] && (command[i] == '\"' || command[i] == '\'')
+					&& command[i + 1] != '$')
 					return (1);
 			}
 		}

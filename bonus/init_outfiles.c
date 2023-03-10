@@ -6,13 +6,13 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 08:54:27 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/28 12:47:35 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/03/06 15:39:57 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	check_ambiguous_redirect(char *str)
+int	check_ambiguous_redirect(t_shell *shell, char *str, char *iofile)
 {
 	int	i;
 	int	start;
@@ -27,7 +27,10 @@ int	check_ambiguous_redirect(char *str)
 				i++;
 		}
 		if (str[i] == '$')
+		{
+			print_error(shell, iofile, E_AMBR, 1);
 			return (1);
+		}
 		i++;
 	}
 	return (0);
@@ -38,17 +41,14 @@ int	init_afiles(t_shell *shell)
 	int	i;
 	int	fd;
 
-	i = 0;
-	fd = 0;
+	i = -1;
 	if (shell->afiles)
 	{
-		while (shell->afiles[i] != 0)
+		while (shell->afiles[++i] != 0)
 		{
-			if (check_ambiguous_redirect(shell->quoted_afiles[i]))
-			{
-				print_error(shell, shell->outfiles[i], E_AMBR, 1);
+			if (check_ambiguous_redirect(shell, shell->quoted_afiles[i],
+					shell->afiles[i]))
 				return (0);
-			}
 			fd = open(shell->afiles[i], O_CREAT, 0644);
 			close(fd);
 			if (access(shell->afiles[i], F_OK | W_OK) == -1)
@@ -58,32 +58,24 @@ int	init_afiles(t_shell *shell)
 			}
 			if (!shell->afiles[i + 1] && shell->ofile == 2)
 				shell->outfile = shell->afiles[i];
-			i++;
 		}
 	}
 	return (1);
 }
 
-
-//if ((shell->outfiles[i][0] == '$' || ft_strchr(shell->outfiles[i], '$')) && !ft_strchr(shell->quoted_outfiles[i], '\''))
-
 int	init_outfiles(t_shell *shell)
 {
-	int	i;
-	int	fd;
-	char	*save;
+	int		i;
+	int		fd;
 
-	i = 0;
-	save = shell->command;
+	i = -1;
 	if (shell->outfiles)
 	{
-		while (shell->outfiles[i] != 0)
+		while (shell->outfiles[++i] != 0)
 		{
-			if (check_ambiguous_redirect(shell->quoted_outfiles[i]))
-			{
-				print_error(shell, shell->outfiles[i], E_AMBR, 1);
+			if (check_ambiguous_redirect(shell, shell->quoted_outfiles[i],
+					shell->outfiles[i]))
 				return (0);
-			}
 			fd = open(shell->outfiles[i], O_CREAT | O_TRUNC, 0644);
 			close(fd);
 			if (access(shell->outfiles[i], F_OK | W_OK) == -1)
@@ -93,7 +85,6 @@ int	init_outfiles(t_shell *shell)
 			}
 			if (!shell->outfiles[i + 1] && shell->ofile == 1)
 				shell->outfile = shell->outfiles[i];
-			i++;
 		}
 	}
 	if (!init_afiles(shell))

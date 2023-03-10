@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 13:16:02 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/28 08:49:51 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/03/06 10:23:09 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,77 +78,44 @@ void	parse_quotes(char **save, char *str, int *i)
 	}
 }
 
-void	parse_file(t_shell *shell, char **files, char *set, int *i)
+void	_parse_iofiles(t_shell *shell, char **files, char *set, int *i)
 {
-	char	*str;
-	int		start;
+	char	*save;
 
-	str = shell->command;
-	start = str[*i];
-	if (start == '\"' || start == '\'')
+	save = ft_calloc(1, 1);
+	while (shell->command[*i] != 0)
 	{
-		if (set[0] == '<' && str[1] == '<')
-			shell->is_quoted_herdoc = 1;
-		*files = ft_joinchar(*files, str[(*i)++]);
-		while (str[*i] != 0 && str[*i] != start)
-			*files = ft_joinchar(*files, str[(*i)++]);
-		*files = ft_joinchar(*files, str[(*i)++]);
+		parse_quotes(&save, shell->command, i);
+		if (shell->command[*i]
+			&& ft_strlen(&shell->command[*i]) >= ft_strlen(set)
+			&& !ft_strncmp(&shell->command[*i], set, ft_strlen(set)))
+		{
+			*i += ft_strlen(set);
+			while (shell->command[*i] && shell->command[*i] == ' ')
+				(*i)++;
+			while (shell->command[*i] && shell->command[*i] != ' '
+				&& shell->command[*i] != '>' && shell->command[*i] != '<')
+				parse_file(shell, files, set, i);
+			*files = ft_joinchar(*files, ' ');
+		}
+		else
+			save = ft_joinchar(save, shell->command[(*i)++]);
 	}
-	else
-	{
-		shell->is_quoted_herdoc = 0;
-		*files = ft_joinchar(*files, str[(*i)++]);
-	}
+	free(shell->command);
+	shell->command = save;
 }
 
 char	*parse_iofiles(t_shell *shell, char *set)
 {
 	char	*files;
-	char	*save;
 	int		i;
 
 	if (!shell->command || !shell->command[0])
 		return (NULL);
 	if (count_iofiles(shell->command, set) == 0)
 		return (NULL);
-	save = ft_calloc(1, 1);
-	files = ft_calloc(1, 1);
 	i = 0;
-	while (shell->command[i] != 0)
-	{
-		parse_quotes(&save, shell->command, &i);
-		if (shell->command[i] && ft_strlen(&shell->command[i]) >= ft_strlen(set)
-			&& !ft_strncmp(&shell->command[i], set, ft_strlen(set)))
-		{
-			i += ft_strlen(set);
-			while (shell->command[i] && shell->command[i] == ' ')
-				i++;
-			while (shell->command[i] && shell->command[i] != ' ' && shell->command[i] != '>' && shell->command[i] != '<')
-				parse_file(shell, &files, set, &i);
-			files = ft_joinchar(files, ' ');
-		}
-		else
-			save = ft_joinchar(save, shell->command[i++]);
-	}
-	free(shell->command);
-	shell->command = save;
+	files = ft_calloc(1, 1);
+	_parse_iofiles(shell, &files, set, &i);
 	return (files);
 }
-/*
-int	main(int ac, char **av)
-{
-	t_shell shell;
-	char	*s = get_next_line(0);
-	shell.command = s;
-	char *res = parse_iofiles(&shell, ">>");
-	printf("%s\n\n", res);
-	char **array;
-	array = ft_split_with_space(res);
-	if (!array)
-		return (0);
-	int	i = 0;
-	while (array[i] != 0)
-		printf("%s\n" ,array[i++]);
-	return (0);
-}
-*/

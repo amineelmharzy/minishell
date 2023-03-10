@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 00:31:33 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/28 13:24:36 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/03/07 17:28:57 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@
 # define E_AMBR "ambiguous redirect"
 # define E_QUOT "unexpected EOF while looking for matching"
 # define E_NOHS "HOME not set"
+
+//int	g_status;
 
 char				**ft_split(char *str, char set);
 char				*ft_strjoin(char *s1, char *s2);
@@ -139,22 +141,29 @@ int					expand_env(t_shell *shell, char *str, char **real);
 int					iofiles_errors(t_shell *shell, char *set);
 int					parse_error(t_shell *shell);
 char				*parse_iofiles(t_shell *shell, char *set);
+void				parse_file(t_shell *shell, char **files, char *set, int *i);
 void				print_error(t_shell *shell, char *target, char *error,
 						int status);
 void				_print_error(t_shell *shell, char *error, int status);
 int					check_identifier(t_shell *shell, char *str);
 int					check_empty_iofiles(char *command, char *set);
+int					check_empty_pipe(char *str, int i);
 char				*exported_key(char *var);
 void				ft_putstr_fd(char *s, int fd);
 int					init_outfd(t_shell *shell);
 char				*get_infile(t_shell *shell);
 t_env				*create_node(char *var);
 void				run_builtin(t_shell *shell, void (*f)(t_shell *), int flag);
+void				run_command(t_shell *shell);
 void				run_env(t_shell *shell, int option,
 						void (*f)(t_shell *, int));
 void				free_commands(t_shell *shell);
 void				init_prompt(t_shell *shell);
 char				*remove_quotes(char *s);
 void				free_command(t_shell *shell);
+void				close_builtin(t_shell *shell, int option);
+void				_exit_(t_shell *shell);
+int					check_ambiguous_redirect(t_shell *shell,
+						char *str, char *iofile);
 
 #endif

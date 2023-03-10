@@ -6,11 +6,21 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 22:17:17 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/28 09:35:18 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/03/07 18:42:42 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void	_set_cwd(t_shell *shell, char **target_dir)
+{
+	shell->exit_status = 0;
+	is_env(shell, "PWD", 3, 0);
+	getcwd(shell->cwd, sizeof(shell->cwd));
+	*target_dir = ft_strjoin("PWD=", shell->cwd);
+	add_env_var(shell, *target_dir, 0);
+	free(*target_dir);
+}
 
 void	cd(t_shell *shell)
 {
@@ -36,12 +46,5 @@ void	cd(t_shell *shell)
 		shell->exit_status = 1;
 	}
 	else
-	{
-		shell->exit_status = 0;
-		is_env(shell, "PWD", 3, 0);
-		getcwd(shell->cwd, sizeof(shell->cwd));
-		target_dir = ft_strjoin("PWD=", shell->cwd);
-		add_env_var(shell, target_dir, 0);
-		free(target_dir);
-	}
+		_set_cwd(shell, &target_dir);
 }

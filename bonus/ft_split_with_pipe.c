@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 14:48:09 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/26 20:03:26 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/03/06 10:30:55 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,17 +30,6 @@ int	ft_counter(char *str, int *i, int *count)
 	if (str[*i] && str[*i] != '|' && str[*i] != '\'' && str[*i] != '\"')
 		(*i)++;
 	return (0);
-}
-
-int	check_empty_pipe(char *str, int i)
-{
-	while (i >= 0)
-	{
-		if (str[i] != ' ' && str[i] != '>' && str[i] != '<')
-			return (0);
-		i--;
-	}
-	return (1);
 }
 
 int	count_pipes(char *str)
