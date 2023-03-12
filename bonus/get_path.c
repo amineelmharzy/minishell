@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 22:36:08 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/03/09 19:09:47 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/03/11 17:50:59 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,8 @@ int	check_errors(t_shell *shell, int option)
 		if (!shell->command[0])
 		{
 			print_error(shell, shell->command, E_NCMD, 127);
+			close(0);
+			dup2(shell->stdin_fd, 0);
 			return (0);
 		}
 		if (check_absolute_path(shell) == -1)

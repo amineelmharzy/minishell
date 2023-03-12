@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 19:56:36 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/03/06 08:46:29 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/03/12 07:47:13 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,9 +107,12 @@ void	free_all(t_shell *shell, int option)
 		free_commands(shell);
 	if (option == 1)
 	{
-		while (shell->path[i] != 0)
-			free(shell->path[i++]);
-		free(shell->path);
+		if (shell->path)
+		{
+			while (shell->path[i] != 0)
+				free(shell->path[i++]);
+			free(shell->path);
+		}
 		while (env)
 		{
 			temp = env->next;

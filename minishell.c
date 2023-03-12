@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 15:41:01 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/03/07 15:48:50 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/03/11 19:09:59 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	main(int ac, char **av, char **envp)
 	while (1)
 	{
 		init_prompt(&shell);
-		shell.command = readline(shell.prompt);
+		shell.command = readline("# ");
 		add_history(shell.command);
 		if (shell.command)
 		{

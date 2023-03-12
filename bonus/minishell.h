@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 00:31:33 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/03/09 18:21:12 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/03/12 08:46:57 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@
 # define E_NOTF "No such file or directory"
 # define E_PIPE "syntax error near unexpected token `|'"
 # define E_REDR "syntax error near unexpected token `newline'"
+# define E_PARN "syntax error near unexpected token `)'"
+# define E_ANDO "syntax error near unexpected token `||' or `&&'"
 # define E_TOMR "too many arguments"
 # define E_NCMD "command not found"
 # define E_NFOD "No such file or directory"
@@ -43,7 +45,7 @@
 # define E_QUOT "unexpected EOF while looking for matching"
 # define E_NOHS "HOME not set"
 
-int					g_status;
+//int					g_status;
 
 char				**ft_split(char *str, char set);
 char				*ft_strjoin(char *s1, char *s2);
@@ -100,10 +102,11 @@ typedef struct s_shell
 	char			**afiles;
 	char			**quoted_afiles;
 	char			**herdocs;
+	char			*subshell_iofiles;
 	struct s_env	*env;
 }					t_shell;
 
-char				**ft_split_with_set(char *command, char *set);
+char				**ft_split_with_set(t_shell *shell, char *command, char *set);
 int					ft_atoi(t_shell *shell, char *str, char *str2);
 void				init_shell(t_shell *shell, char **envp);
 void				insert_node_to_end(t_shell *shell, t_env *new_node);
@@ -141,6 +144,7 @@ char				**ft_split_with_pipe(char *command);
 int					count_pipes(char *str);
 int					count_iofiles(char *str, char *set);
 int					count_args(char *command);
+int					count_set(char *str, char *set);
 void				exec_lastcommand(t_shell *shell);
 void				set_infile(t_shell *shell);
 void				set_outfile(t_shell *shell);
@@ -150,13 +154,15 @@ char				*get_real_command(t_shell *shell, int sq);
 int					ft_strlen_to_char(char *str, char c);
 int					expand_env(t_shell *shell, char *str, char **real);
 int					iofiles_errors(t_shell *shell, char *set);
-int					parse_error(t_shell *shell);
+int					parse_error(t_shell *shell, int option);
 char				*parse_iofiles(t_shell *shell, char *set);
 void				parse_file(t_shell *shell, char **files, char *set, int *i);
 void				print_error(t_shell *shell, char *target, char *error,
 						int status);
-void				_print_error(t_shell *shell, char *error, int status);
+char				**_print_error(t_shell *shell, char *error, int status);
+void				skip_quotes(char *str, int *i);
 int					check_identifier(t_shell *shell, char *str);
+int					check_parenthesis(char *str);
 int					check_empty_iofiles(char *command, char *set);
 char				*exported_key(char *var);
 void				ft_putstr_fd(char *s, int fd);
@@ -180,4 +186,6 @@ void				__run_command(t_shell *shell, char	*command);
 t_node				*__astric_l(char *path, int is_hidden);
 char				*expand_astric(char **str);
 char				*ft_chardup(char c);
+void				_run_command(t_shell *shell, char **cmd);
+int					is_subshell_command(char *command);
 #endif

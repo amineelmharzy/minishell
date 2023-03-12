@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 19:43:59 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/26 18:40:48 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/03/12 07:50:02 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void	init_shell_variables(t_shell *shell, char **envp)
 	shell->herdoc_output = 0;
 	shell->is_herdoc = 0;
 	shell->envp = envp;
+	shell->path = 0;
 	shell->path = ft_split(getenv("PATH"), ':');
 	shell->is_pipe = 0;
 	shell->is_builtin = 0;

@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 19:43:59 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/03/08 21:33:24 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/03/11 18:05:48 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,22 @@
 
 void	init_prompt(t_shell *shell)
 {
+	/*
 	if (shell->prompt)
 	{
 		free(shell->prompt);
 		shell->prompt = 0;
 	}
+	*/
+	shell->prompt = "~ ";
+	/*
 	shell->prompt = ft_joinstr(ft_strdup("\x1B[35m"),
 			ft_strdup(is_env(shell, "USER", 4, 1)));
 	shell->prompt = ft_joinstr(shell->prompt, ft_strdup("\x1B[0m in \x1B[32m"));
 	shell->prompt = ft_joinstr(shell->prompt,
 			ft_strdup(is_env(shell, "PWD", 3, 1)));
 	shell->prompt = ft_joinstr(shell->prompt, ft_strdup(" \x1B[36m# \x1B[0m"));
+	*/
 }
 
 void	init_shell_variables(t_shell *shell, char **envp)

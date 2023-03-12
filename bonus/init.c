@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:42:59 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/03/09 19:06:12 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/03/12 08:47:25 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,14 @@
 
 int	init_command(t_shell *shell, int i)
 {
+	/*
 	shell->parsed_command = 0;
 	if (g_status == 130)
 	{
 		shell->exit_status = g_status;
 		g_status = 0;
 	}
+	*/
 	shell->command = ft_strdup(shell->commands[i]);
 	if (!init_iofiles(shell))
 	{
@@ -86,12 +88,17 @@ void	__run_command(t_shell *shell, char *command)
 			{
 				if (__chk_empty_cmd(shell))
 					continue ;
-				if (!get_path(shell))
-					continue ;
-				__func_less_(shell, 0);
-				if (shell->commands[i + 1] == 0)
-					break ;
-				exec_command(shell);
+				if (is_subshell_command(shell->commands[i]))
+					_run_command(shell, &shell->commands[i]);
+				else
+				{
+					if (!get_path(shell))
+						continue ;
+					__func_less_(shell, 0);
+					if (shell->commands[i + 1] == 0)
+						break ;
+					exec_command(shell);
+				}
 			}
 			else
 				shell->is_builtin = 1;
