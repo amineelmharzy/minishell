@@ -6,30 +6,54 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 22:25:31 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/26 11:47:47 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/05/06 19:37:59 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+char	*write_with_backslash(char *value)
+{
+	int		i;
+	char	*res;
+
+	i = 0;
+	res = ft_calloc(1, 1);
+	while (value[i] != 0)
+	{
+		if (value[i] == '\"' || value[i] == '$')
+			res = ft_joinchar(res, '\\');
+		res = ft_joinchar(res, value[i++]);
+	}
+	return (res);
+}
+
 void	print_env(t_env *temp, int option)
 {
+	char	*res;
+
 	if (option == 0)
 	{
 		if (temp->value[0])
 			printf("%s=%s\n", temp->key, temp->value);
 		else if (temp->eq == 1)
 			printf("%s=%s\n", temp->key, temp->value);
+		return ;
 	}
-	else if (option == 1)
+	if (temp->value[0])
 	{
-		if (temp->value[0])
-			printf("declare -x %s=\"%s\"\n", temp->key, temp->value);
-		else if (temp->eq == 1)
-			printf("declare -x %s=\"%s\"\n", temp->key, temp->value);
-		else
-			printf("declare -x %s\n", temp->key);
+		res = write_with_backslash(temp->value);
+		printf("declare -x %s=\"%s\"\n", temp->key, res);
+		free(res);
 	}
+	else if (temp->eq == 1)
+	{
+		res = write_with_backslash(temp->value);
+		printf("declare -x %s=\"%s\"\n", temp->key, res);
+		free(res);
+	}
+	else
+		printf("declare -x %s\n", temp->key);
 }
 
 void	env(t_shell *shell, int opt)

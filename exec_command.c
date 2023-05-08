@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 16:48:20 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/03/07 17:14:13 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/04/14 15:14:21 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,6 @@ void	parent(t_shell *shell, int *pfd)
 
 	dup2((pfd)[0], 0);
 	close((pfd)[1]);
-	waitpid(-1, &status, 0);
-	if (WIFEXITED(status))
-		shell->exit_status = WEXITSTATUS(status);
 	free(pfd);
 }
 

@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 13:16:02 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/03/06 10:23:09 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/05/07 14:39:31 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,14 +67,15 @@ void	parse_quotes(char **save, char *str, int *i)
 {
 	int	start;
 
-	while (str[*i] && (str[*i] == '\"'
+	while (str[*i] && (str[*i] == '\''
 			|| str[*i] == '\"'))
 	{
 		start = str[*i];
 		*save = ft_joinchar(*save, str[(*i)++]);
 		while (str[*i] && str[*i] != start)
 			*save = ft_joinchar(*save, str[(*i)++]);
-		*save = ft_joinchar(*save, str[(*i)++]);
+		if (str[*i])
+			*save = ft_joinchar(*save, str[(*i)++]);
 	}
 }
 
@@ -98,7 +99,8 @@ void	_parse_iofiles(t_shell *shell, char **files, char *set, int *i)
 				parse_file(shell, files, set, i);
 			*files = ft_joinchar(*files, ' ');
 		}
-		else
+		else if (shell->command[*i] && shell->command[*i] != '\''
+			&& shell->command[*i] != '\"')
 			save = ft_joinchar(save, shell->command[(*i)++]);
 	}
 	free(shell->command);
@@ -117,5 +119,10 @@ char	*parse_iofiles(t_shell *shell, char *set)
 	i = 0;
 	files = ft_calloc(1, 1);
 	_parse_iofiles(shell, &files, set, &i);
+	if (!shell->command[0])
+	{
+		free(shell->command);
+		shell->command = 0;
+	}
 	return (files);
 }

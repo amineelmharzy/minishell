@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 00:31:33 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/03/12 08:46:57 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/05/08 19:13:10 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,11 +66,10 @@ typedef struct s_node
 	char			*content;
 	int				index;
 	struct s_node	*next;
-}			t_node;
+}					t_node;
 
 typedef struct s_shell
 {
-	int				err;
 	int				stdin_fd;
 	int				stdout_fd;
 	int				ofile;
@@ -83,12 +82,12 @@ typedef struct s_shell
 	int				is_infile;
 	char			cwd[PATH_MAX];
 	char			*command;
-	char			*cmd;
 	char			*prompt;
 	char			*herdoc_output;
 	char			*infile;
 	char			*outfile;
 	char			*rcommand;
+	char			*shell_name;
 	char			**path;
 	char			**envp;
 	char			**commands;
@@ -102,11 +101,13 @@ typedef struct s_shell
 	char			**afiles;
 	char			**quoted_afiles;
 	char			**herdocs;
-	char			*subshell_iofiles;
+	char			*s_iofiles;
 	struct s_env	*env;
 }					t_shell;
 
-char				**ft_split_with_set(t_shell *shell, char *command, char *set);
+int					init_command(t_shell *shell, int i);
+char				**ft_split_with_set(t_shell *shell, char *command,
+						char *set);
 int					ft_atoi(t_shell *shell, char *str, char *str2);
 void				init_shell(t_shell *shell, char **envp);
 void				insert_node_to_end(t_shell *shell, t_env *new_node);
@@ -168,24 +169,34 @@ char				*exported_key(char *var);
 void				ft_putstr_fd(char *s, int fd);
 int					init_outfd(t_shell *shell);
 char				*get_infile(t_shell *shell);
-t_env				*create_node(char *var);
+t_env				*create_node(char *var, int op);
 void				run_builtin(t_shell *shell, void (*f)(t_shell *), int flag);
 void				run_env(t_shell *shell, int option, void (*f)(t_shell *,
 							int));
-void				free_commands(t_shell *shell, int option);
-void				init_prompt(t_shell *shell);
+void				free_commands(t_shell *shell, int option, int i);
 char				*remove_quotes(char *s);
 void				free_command(t_shell *shell);
 void				close_builtin(t_shell *shell, int option);
 void				_exit_(t_shell *shell);
-int					check_ambiguous_redirect(t_shell *shell, char *str,
-						char *iofile);
 int					check_empty_pipe(char *str, int i);
 void				run_command(t_shell *shell);
-void				__run_command(t_shell *shell, char	*command);
+void				__run_command(t_shell *shell, char *command, int i);
 t_node				*__astric_l(char *path, int is_hidden);
 char				*expand_astric(char **str);
 char				*ft_chardup(char c);
 void				_run_command(t_shell *shell, char **cmd);
 int					is_subshell_command(char *command);
+int					check_end(char *str, int i, int start);
+char				*rl_replace_line(const char *line, int a);
+void				_subshell_func(t_shell *shell, char ***ars, char **cmd,
+						char **save);
+void				_subshell_child(t_shell *shell, char **ars, int pfd[2]);
+void				_subshell_parent(t_shell *shell, char **ars, char **cmd,
+						char *save);
+void				__func_parse(t_shell *shell, char **res, char *str, int *i);
+int					check_ambiguous_redirect(t_shell *shell, char **iofile);
+int					check_last_space(char *str, int i);
+char				*remove_spaces(char *str);
+int					syntax_err(t_shell *shell);
+
 #endif

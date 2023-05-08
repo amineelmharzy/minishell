@@ -1,48 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
+/*   run.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:42:59 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/03/12 08:26:33 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/05/01 18:17:48 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	init_command(t_shell *shell, int i)
-{
-	shell->parsed_command = 0;
-	/*
-	if (g_status == 130)
-	{
-		shell->exit_status = g_status;
-		g_status = 0;
-	}*/
-	shell->command = ft_strdup(shell->commands[i]);
-	if (!init_iofiles(shell))
-	{
-		free(shell->command);
-		return (0);
-	}
-	shell->command = get_real_command(shell, 0);
-	if (!shell->command || !shell->command[0])
-	{
-		free(shell->command);
-		return (0);
-	}
-	shell->parsed_command = ft_split_with_space(shell->command, 1);
-	shell->command = shell->parsed_command[0];
-	return (1);
-}
-
 void	_exec_l_cmd(t_shell *shell, int i)
 {
 	if (shell->commands[i])
 		exec_lastcommand(shell);
-	free_all(shell, 0);
+	free_all(shell, 2);
+	if (shell->commands)
+	{
+		i = 0;
+		while (shell->commands[i])
+			free(shell->commands[i++]);
+		free(shell->commands);
+	}
 }
 
 int	__chk_empty_cmd(t_shell *shell)
@@ -58,7 +39,7 @@ int	__chk_empty_cmd(t_shell *shell)
 	return (0);
 }
 
-void	__func_less_(t_shell *shell, int opt)
+int	__func_less_(t_shell *shell, int opt)
 {
 	if (!opt)
 	{
@@ -71,14 +52,13 @@ void	__func_less_(t_shell *shell, int opt)
 		shell->is_infile = 0;
 		free_all(shell, 2);
 	}
+	return (0);
 }
 
-void	run_command(t_shell *shell)
+void	__run_command(t_shell *shell, char *command, int i)
 {
-	int	i;
-
 	i = -1;
-	shell->commands = ft_split_with_pipe(shell->command);
+	shell->commands = ft_split_with_pipe(command);
 	while (shell->commands[++i] != 0)
 	{
 		if (init_command(shell, i) == 1)
@@ -87,15 +67,17 @@ void	run_command(t_shell *shell)
 			{
 				if (__chk_empty_cmd(shell))
 					continue ;
-				if (!get_path(shell))
-					continue ;
-				__func_less_(shell, 0);
-				if (shell->commands[i + 1] == 0)
-					break ;
-				exec_command(shell);
+				if (is_subshell_command(shell->commands[i]))
+					_run_command(shell, &shell->commands[i]);
+				else
+				{
+					if (!get_path(shell))
+						continue ;
+					if (__func_less_(shell, 0) || !shell->commands[i + 1])
+						break ;
+					exec_command(shell);
+				}
 			}
-			else
-				shell->is_builtin = 1;
 		}
 		__func_less_(shell, 1);
 	}

@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 16:21:34 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/26 08:08:55 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/05/03 16:03:45 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@ void	_exec_process(t_shell *shell, void (*f)(t_shell *), int flag,
 	{
 		if (flag)
 			f(shell);
-		exit(0);
+		exit(shell->exit_status);
 	}
-	else if (option == 1)
+	else
 	{
-		waitpid(-1, &status, 0);
+		waitpid(option, &status, 0);
 		if (WIFEXITED(status))
 			shell->exit_status = WEXITSTATUS(status);
 		if (!flag)
@@ -52,7 +52,7 @@ void	run_builtin(t_shell *shell, void (*f)(t_shell *), int flag)
 	}
 	else
 	{
-		_exec_process(shell, f, flag, 1);
+		_exec_process(shell, f, flag, pid);
 		if (shell->is_pipe)
 		{
 			dup2(pfd[0], 0);

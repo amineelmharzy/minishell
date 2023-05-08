@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 14:48:09 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/03/11 16:42:36 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/05/08 17:08:47 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ int	count_set(char *str, char *set)
 
 	i = 0;
 	count = 0;
-	start = 0;
 	while (str[i] && str[i] == ' ')
 		i++;
 	if (str[i] == set[0])
@@ -49,10 +48,9 @@ int	count_set(char *str, char *set)
 	{
 		while (str[i] && (str[i] == '\"' || str[i] == '\'' || str[i] == '('))
 		{
-			start = str[i];
+			start = str[i++];
 			if (start == '(')
 				start = ')';
-			i++;
 			while (str[i] != 0 && str[i] != start)
 				i++;
 			i++;
@@ -68,15 +66,17 @@ static void	get_command(char **cmd, char *command, char *set, int *i)
 	int	start;
 
 	while (command[*i] && (command[*i] == '\"' || command[*i] == '\''
-		|| command[*i] == '('))
+			|| command[*i] == '('))
 	{
 		start = command[*i];
 		if (command[*i] == '(')
 			start = ')';
-		*cmd = ft_joinchar(*cmd, command[(*i)++]);
-		while (command[*i] != 0 && command[*i] != start)
+		else
 			*cmd = ft_joinchar(*cmd, command[(*i)++]);
-		*cmd = ft_joinchar(*cmd, command[(*i)++]);
+		while (command[*i] != 0 && !check_end(command, *i, start))
+			*cmd = ft_joinchar(*cmd, command[(*i)++]);
+		if (command[*i] != 0)
+			*cmd = ft_joinchar(*cmd, command[(*i)++]);
 	}
 	while (command[*i] != 0
 		&& !(command[*i] == set[0] && command[*i + 1] == set[1])
@@ -100,7 +100,7 @@ char	**ft_split_with_set(t_shell *shell, char *command, char *set)
 
 	init_vars(&i, &j, &cmd);
 	if (count_set(command, set) == -1)
-		return (_print_error(shell, E_ANDO, 2));
+		return (free(cmd), _print_error(shell, E_ANDO, 2), NULL);
 	array = ft_calloc(count_set(command, set) + 2, sizeof(char *));
 	if (!array)
 		return (NULL);

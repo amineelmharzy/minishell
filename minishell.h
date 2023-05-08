@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 00:31:33 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/03/07 17:28:57 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/05/07 16:06:32 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@
 # define E_QUOT "unexpected EOF while looking for matching"
 # define E_NOHS "HOME not set"
 
-//int	g_status;
+int	g_status;
 
 char				**ft_split(char *str, char set);
 char				*ft_strjoin(char *s1, char *s2);
@@ -68,6 +68,7 @@ typedef struct s_shell
 	int				ifile;
 	int				exit_status;
 	int				is_pipe;
+	int				g_status;
 	int				is_builtin;
 	int				is_herdoc;
 	int				is_quoted_herdoc;
@@ -75,10 +76,10 @@ typedef struct s_shell
 	char			cwd[PATH_MAX];
 	char			*command;
 	char			*cmd;
-	char			*prompt;
 	char			*herdoc_output;
 	char			*infile;
 	char			*outfile;
+	char			*expanded_iofiles;
 	char			*rcommand;
 	char			**path;
 	char			**envp;
@@ -93,6 +94,8 @@ typedef struct s_shell
 	struct s_env	*env;
 }					t_shell;
 
+int					init_command(t_shell *shell, int i);
+char				*rl_replace_line(const char *line, int a);;
 int					ft_atoi(t_shell *shell, char *str, char *str2);
 void				init_shell(t_shell *shell, char **envp);
 void				insert_node_to_end(t_shell *shell, t_env *new_node);
@@ -152,18 +155,18 @@ char				*exported_key(char *var);
 void				ft_putstr_fd(char *s, int fd);
 int					init_outfd(t_shell *shell);
 char				*get_infile(t_shell *shell);
-t_env				*create_node(char *var);
+t_env				*create_node(char *var, int op);
 void				run_builtin(t_shell *shell, void (*f)(t_shell *), int flag);
-void				run_command(t_shell *shell);
+void				run_command(t_shell *shell, int i);
 void				run_env(t_shell *shell, int option,
 						void (*f)(t_shell *, int));
 void				free_commands(t_shell *shell);
-void				init_prompt(t_shell *shell);
 char				*remove_quotes(char *s);
-void				free_command(t_shell *shell);
+void				free_command(t_shell *shell, int i);
 void				close_builtin(t_shell *shell, int option);
 void				_exit_(t_shell *shell);
-int					check_ambiguous_redirect(t_shell *shell,
-						char *str, char *iofile);
+int					check_ambiguous_redirect(t_shell *shell, char **iofile);
+int					check_last_space(char *str, int i);
+char				*remove_spaces(char *str);
 
 #endif

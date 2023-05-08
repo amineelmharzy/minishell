@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 14:25:48 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/03/06 08:43:43 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/04/14 16:42:14 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,7 @@ int	check_infiles(t_shell *shell)
 		return (1);
 	while (shell->infiles[++i] != 0)
 	{
-		if (check_ambiguous_redirect(shell, shell->infiles[i],
-				shell->infiles[i]))
+		if (check_ambiguous_redirect(shell, &shell->infiles[i]))
 			return (0);
 		if (!check_infile(shell, shell->infiles[i]))
 			return (0);

@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 22:17:17 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/03/07 18:42:42 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/04/15 18:05:39 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	cd(t_shell *shell)
 		target_dir = shell->parsed_command[1];
 	if (!target_dir)
 	{
-		print_error(shell, shell->parsed_command[0], E_NOHS, 1);
+		write(2, "minishell: cd: HOME not set\n", 28);
 		return ;
 	}
 	if (shell->parsed_command[1] && shell->parsed_command[2])

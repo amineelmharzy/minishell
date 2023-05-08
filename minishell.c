@@ -6,19 +6,45 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 15:41:01 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/03/11 19:09:59 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/05/07 17:08:54 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+int	init_command(t_shell *shell, int i)
+{
+	shell->parsed_command = 0;
+	if (g_status == 1)
+	{
+		shell->exit_status = g_status;
+		g_status = 0;
+	}
+	shell->command = ft_strdup(shell->commands[i]);
+	if (!init_iofiles(shell))
+	{
+		free(shell->command);
+		return (0);
+	}
+	shell->command = get_real_command(shell, 0);
+	if (!shell->command || !shell->command[0])
+	{
+		free(shell->command);
+		return (0);
+	}
+	shell->parsed_command = ft_split_with_space(shell->command, 1);
+	shell->command = shell->parsed_command[0];
+	return (1);
+}
+
 void	handler(int sig)
 {
 	if (sig == SIGINT)
 	{
-		//g_status = 130;
+		g_status = 1;
 		printf("\n");
 	}
+	rl_replace_line("", 0);
 	rl_on_new_line();
 	rl_redisplay();
 }
@@ -32,13 +58,12 @@ int	main(int ac, char **av, char **envp)
 	signal(SIGQUIT, handler);
 	while (1)
 	{
-		init_prompt(&shell);
-		shell.command = readline("# ");
+		shell.command = readline("▶ ");
 		add_history(shell.command);
 		if (shell.command)
 		{
 			if (!parse_error(&shell))
-				run_command(&shell);
+				run_command(&shell, -1);
 			free_all(&shell, 0);
 		}
 		else

@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 08:27:21 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/03/06 08:27:30 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/04/14 18:30:25 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,4 +29,5 @@ void	close_builtin(t_shell *shell, int option)
 		close(0);
 		dup2(shell->stdin_fd, 0);
 	}
+	shell->is_builtin = 1;
 }

@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 16:15:30 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/03/07 15:47:44 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/05/07 17:05:28 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,9 @@ void	print_error(t_shell *shell, char *target, char *error, int status)
 {
 	dup2(2, 1);
 	printf("minishell: %s: %s\n", target, error);
-	shell->exit_status = status;
+	close(1);
 	dup2(shell->stdout_fd, 1);
+	shell->exit_status = status;
 }
 
 void	_print_error(t_shell *shell, char *error, int status)

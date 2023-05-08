@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 16:47:42 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/03/07 18:39:58 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/05/07 15:52:17 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	_check_command__(t_shell *shell, int option, int i)
 {
 	if (ft_strncmp(shell->command, "exit", 4) == 0)
 	{
-		if (i == 0 && shell->commands[i] != 0)
+		if (i == 0 && shell->commands[i] && !shell->commands[1])
 		{
 			if (shell->parsed_command[1])
 			{

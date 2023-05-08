@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 19:56:36 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/03/08 21:35:42 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/05/08 19:13:32 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,33 +62,33 @@ void	free_outfiles(t_shell *shell)
 	}
 	if (shell->outfile)
 		shell->outfile = 0;
+	if (shell->s_iofiles)
+	{
+		free(shell->s_iofiles);
+		shell->s_iofiles = 0;
+	}
 }
 
-void	free_commands(t_shell *shell, int option)
+void	free_commands(t_shell *shell, int option, int i)
 {
-	int	i;
-
 	i = 0;
-	if (option)
+	if (!option && shell->fcommands)
 	{
-		if (shell->fcommands)
-		{
-			while (shell->fcommands[i] != 0)
-				free(shell->fcommands[i++]);
-			free(shell->fcommands);
-			shell->fcommands = 0;
-			i = 0;
-		}
-		if (shell->or_commands)
-		{
-			while (shell->or_commands[i] != 0)
-				free(shell->or_commands[i++]);
-			free(shell->or_commands);
-			shell->or_commands = 0;
-			i = 0;
-		}
+		while (shell->fcommands[i] != 0)
+			free(shell->fcommands[i++]);
+		free(shell->fcommands);
+		shell->fcommands = 0;
+		i = 0;
 	}
-	if (shell->commands)
+	if (option == 1 && shell->or_commands)
+	{
+		while (shell->or_commands[i] != 0)
+			free(shell->or_commands[i++]);
+		free(shell->or_commands);
+		shell->or_commands = 0;
+		i = 0;
+	}
+	if (option == 2 && shell->commands)
 	{
 		while (shell->commands[i] != 0)
 			free(shell->commands[i++]);
@@ -102,6 +102,8 @@ void	free_command(t_shell *shell)
 	int	i;
 
 	i = 0;
+	free_infiles(shell);
+	free_outfiles(shell);
 	if (shell->parsed_command)
 	{
 		while (shell->parsed_command[i] != 0)
@@ -119,17 +121,15 @@ void	free_all(t_shell *shell, int option)
 
 	i = 0;
 	env = shell->env;
-	free_infiles(shell);
-	free_outfiles(shell);
 	free_command(shell);
 	if (option == 0)
-		free_commands(shell, 0);
+		free_commands(shell, 0, i);
 	if (option == 1)
 	{
-		free_commands(shell, 1);
-		while (shell->path[i] != 0)
+		while (shell->path && shell->path[i] != 0)
 			free(shell->path[i++]);
-		free(shell->path);
+		if (shell->path)
+			free(shell->path);
 		while (env)
 		{
 			temp = env->next;

@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 19:56:36 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/03/12 07:47:13 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/05/07 16:06:14 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,8 @@ void	free_outfiles(t_shell *shell)
 		free(shell->outfiles);
 		shell->outfiles = 0;
 	}
-	if (shell->outfile)
-		shell->outfile = 0;
+	shell->outfile = 0;
+	free_infiles(shell);
 }
 
 void	free_commands(t_shell *shell)
@@ -76,12 +76,12 @@ void	free_commands(t_shell *shell)
 		free(shell->commands);
 		shell->commands = 0;
 	}
+	shell->is_builtin = 0;
+	shell->is_pipe = 0;
 }
 
-void	free_command(t_shell *shell)
+void	free_command(t_shell *shell, int i)
 {
-	int	i;
-
 	i = 0;
 	if (shell->parsed_command)
 	{
@@ -89,6 +89,22 @@ void	free_command(t_shell *shell)
 			free(shell->parsed_command[i++]);
 		free(shell->parsed_command);
 		shell->parsed_command = 0;
+		i = 0;
+	}
+	if (shell->quoted_outfiles)
+	{
+		while (shell->quoted_outfiles[i])
+			free(shell->quoted_outfiles[i++]);
+		free(shell->quoted_outfiles);
+		shell->quoted_outfiles = 0;
+		i = 0;
+	}
+	if (shell->quoted_afiles)
+	{
+		while (shell->quoted_afiles[i])
+			free(shell->quoted_afiles[i++]);
+		free(shell->quoted_afiles);
+		shell->quoted_afiles = 0;
 	}
 }
 
@@ -100,19 +116,16 @@ void	free_all(t_shell *shell, int option)
 
 	i = 0;
 	env = shell->env;
-	free_infiles(shell);
 	free_outfiles(shell);
-	free_command(shell);
+	free_command(shell, 0);
 	if (option == 0)
 		free_commands(shell);
 	if (option == 1)
 	{
+		while (shell->path && shell->path[i] != 0)
+			free(shell->path[i++]);
 		if (shell->path)
-		{
-			while (shell->path[i] != 0)
-				free(shell->path[i++]);
 			free(shell->path);
-		}
 		while (env)
 		{
 			temp = env->next;

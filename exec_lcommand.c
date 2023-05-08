@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 14:00:07 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/03/07 14:48:34 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/04/12 16:04:25 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void	exec_lastcommand(t_shell *shell)
 	}
 	else
 	{
-		waitpid(-1, &status, 0);
+		waitpid(pid, &status, 0);
 		if (WIFEXITED(status))
 			shell->exit_status = WEXITSTATUS(status);
 		close(0);

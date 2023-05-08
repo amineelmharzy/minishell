@@ -6,34 +6,72 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 08:54:27 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/03/06 15:39:57 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/05/07 16:03:50 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	check_ambiguous_redirect(t_shell *shell, char *str, char *iofile)
+void	_remove_space(char **res, char *str, int *i, int op)
 {
-	int	i;
-	int	start;
+	int	st;
+
+	while (op == 0 && str[*i] == ' ')
+		(*i)++;
+	while (str && (str[*i] == '\"' || str[*i] == '\''))
+	{
+		st = str[(*i)++];
+		while (str[*i] && str[*i] != st)
+			*res = ft_joinchar(*res, str[(*i)++]);
+		(*i)++;
+	}
+}
+
+void	__remove_space(char **res, char *str, int *i, int len)
+{
+	int	st;
+
+	if (str[*i] == ' ')
+	{
+		if (len != 0 && !check_last_space(str, *i))
+		{
+			while (str[*i] && str[*i] == ' ')
+				*res = ft_joinchar(*res, str[(*i)++]);
+		}
+		else
+		{
+			while (str[*i] && str[*i] == ' ')
+				(*i)++;
+		}
+		while (str[*i] && str[*i] == '\'')
+		{
+			st = str[(*i)++];
+			while (str[*i] != 0 && str[*i] != st)
+				*res = ft_joinchar(*res, str[(*i)++]);
+			(*i)++;
+		}
+	}
+}
+
+char	*remove_spaces(char *str)
+{
+	int		i;
+	int		len;
+	char	*res;
 
 	i = 0;
+	len = 0;
+	res = ft_calloc(1, 1);
+	_remove_space(&res, str, &i, 1);
 	while (str[i] != 0)
 	{
-		if (str[i] == '\"' || str[i] == '\'')
-		{
-			start = str[i++];
-			while (str[i] && str[i] != start)
-				i++;
-		}
-		if (str[i] == '$')
-		{
-			print_error(shell, iofile, E_AMBR, 1);
-			return (1);
-		}
-		i++;
+		_remove_space(&res, str, &i, 0);
+		__remove_space(&res, str, &i, len);
+		len++;
+		if (str[i] != 0 && str[i] != '\'' && str[i] != '\"')
+			res = ft_joinchar(res, str[i++]);
 	}
-	return (0);
+	return (res);
 }
 
 int	init_afiles(t_shell *shell)
@@ -46,9 +84,10 @@ int	init_afiles(t_shell *shell)
 	{
 		while (shell->afiles[++i] != 0)
 		{
-			if (check_ambiguous_redirect(shell, shell->quoted_afiles[i],
-					shell->afiles[i]))
+			if (check_ambiguous_redirect(shell, &shell->quoted_afiles[i]))
 				return (0);
+			free(shell->afiles[i]);
+			shell->afiles[i] = ft_strdup(shell->quoted_afiles[i]);
 			fd = open(shell->afiles[i], O_CREAT, 0644);
 			close(fd);
 			if (access(shell->afiles[i], F_OK | W_OK) == -1)
@@ -73,9 +112,10 @@ int	init_outfiles(t_shell *shell)
 	{
 		while (shell->outfiles[++i] != 0)
 		{
-			if (check_ambiguous_redirect(shell, shell->quoted_outfiles[i],
-					shell->outfiles[i]))
+			if (check_ambiguous_redirect(shell, &shell->quoted_outfiles[i]))
 				return (0);
+			free(shell->outfiles[i]);
+			shell->outfiles[i] = ft_strdup(shell->quoted_outfiles[i]);
 			fd = open(shell->outfiles[i], O_CREAT | O_TRUNC, 0644);
 			close(fd);
 			if (access(shell->outfiles[i], F_OK | W_OK) == -1)
@@ -87,7 +127,5 @@ int	init_outfiles(t_shell *shell)
 				shell->outfile = shell->outfiles[i];
 		}
 	}
-	if (!init_afiles(shell))
-		return (0);
-	return (1);
+	return (init_afiles(shell));
 }

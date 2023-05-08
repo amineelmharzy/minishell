@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:06:56 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/26 14:49:01 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/04/16 19:24:07 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ int	check_identifier(t_shell *shell, char *str)
 		if (str[i] == '@')
 		{
 			print_error(shell, str, E_NVID, 1);
+			shell->exit_status = 1;
 			return (1);
 		}
 		i++;

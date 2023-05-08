@@ -1,2 +1,2 @@
 #!/bin/bash
-echo AMINE
+echo hi

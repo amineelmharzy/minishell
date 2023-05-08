@@ -6,40 +6,13 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 22:36:08 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/03/11 17:50:59 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/05/07 17:07:34 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	__func(t_shell *shell, DIR *d, int ret, int option)
-{
-	char	*_var;
-
-	if (!option)
-	{
-		chdir(shell->command);
-		shell->exit_status = 0;
-		is_env(shell, "PWD", 3, 0);
-		getcwd(shell->cwd, sizeof(shell->cwd));
-		add_env_var(shell, ft_strjoin("PWD=", shell->cwd), 0);
-		closedir(d);
-	}
-	else
-	{
-		if (ret == 1)
-		{
-			is_env(shell, "_", 1, 0);
-			_var = ft_strjoin("_=", shell->rcommand);
-			add_env_var(shell, _var, 0);
-			free(_var);
-			return (1);
-		}
-	}
-	return (0);
-}
-
-int	check_absolute_path(t_shell *shell)
+int	check_absolute_path(t_shell *shell, int opt)
 {
 	DIR	*d;
 
@@ -50,19 +23,19 @@ int	check_absolute_path(t_shell *shell)
 			d = opendir(shell->command);
 			if (d)
 			{
-				__func(shell, d, 0, 0);
+				closedir(d);
+				print_error(shell, shell->command, E_IDIR, 126);
 				return (-1);
 			}
 			if (access(shell->command, X_OK) != -1)
 			{
-				shell->rcommand = ft_strdup(shell->command);
+				if (opt)
+					shell->rcommand = ft_strdup(shell->command);
 				return (1);
 			}
-			else
-				print_error(shell, shell->command, strerror(errno), 126);
+			print_error(shell, shell->command, strerror(errno), 126);
 		}
-		else
-			print_error(shell, shell->command, strerror(errno), 127);
+		print_error(shell, shell->command, strerror(errno), 127);
 		return (-1);
 	}
 	return (0);
@@ -97,7 +70,7 @@ int	check_errors(t_shell *shell, int option)
 			dup2(shell->stdin_fd, 0);
 			return (0);
 		}
-		if (check_absolute_path(shell) == -1)
+		if (check_absolute_path(shell, 0) == -1)
 			return (0);
 		return (1);
 	}
@@ -118,7 +91,7 @@ int	get_path(t_shell *shell)
 
 	if (!check_errors(shell, 0))
 		return (0);
-	if (check_absolute_path(shell))
+	if (check_absolute_path(shell, 1))
 		return (1);
 	if (!check_errors(shell, 1))
 		return (0);
@@ -126,7 +99,7 @@ int	get_path(t_shell *shell)
 	while (shell->path[++i] != 0)
 	{
 		ret = check_rcommand(shell, i);
-		if (__func(shell, NULL, ret, 1))
+		if (ret)
 			return (1);
 		else if (ret == 2)
 			break ;

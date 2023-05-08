@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 14:00:07 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/03/07 14:48:34 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/04/15 18:11:14 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 void	__last_child(t_shell *shell, int *fd)
 {
 	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_DFL);
 	if (shell->outfile)
 	{
 		if (shell->ofile == 1)
@@ -37,9 +36,9 @@ void	__last_child(t_shell *shell, int *fd)
 	}
 }
 
-void	__last_parent(int pfd[2])
+void	__last_parent(int pfd[2], int pid)
 {
-	waitpid(-1, NULL, 0);
+	waitpid(pid, NULL, 0);
 	dup2((pfd)[0], 0);
 	close((pfd)[1]);
 }
@@ -67,7 +66,7 @@ void	last_child(t_shell *shell, int *fd)
 			exit(0);
 		}
 		else
-			__last_parent(pfd);
+			__last_parent(pfd, pid);
 	}
 }
 
@@ -91,7 +90,7 @@ void	exec_lastcommand(t_shell *shell)
 	}
 	else
 	{
-		waitpid(-1, &status, 0);
+		waitpid(pid, &status, 0);
 		if (WIFEXITED(status))
 			shell->exit_status = WEXITSTATUS(status);
 		close(0);
