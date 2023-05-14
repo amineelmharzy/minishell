@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 13:16:02 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/05/07 14:39:31 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/05/10 14:49:57 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	ft_iofile_counter(char *str, char *set, int *i, int *count)
 		*i += ft_strlen(set);
 		while (str[*i] != 0 && str[*i] == ' ')
 			(*i)++;
-		if (str[*i] == '<' || str[*i] == '>')
+		if (str[*i] && (str[*i] == '<' || str[*i] == '>'))
 			return (-1);
 		if (str[*i])
 		{
@@ -48,7 +48,7 @@ int	count_iofiles(char *str, char *set)
 	count = 0;
 	while (str[i] != 0)
 	{
-		while (str[i] == '\"' || str[i] == '\'')
+		while (str[i] && (str[i] == '\"' || str[i] == '\''))
 		{
 			start = str[i];
 			i++;
@@ -58,7 +58,8 @@ int	count_iofiles(char *str, char *set)
 		}
 		if (ft_iofile_counter(str, set, &i, &count) == -1)
 			return (-1);
-		i++;
+		if (str[i])
+			i++;
 	}
 	return (count);
 }

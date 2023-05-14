@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 00:31:33 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/05/08 19:13:10 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/05/14 14:03:46 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ typedef struct s_shell
 	int				is_herdoc;
 	int				is_quoted_herdoc;
 	int				is_infile;
+	int				syntax_err;
 	char			cwd[PATH_MAX];
 	char			*command;
 	char			*prompt;
@@ -175,7 +176,7 @@ void				run_env(t_shell *shell, int option, void (*f)(t_shell *,
 							int));
 void				free_commands(t_shell *shell, int option, int i);
 char				*remove_quotes(char *s);
-void				free_command(t_shell *shell);
+void				free_command(t_shell *shell, int i);
 void				close_builtin(t_shell *shell, int option);
 void				_exit_(t_shell *shell);
 int					check_empty_pipe(char *str, int i);

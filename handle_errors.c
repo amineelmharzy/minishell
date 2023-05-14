@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 16:15:30 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/05/07 17:05:28 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/05/13 12:56:41 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,20 @@
 
 void	print_error(t_shell *shell, char *target, char *error, int status)
 {
-	dup2(2, 1);
-	printf("minishell: %s: %s\n", target, error);
-	close(1);
-	dup2(shell->stdout_fd, 1);
+	write(2, "minishell: ", 11);
+	write(2, target, ft_strlen(target));
+	write(2, ": ", 2);
+	write(2, error, ft_strlen(error));
+	write(2, "\n", 1);
 	shell->exit_status = status;
 }
 
 void	_print_error(t_shell *shell, char *error, int status)
 {
-	dup2(2, 1);
-	printf("minishell: %s\n", error);
+	write(2, "minishell: ", 11);
+	write(2, error, ft_strlen(error));
+	write(2, "\n", 1);
 	shell->exit_status = status;
-	dup2(shell->stdout_fd, 1);
 }
 
 int	iofiles_errors(t_shell *shell, char *set)
@@ -53,5 +54,7 @@ int	parse_error(t_shell *shell)
 		free(shell->command);
 		return (1);
 	}
+	if (syntax_err(shell))
+		return (dup2(shell->stdin_fd, 0), 1);
 	return (0);
 }

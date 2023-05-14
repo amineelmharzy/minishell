@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 00:31:33 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/05/07 16:06:32 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/05/10 17:04:13 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,5 +168,7 @@ void				_exit_(t_shell *shell);
 int					check_ambiguous_redirect(t_shell *shell, char **iofile);
 int					check_last_space(char *str, int i);
 char				*remove_spaces(char *str);
+int					syntax_err(t_shell *shell);
+void				free_outfiles(t_shell *shell);
 
 #endif

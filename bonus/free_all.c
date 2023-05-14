@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 19:56:36 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/05/08 19:13:32 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/05/14 11:56:49 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,13 +97,26 @@ void	free_commands(t_shell *shell, int option, int i)
 	}
 }
 
-void	free_command(t_shell *shell)
+void	free_command(t_shell *shell, int i)
 {
-	int	i;
-
-	i = 0;
 	free_infiles(shell);
 	free_outfiles(shell);
+	if (shell->quoted_outfiles)
+	{
+		while (shell->quoted_outfiles[i])
+			free(shell->quoted_outfiles[i++]);
+		free(shell->quoted_outfiles);
+		shell->quoted_outfiles = 0;
+		i = 0;
+	}
+	if (shell->quoted_afiles)
+	{
+		while (shell->quoted_afiles[i])
+			free(shell->quoted_afiles[i++]);
+		free(shell->quoted_afiles);
+		shell->quoted_afiles = 0;
+		i = 0;
+	}
 	if (shell->parsed_command)
 	{
 		while (shell->parsed_command[i] != 0)
@@ -121,7 +134,7 @@ void	free_all(t_shell *shell, int option)
 
 	i = 0;
 	env = shell->env;
-	free_command(shell);
+	free_command(shell, 0);
 	if (option == 0)
 		free_commands(shell, 0, i);
 	if (option == 1)

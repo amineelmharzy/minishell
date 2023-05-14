@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 14:00:07 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/04/12 16:04:25 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/05/11 16:15:17 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@ void	__last_child(t_shell *shell, int *fd)
 	}
 }
 
-void	__last_parent(int pfd[2])
+void	__last_parent(int pfd[2], int pid)
 {
-	waitpid(-1, NULL, 0);
+	waitpid(pid, NULL, 0);
 	dup2((pfd)[0], 0);
 	close((pfd)[1]);
 }
@@ -67,7 +67,7 @@ void	last_child(t_shell *shell, int *fd)
 			exit(0);
 		}
 		else
-			__last_parent(pfd);
+			__last_parent(pfd, pid);
 	}
 }
 

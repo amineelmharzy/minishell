@@ -1,33 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_iofiles.c                                     :+:      :+:    :+:   */
+/*   syntax_errors.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/21 11:37:05 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/05/10 16:01:46 by ael-mhar         ###   ########.fr       */
+/*   Created: 2023/05/08 19:07:41 by ael-mhar          #+#    #+#             */
+/*   Updated: 2023/05/13 14:27:59 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	init_iofiles(t_shell *shell)
+int	syntax_err(t_shell *shell)
 {
-	if (!implement_redirection(shell))
-		return (0);
-	if (shell->herdocs)
+	char	*save;
+	int		i;
+
+	i = -1;
+	save = shell->command;
+	shell->commands = ft_split_with_pipe(ft_strdup(shell->command));
+	while (shell->commands[++i])
 	{
-		close(0);
-		dup2(shell->stdin_fd, 0);
-		shell->herdoc_output = herdoc(shell);
+		shell->command = ft_strdup(shell->commands[i]);
+		if (!implement_redirection(shell))
+			return (free(shell->command), free(save), 1);
+		free(shell->command);
+		free_outfiles(shell);
 	}
-	if (!check_infiles(shell))
-		return (0);
-	if (shell->outfiles || shell->afiles)
-	{
-		if (!init_outfiles(shell))
-			return (0);
-	}
-	return (1);
+	shell->command = save;
+	return (0);
 }
