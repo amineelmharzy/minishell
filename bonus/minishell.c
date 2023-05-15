@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 15:41:01 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/05/08 19:16:25 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/05/15 14:20:52 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ void	handler(int sig)
 		g_status = 1;
 		printf("\n");
 	}
-	//rl_replace_line("", 0);
 	rl_on_new_line();
 	rl_redisplay();
 }

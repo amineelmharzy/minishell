@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 15:41:01 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/05/13 13:08:47 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/05/15 13:12:13 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ void	handler(int sig)
 		g_status = 1;
 		printf("\n");
 	}
-	//rl_replace_line("", 0);
 	rl_on_new_line();
 	rl_redisplay();
 }
@@ -56,6 +55,8 @@ int	main(int ac, char **av, char **envp)
 {
 	t_shell	shell;
 
+	(void) ac;
+	(void) av;
 	init_shell(&shell, envp);
 	signal(SIGINT, handler);
 	signal(SIGQUIT, handler);

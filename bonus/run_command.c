@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 10:16:18 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/05/14 14:47:28 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/05/14 20:04:51 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,8 @@ void	run_command(t_shell *shell)
 		return (free_all(shell, 0));
 	shell->fcommands = ft_split_with_set(shell, shell->command, "&&");
 	if (!shell->fcommands)
-		return ((shell->syntax_err = 1), free(shell->command), free_all(shell, 0));
+		return ((shell->syntax_err = 1), free(shell->command),
+			free_all(shell, 0));
 	if (syntax_err(shell))
 	{
 		dup2(shell->stdin_fd, 0);
