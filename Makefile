@@ -25,6 +25,9 @@ clean :
 fclean : clean
 	$(RM) $(NAME)
 
+bonus : 
+	make -C bonus
+
 re: fclean all
 
 install:
@@ -34,4 +37,4 @@ leak: all
 	valgrind --leak-check=full --track-origins=yes  --leak-check=full ./minishell
 
 
-.PHONY = all clean fclean re
+.PHONY = all clean fclean bonus re
