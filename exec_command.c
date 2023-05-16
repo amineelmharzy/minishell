@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 16:48:20 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/05/12 19:36:08 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/05/16 12:12:49 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	parent(t_shell *shell, int *pfd)
 
 	dup2((pfd)[0], 0);
 	close((pfd)[1]);
+	close((pfd)[0]);
 	free(pfd);
 	shell->exit_status = 0;
 }
@@ -80,7 +81,7 @@ void	child(t_shell *shell)
 	}
 }
 
-void	exec_command(t_shell *shell)
+void	exec_command(t_shell *shell, int i)
 {
 	int	pid;
 	int	fd;

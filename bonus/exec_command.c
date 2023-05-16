@@ -6,20 +6,21 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 16:48:20 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/05/14 14:39:33 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/05/16 12:24:32 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	parent(t_shell *shell, int *pfd, int pid)
+void	parent(t_shell *shell, int *pfd)
 {
 	int	status;
 
 	dup2((pfd)[0], 0);
 	close((pfd)[1]);
-	shell->exit_status = 0;
+	close((pfd)[0]);
 	free(pfd);
+	shell->exit_status = 0;
 }
 
 void	_child_(t_shell *shell, int **pfd, int *fd)
@@ -92,6 +93,7 @@ void	exec_command(t_shell *shell)
 	if (pid == 0)
 	{
 		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		_child_(shell, &pfd, &fd);
 		child(shell);
 		if (execve(shell->rcommand, shell->parsed_command, shell->envp) < 0)
@@ -102,5 +104,5 @@ void	exec_command(t_shell *shell)
 		exit(0);
 	}
 	else
-		parent(shell, pfd, pid);
+		parent(shell, pfd);
 }

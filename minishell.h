@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 00:31:33 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/05/10 17:04:13 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/05/16 12:11:50 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ typedef struct s_env
 
 typedef struct s_shell
 {
-	int				err;
 	int				stdin_fd;
 	int				stdout_fd;
 	int				ofile;
@@ -79,7 +78,6 @@ typedef struct s_shell
 	char			*herdoc_output;
 	char			*infile;
 	char			*outfile;
-	char			*expanded_iofiles;
 	char			*rcommand;
 	char			**path;
 	char			**envp;
@@ -122,7 +120,7 @@ void				free_all(t_shell *shell, int option);
 int					parse_infiles(t_shell *shell);
 int					implement_redirection(t_shell *shell);
 char				**ft_split_with_space(char *command, int option);
-void				exec_command(t_shell *shell);
+void				exec_command(t_shell *shell, int i);
 int					check_infiles(t_shell *shell);
 char				*herdoc(t_shell *shell);
 char				*get_next_line(int fd);
@@ -133,7 +131,7 @@ char				**ft_split_with_pipe(char *command);
 int					count_pipes(char *str);
 int					count_iofiles(char *str, char *set);
 int					count_args(char *command);
-void				exec_lastcommand(t_shell *shell);
+void				exec_lastcommand(t_shell *shell, int i);
 void				set_infile(t_shell *shell);
 void				set_outfile(t_shell *shell);
 int					check_command(t_shell *shell, int i, int option);
@@ -170,5 +168,6 @@ int					check_last_space(char *str, int i);
 char				*remove_spaces(char *str);
 int					syntax_err(t_shell *shell);
 void				free_outfiles(t_shell *shell);
+void				handler(int sig);
 
 #endif

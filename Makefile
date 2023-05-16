@@ -7,34 +7,34 @@ OBJS = $(SRCS:.c=.o)
 NAME = minishell
 NAMEOBJ = minishell.o
 NAMESRC = minishell.c
+DEPENDENCIES = readline
 
 %.o : %.c
-	$(CC) $(FLAGS) -c $< -o $@
+	@$(CC) $(FLAGS) -c $< -o $@
 
 all : $(NAME)
 
 $(NAMEOBJ) : $(NAMESRC)
-	$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(NAME) : $(OBJS) $(NAMEOBJ)
-	$(CC) $(CFLAGS) $(RLFLAGS) -lreadline $^ -o $@
+	@$(CC) $(CFLAGS) $(RLFLAGS) -lreadline $^ -o $@
 
 clean :
-	$(RM) $(OBJS) $(NAMEOBJ)
+	@$(RM) $(OBJS) $(NAMEOBJ)
 
 fclean : clean
-	$(RM) $(NAME)
+	@$(RM) $(NAME)
 
-bonus : 
+bonus:
 	make -C bonus
 
 re: fclean all
 
 install:
-	apt install libreadline-dev -y
+	brew install readline
 
 leak: all
-	valgrind --leak-check=full --track-origins=yes  --leak-check=full ./minishell
-
+	valgrind --leak-check=full --track-origins=yes $(NAME)
 
 .PHONY = all clean fclean bonus re

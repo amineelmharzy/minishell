@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:42:59 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/05/13 12:50:40 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/05/15 21:30:06 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	_exec_l_cmd(t_shell *shell, int i)
 {
 	if (shell->commands[i])
-		exec_lastcommand(shell);
+		exec_lastcommand(shell, i);
 	free_all(shell, 0);
 }
 
@@ -64,7 +64,7 @@ void	run_command(t_shell *shell, int i)
 				__func_less_(shell, 0);
 				if (shell->commands[i + 1] == 0)
 					break ;
-				exec_command(shell);
+				exec_command(shell, i);
 			}
 			else
 				shell->is_builtin = 1;

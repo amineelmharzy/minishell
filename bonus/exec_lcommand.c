@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 14:00:07 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/05/13 14:48:59 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/05/16 12:23:19 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	__last_child(t_shell *shell, int *fd)
 {
 	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 	if (shell->outfile)
 	{
 		if (shell->ofile == 1)
@@ -70,9 +71,21 @@ void	last_child(t_shell *shell, int *fd)
 	}
 }
 
-void	exec_lastcommand(t_shell *shell)
+void	last_parent(t_shell *shell, int pid)
 {
 	int	status;
+
+	waitpid(pid, &status, 0);
+	if (WIFEXITED(status))
+		shell->exit_status = WEXITSTATUS(status);
+	close(0);
+	while (wait(NULL) > 0)
+		;
+	dup2(shell->stdin_fd, 0);
+}
+
+void	exec_lastcommand(t_shell *shell)
+{
 	int	pid;
 	int	fd;
 
@@ -88,12 +101,8 @@ void	exec_lastcommand(t_shell *shell)
 		}
 		exit(0);
 	}
+	else if (pid > 0)
+		last_parent(shell, pid);
 	else
-	{
-		waitpid(pid, &status, 0);
-		if (WIFEXITED(status))
-			shell->exit_status = WEXITSTATUS(status);
-		close(0);
-		dup2(shell->stdin_fd, 0);
-	}
+		_print_error(shell, strerror(errno), 1);
 }
