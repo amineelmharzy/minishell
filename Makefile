@@ -4,7 +4,7 @@ CFLAGS = -Wall -Wextra -Werror
 RLFLAGS = -L /Users/ael-mhar/homebrew/opt/readline/lib -I /Users/ael-mhar/homebrew/opt/readline/include/readline
 SRCS = $(wildcard *.c) $(wildcard builtins/*.c)
 OBJS = $(SRCS:.c=.o)
-NAME = minishell
+NAME = ./minishell
 NAMEOBJ = minishell.o
 NAMESRC = minishell.c
 DEPENDENCIES = readline
@@ -32,7 +32,7 @@ bonus:
 re: fclean all
 
 install:
-	brew install readline
+	brew install $(DEPENDENCIES)
 
 leak: all
 	valgrind --leak-check=full --track-origins=yes $(NAME)

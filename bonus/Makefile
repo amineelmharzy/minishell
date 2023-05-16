@@ -31,7 +31,7 @@ install:
 	@apt install libreadline-dev -y
 
 leak: all
-	@valgrind --leak-check=full --track-origins=yes  --leak-check=full ./minishell
+	@valgrind --leak-check=full --track-origins=yes $(NAME)
 
 
 .PHONY = all clean fclean re
