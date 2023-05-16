@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 16:15:30 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/05/14 15:41:17 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/05/16 14:41:08 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ int	parse_error(t_shell *shell, int option)
 	if (option && check_parenthesis(shell->command) == -1)
 	{
 		_print_error(shell, E_PARN, 2);
+		free(shell->command);
 		shell->command = 0;
 		return (1);
 	}

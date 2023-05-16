@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 15:41:01 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/05/15 14:20:52 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/05/16 14:38:30 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ int	main(int ac, char **av, char **envp)
 	{
 		shell.command = ft_strdup(av[2]);
 		run_command(&shell);
+		free_all(&shell, 1);
 		exit(shell.exit_status);
 	}
 	while (1)

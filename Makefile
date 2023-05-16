@@ -26,10 +26,10 @@ clean :
 fclean : clean
 	@$(RM) $(NAME)
 
+re: fclean all
+
 bonus:
 	make -C bonus
-
-re: fclean all
 
 install:
 	brew install $(DEPENDENCIES)
@@ -37,4 +37,4 @@ install:
 leak: all
 	valgrind --leak-check=full --track-origins=yes $(NAME)
 
-.PHONY = all clean fclean bonus re
+.PHONY = all clean fclean re bonus

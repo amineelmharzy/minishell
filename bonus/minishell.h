@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 00:31:33 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/05/14 14:03:46 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/05/16 14:42:25 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,6 @@ typedef struct s_shell
 	char			**envp;
 	char			**commands;
 	char			**fcommands;
-	char			**p_commands;
 	char			**or_commands;
 	char			**parsed_command;
 	char			**infiles;
