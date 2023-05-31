@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 09:39:16 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/04/16 18:21:51 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/05/29 20:00:13 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_env	*create_node(char *var, int op)
 	int		i;
 
 	node = malloc(sizeof(t_env));
-	if (!node)
+	if (!node || !var)
 		return (NULL);
 	array = ft_split(var, '=');
 	node->key = ft_strdup(array[0]);

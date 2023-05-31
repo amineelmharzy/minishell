@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 10:36:48 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/03/09 15:57:27 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/05/29 17:50:03 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,13 +90,15 @@ char	*get_matched(char *file_name, char *s)
 	{
 		if (head->index != -1)
 			res = ft_joinstr(res, ft_joinchar(head->content, ' '));
+		else
+			free(head->content);
 		tmp = head->next;
 		free(head);
 		head = tmp;
 	}
 	if (!res || !res[0])
 		return (free(res), file_name);
-	return (res);
+	return (free(file_name), res);
 }
 
 char	*expand_astric(char **str)

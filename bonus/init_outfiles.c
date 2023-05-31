@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 08:54:27 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/05/07 16:03:50 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/05/26 19:12:37 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	_remove_space(char **res, char *str, int *i, int op)
 {
 	int	st;
 
-	while (op == 0 && str[*i] == ' ')
+	while (op == 0 && (str[*i] == ' ' || str[*i] == '\t'))
 		(*i)++;
 	while (str && (str[*i] == '\"' || str[*i] == '\''))
 	{
@@ -31,16 +31,16 @@ void	__remove_space(char **res, char *str, int *i, int len)
 {
 	int	st;
 
-	if (str[*i] == ' ')
+	if (str[*i] == ' ' || str[*i] == '\t')
 	{
 		if (len != 0 && !check_last_space(str, *i))
 		{
-			while (str[*i] && str[*i] == ' ')
+			while (str[*i] && (str[*i] == ' ' || str[*i] == '\t'))
 				*res = ft_joinchar(*res, str[(*i)++]);
 		}
 		else
 		{
-			while (str[*i] && str[*i] == ' ')
+			while (str[*i] && (str[*i] == '\t' || str[*i] == ' '))
 				(*i)++;
 		}
 		while (str[*i] && str[*i] == '\'')

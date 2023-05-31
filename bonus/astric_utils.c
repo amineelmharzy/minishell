@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 11:34:08 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/03/09 15:56:49 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/05/29 20:00:03 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ t_node	*__astric_l(char *path, int is_hidden)
 		}
 		entry = readdir(dir);
 	}
+	closedir(dir);
 	return (head);
 }
 
@@ -110,3 +111,35 @@ char	*ft_chardup(char c)
 	s[1] = 0;
 	return (s);
 }
+/*
+void	export_astric(t_env *node)
+{
+	char	**arr;
+	char	*save;
+	char	*s;
+	char	*s1;
+	int		i;
+
+	i = -1;
+	s = ft_calloc(1, 1);
+	save = ft_calloc(1, 1);
+	while (node->value[++i] != 0)
+	{
+		while (node->value[i] && node->value[i] != ' ' && node->value[i] != '\t')
+			s = ft_joinchar(s, node->value[i++]);
+		if (s[0])
+		{
+			s1 = s;
+			save = ft_joinstr(save, expand_astric(&s));
+			free(s1);
+			s = ft_calloc(1, 1);
+		}
+		if (node->value[i] && (node->value[i] == ' ' || node->value[i] == '\t'))
+			save = ft_joinchar(save, node->value[i]);
+	}
+	free(node->value);
+	node->value = save;
+	node->next = 0;
+	return (free(s));
+}
+*/

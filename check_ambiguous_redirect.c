@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 16:54:43 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/05/07 15:59:26 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/05/26 19:11:33 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	check_last_space(char *str, int i)
 {
-	while (str[i] == ' ')
+	while (str[i] == ' ' || str[i] == '\t')
 		i++;
 	if (str[i] != 0)
 		return (0);
@@ -28,9 +28,9 @@ int	_check_space(char *str, int i)
 	st = 0;
 	while (str[i] != 0)
 	{
-		if (str[i] == ' ')
+		if (str[i] == ' ' || str[i] == '\t')
 		{
-			while (str[i] == ' ')
+			while (str[i] == ' ' || str[i] == '\t')
 				i++;
 			while (str[i] == '\'')
 			{
@@ -51,12 +51,12 @@ int	__check_space(char *str, int *i, int *j, int *len)
 {
 	int	st;
 
-	while (str[(*i)] == ' ')
+	while (str[(*i)] == ' ' || str[*i] == '\t')
 	{
 		(*i)++;
 		(*j)++;
 	}
-	if (!str[*i] || str[*i] == ' ')
+	if (!str[*i] || str[*i] == ' ' || str[*i] == '\t')
 		return (1);
 	while (str && (str[*i] == '\"' || str[*i] == '\''))
 	{
@@ -91,7 +91,7 @@ int	check_spaces(char *str, char *file)
 		st = 0;
 		if (!str[i] && j)
 			return (1);
-		while (str[i] && str[i++] == ' ')
+		while (str[i] && (str[i++] == ' ' || str[i++] == '\t'))
 			st++;
 		if (str[i] == 0 && st)
 			return (1);

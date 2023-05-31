@@ -1,7 +1,7 @@
 CC = cc
 RM = rm -rf
 CFLAGS = -Wall -Wextra -Werror 
-RLFLAGS = -L /Users/ael-mhar/homebrew/opt/readline/lib -I /Users/ael-mhar/homebrew/opt/readline/include/readline
+RLFLAGS = -lreadline #-L /Users/ael-mhar/homebrew/opt/readline/lib -I /Users/ael-mhar/homebrew/opt/readline/include/readline
 SRCS = $(wildcard *.c) $(wildcard builtins/*.c)
 OBJS = $(SRCS:.c=.o)
 NAME = ./minishell
@@ -31,8 +31,10 @@ re: fclean all
 bonus:
 	make -C bonus
 
-install:
+install-moacos:
 	brew install $(DEPENDENCIES)
+install-linux:
+	sudo apt install libreadline-dev -y
 
 leak: all
 	valgrind --leak-check=full --track-origins=yes $(NAME)

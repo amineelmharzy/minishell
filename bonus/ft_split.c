@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 14:48:09 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/18 08:30:00 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/05/30 15:21:43 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int	check_sep(char c, char sep)
 	int	i;
 
 	i = 0;
-	if (c == sep)
+	if (c == sep || (sep == ' ' && c == '\t'))
 		return (1);
 	return (0);
 }
