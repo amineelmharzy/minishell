@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 19:56:36 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/05/14 11:56:49 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/06/05 17:47:02 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,22 +101,6 @@ void	free_command(t_shell *shell, int i)
 {
 	free_infiles(shell);
 	free_outfiles(shell);
-	if (shell->quoted_outfiles)
-	{
-		while (shell->quoted_outfiles[i])
-			free(shell->quoted_outfiles[i++]);
-		free(shell->quoted_outfiles);
-		shell->quoted_outfiles = 0;
-		i = 0;
-	}
-	if (shell->quoted_afiles)
-	{
-		while (shell->quoted_afiles[i])
-			free(shell->quoted_afiles[i++]);
-		free(shell->quoted_afiles);
-		shell->quoted_afiles = 0;
-		i = 0;
-	}
 	if (shell->parsed_command)
 	{
 		while (shell->parsed_command[i] != 0)

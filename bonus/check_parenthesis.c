@@ -6,24 +6,11 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 14:49:23 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/05/08 19:02:43 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/06/05 17:13:55 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	skip_quotes(char *str, int *i)
-{
-	int	start;
-
-	while (str[*i] && (str[*i] == '\"' || str[*i] == '\''))
-	{
-		start = str[(*i)++];
-		while (str[*i] && str[*i] != start)
-			(*i)++;
-		(*i)++;
-	}
-}
 
 int	check_nearp(char *str, int i)
 {
@@ -100,6 +87,34 @@ int	check_end(char *str, int i, int start)
 	return (0);
 }
 
+int	_check_p(char *str, int *i, int *count_o, int *count_c)
+{
+	int	j;
+
+	j = 0;
+	skip_quotes(str, i);
+	if (*count_c > *count_o)
+		return (-1);
+	if (str[*i] == '(')
+	{
+		j = *i - 1;
+		while (j > 0 && str[j] != '&' && str[j] != '|')
+		{
+			if (str[j] != ' ' && str[j] != '\t')
+				return (-1);
+			j--;
+		}
+		(*count_o)++;
+	}
+	else if (str[*i] == ')')
+	{
+		if (++(*count_c) && (check_nearp(str, *i + 1) == -1
+				|| check_otherp(str, *count_c, *count_o, *i + 1)))
+			return (-1);
+	}
+	return (0);
+}
+
 int	check_parenthesis(char *str)
 {
 	int	i;
@@ -111,18 +126,18 @@ int	check_parenthesis(char *str)
 	count_c = 0;
 	while (str[i] != 0)
 	{
-		skip_quotes(str, &i);
-		if (count_c > count_o)
+		if (_check_p(str, &i, &count_o, &count_c) == -1)
 			return (-1);
 		if (str[i] == '(')
-			count_o++;
-		else if (str[i] == ')')
 		{
-			if (++count_c && (check_nearp(str, i + 1) == -1
-					|| check_otherp(str, count_c, count_o, i + 1)))
+			i++;
+			while (str[i] == ' ' || str[i] == '\t')
+				(i)++;
+			if (str[i] == ')')
 				return (-1);
 		}
-		i++;
+		else
+			(i)++;
 	}
 	if (count_o != count_c)
 		return (-1);

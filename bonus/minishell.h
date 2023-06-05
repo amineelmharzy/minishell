@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 00:31:33 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/05/29 19:19:12 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/06/05 17:47:36 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,6 @@ typedef struct s_shell
 	int				is_herdoc;
 	int				is_quoted_herdoc;
 	int				is_infile;
-	int				syntax_err;
 	char			cwd[PATH_MAX];
 	char			*command;
 	char			*prompt;
@@ -97,9 +96,7 @@ typedef struct s_shell
 	char			**parsed_command;
 	char			**infiles;
 	char			**outfiles;
-	char			**quoted_outfiles;
 	char			**afiles;
-	char			**quoted_afiles;
 	char			**herdocs;
 	char			*s_iofiles;
 	struct s_env	*env;
@@ -198,5 +195,6 @@ int					check_ambiguous_redirect(t_shell *shell, char **iofile);
 int					check_last_space(char *str, int i);
 char				*remove_spaces(char *str);
 int					syntax_err(t_shell *shell);
+char				*remove_p(t_shell *shell, char *str, char **save);
 
 #endif

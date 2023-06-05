@@ -29,7 +29,7 @@ fclean : clean
 re: fclean all
 
 bonus:
-	make -C bonus
+	make -C bonus/
 
 install-moacos:
 	brew install $(DEPENDENCIES)

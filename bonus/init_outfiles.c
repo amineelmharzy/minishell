@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 08:54:27 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/05/26 19:12:37 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/06/05 17:51:51 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,10 +84,8 @@ int	init_afiles(t_shell *shell)
 	{
 		while (shell->afiles[++i] != 0)
 		{
-			if (check_ambiguous_redirect(shell, &shell->quoted_afiles[i]))
+			if (check_ambiguous_redirect(shell, &shell->afiles[i]))
 				return (0);
-			free(shell->afiles[i]);
-			shell->afiles[i] = ft_strdup(shell->quoted_afiles[i]);
 			fd = open(shell->afiles[i], O_CREAT, 0644);
 			close(fd);
 			if (access(shell->afiles[i], F_OK | W_OK) == -1)
@@ -112,10 +110,8 @@ int	init_outfiles(t_shell *shell)
 	{
 		while (shell->outfiles[++i] != 0)
 		{
-			if (check_ambiguous_redirect(shell, &shell->quoted_outfiles[i]))
+			if (check_ambiguous_redirect(shell, &shell->outfiles[i]))
 				return (0);
-			free(shell->outfiles[i]);
-			shell->outfiles[i] = ft_strdup(shell->quoted_outfiles[i]);
 			fd = open(shell->outfiles[i], O_CREAT | O_TRUNC, 0644);
 			close(fd);
 			if (access(shell->outfiles[i], F_OK | W_OK) == -1)

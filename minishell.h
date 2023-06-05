@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 00:31:33 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/05/16 12:11:50 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/06/05 17:45:04 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +85,7 @@ typedef struct s_shell
 	char			**parsed_command;
 	char			**infiles;
 	char			**outfiles;
-	char			**quoted_outfiles;
 	char			**afiles;
-	char			**quoted_afiles;
 	char			**herdocs;
 	struct s_env	*env;
 }					t_shell;

@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 19:43:59 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/05/29 19:19:23 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/06/05 17:47:14 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,6 @@ void	init_shell_variables(t_shell *shell, char **envp)
 	shell->fcommands = 0;
 	shell->or_commands = 0;
 	shell->s_iofiles = 0;
-	shell->quoted_afiles = 0;
-	shell->quoted_outfiles = 0;
-	shell->syntax_err = 0;
 }
 
 void	init_shell(t_shell *shell, char **envp)

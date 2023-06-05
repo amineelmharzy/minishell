@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 17:57:25 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/05/14 14:34:33 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/06/05 15:45:09 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	*remove_p(t_shell *shell, char *str, char **save)
 		skip_quotes(str, &i);
 		if (str[i] == '(')
 			break ;
-		*save = ft_joinchar(*save, str[i++]);
+		res = ft_joinchar(res, str[i++]);
 	}
 	__func_parse(shell, &res, str, &i);
 	while (str[i] != 0)
@@ -68,7 +68,7 @@ void	_subshell_child(t_shell *shell, char **ars, int pfd[2])
 		dup2(pfd[1], 1);
 		close(pfd[0]);
 	}
-	shell->command = shell->s_iofiles;
+	shell->command = ft_strdup(shell->s_iofiles);
 	if (!init_iofiles(shell))
 	{
 		free(shell->command);

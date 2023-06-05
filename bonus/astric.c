@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 10:36:48 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/05/29 17:50:03 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/06/05 17:04:53 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,12 +71,11 @@ void	__next_l(t_node *node, char *_file)
 	}
 }
 
-char	*get_matched(char *file_name, char *s)
+char	*get_matched(char *file_name, char *s, int i)
 {
 	t_node	*head;
 	t_node	*tmp;
 	char	*res;
-	int		i;
 
 	i = 0;
 	res = 0;
@@ -120,7 +119,7 @@ char	*expand_astric(char **str)
 	if (chk)
 	{
 		*str += i;
-		return (get_matched(regex, "."));
+		return (get_matched(regex, ".", 0));
 	}
 	free(regex);
 	regex = ft_chardup((*str)[0]);
