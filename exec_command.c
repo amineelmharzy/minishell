@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 16:48:20 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/05/16 12:12:49 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/06/12 11:28:49 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,8 @@ void	exec_command(t_shell *shell, int i)
 	int	*pfd;
 
 	pfd = (int *)ft_calloc(2, sizeof(int));
-	pipe(pfd);
+	if (pipe(pfd) == -1)
+		return (free(pfd), _print_error(shell, strerror(errno), 1));
 	pid = fork();
 	if (pid == 0)
 	{
@@ -97,12 +98,12 @@ void	exec_command(t_shell *shell, int i)
 		_child_(shell, &pfd, &fd);
 		child(shell);
 		if (execve(shell->rcommand, shell->parsed_command, shell->envp) < 0)
-		{
-			perror("minishell");
-			exit(1);
-		}
+			return (perror("minishell"), exit(1));
 		exit(0);
 	}
-	else
+	else if (pid > 0)
 		parent(shell, pfd);
+	else
+		return (close(pfd[0]), close(pfd[1]),
+			_print_error(shell, strerror(errno), 1));
 }

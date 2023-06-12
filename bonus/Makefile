@@ -1,12 +1,13 @@
 CC = cc
 RM = rm -rf
-CFLAGS = -Wall -Wextra -Werror 
-#RLFLAGS = -L /Users/ael-mhar/homebrew/opt/readline/lib -I /Users/ael-mhar/homebrew/opt/readline/include/readline -lreadline 
+CFLAGS = -Wall -Wextra -Werror
+RLFLAGS = -L /Users/ael-mhar/readline/lib -I /Users/ael-mhar/readline/include/readline -lreadline
 SRCS = $(wildcard *.c) $(wildcard builtins/*.c)
 OBJS = $(SRCS:.c=.o)
 NAME = ../minishell_bonus
 NAMEOBJ = minishell.o
 NAMESRC = minishell.c
+DEPENDENCIES = readline
 
 %.o : %.c
 	@$(CC) $(FLAGS) -c $< -o $@
@@ -17,7 +18,7 @@ $(NAMEOBJ) : $(NAMESRC)
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(NAME) : $(OBJS) $(NAMEOBJ)
-	@$(CC) $(CFLAGS) -lreadline $^ -o $@
+	@$(CC) $(CFLAGS) $(RLFLAGS) -lreadline $^ -o $@
 
 clean :
 	@$(RM) $(OBJS) $(NAMEOBJ)
@@ -27,11 +28,12 @@ fclean : clean
 
 re: fclean all
 
-install:
-	@apt install libreadline-dev -y
+install-moacos:
+	brew install $(DEPENDENCIES)
+install-linux:
+	sudo apt install libreadline-dev -y
 
 leak: all
-	@valgrind --leak-check=full --track-origins=yes $(NAME)
+	valgrind --leak-check=full --track-origins=yes $(NAME)
 
-
-.PHONY = all clean fclean re
+.PHONY : all clean fclean re

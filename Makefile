@@ -1,7 +1,7 @@
 CC = cc
 RM = rm -rf
-CFLAGS = -Wall -Wextra -Werror 
-RLFLAGS = -lreadline
+CFLAGS = -Wall -Wextra -Werror
+RLFLAGS = -L /Users/ael-mhar/readline/lib -I /Users/ael-mhar/readline/include/readline -lreadline
 SRCS = $(wildcard *.c) $(wildcard builtins/*.c)
 OBJS = $(SRCS:.c=.o)
 NAME = ./minishell
@@ -39,4 +39,4 @@ install-linux:
 leak: all
 	valgrind --leak-check=full --track-origins=yes $(NAME)
 
-.PHONY = all clean fclean re bonus
+.PHONY : all clean fclean re bonus

@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 00:31:33 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/06/08 12:08:10 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/06/12 11:47:49 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,9 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
-# include <stdint.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
-# include <sys/stat.h>
-# include <sys/types.h>
-# include <termios.h>
 # include <unistd.h>
 
 # define BUFFER_SIZE 1
@@ -73,6 +69,7 @@ typedef struct s_shell
 	int				is_herdoc;
 	int				is_quoted_herdoc;
 	int				is_infile;
+	int				herdoc_pipe[2];
 	char			cwd[PATH_MAX];
 	char			*command;
 	char			*cmd;
