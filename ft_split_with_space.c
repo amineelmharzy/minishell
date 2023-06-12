@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 14:48:09 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/05/05 16:43:15 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/06/12 10:43:57 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,7 @@ void	parse_arg(char **cmd, char *command, int *i, int option)
 		else
 			(*i)++;
 		while (command[*i] != 0 && command[*i] != start)
-		{
-			if (option == 0 && command[*i] == '$' && start == '\"')
-				while (ft_isalnum(command[++(*i)]) && command[*i] != '$'
-					&& command[*i] != ' ')
-					(*i)++;
-			else
-				*cmd = ft_joinchar(*cmd, command[(*i)++]);
-		}
+			*cmd = ft_joinchar(*cmd, command[(*i)++]);
 		if (option == -1 && command[*i])
 			*cmd = ft_joinchar(*cmd, command[(*i)++]);
 		else if (command[*i] != 0 && command[*i] == start)

@@ -6,13 +6,14 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 00:31:33 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/06/05 17:45:04 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/06/08 12:08:10 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include <dirent.h>
 # include <errno.h>
 # include <fcntl.h>
 # include <limits.h>
@@ -23,10 +24,10 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
-# include <unistd.h>
-# include <sys/types.h>
 # include <sys/stat.h>
-# include <dirent.h>
+# include <sys/types.h>
+# include <termios.h>
+# include <unistd.h>
 
 # define BUFFER_SIZE 1
 
@@ -43,7 +44,7 @@
 # define E_QUOT "unexpected EOF while looking for matching"
 # define E_NOHS "HOME not set"
 
-int	g_status;
+int					g_status;
 
 char				**ft_split(char *str, char set);
 char				*ft_strjoin(char *s1, char *s2);
@@ -91,7 +92,8 @@ typedef struct s_shell
 }					t_shell;
 
 int					init_command(t_shell *shell, int i);
-char				*rl_replace_line(const char *line, int a);;
+char				*rl_replace_line(const char *line, int a);
+;
 int					ft_atoi(t_shell *shell, char *str, char *str2);
 void				init_shell(t_shell *shell, char **envp);
 void				insert_node_to_end(t_shell *shell, t_env *new_node);
@@ -154,8 +156,8 @@ char				*get_infile(t_shell *shell);
 t_env				*create_node(char *var, int op);
 void				run_builtin(t_shell *shell, void (*f)(t_shell *), int flag);
 void				run_command(t_shell *shell, int i);
-void				run_env(t_shell *shell, int option,
-						void (*f)(t_shell *, int));
+void				run_env(t_shell *shell, int option, void (*f)(t_shell *,
+							int));
 void				free_commands(t_shell *shell);
 char				*remove_quotes(char *s);
 void				free_command(t_shell *shell, int i);

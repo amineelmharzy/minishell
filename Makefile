@@ -1,7 +1,7 @@
 CC = cc
 RM = rm -rf
 CFLAGS = -Wall -Wextra -Werror 
-RLFLAGS = -lreadline #-L /Users/ael-mhar/homebrew/opt/readline/lib -I /Users/ael-mhar/homebrew/opt/readline/include/readline
+RLFLAGS = -lreadline
 SRCS = $(wildcard *.c) $(wildcard builtins/*.c)
 OBJS = $(SRCS:.c=.o)
 NAME = ./minishell
