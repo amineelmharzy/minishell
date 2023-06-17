@@ -3,7 +3,7 @@ RM = rm -rf
 CFLAGS = -Wall -Wextra -Werror
 RLFLAGS = -L /Users/ael-mhar/readline/lib -I /Users/ael-mhar/readline/include/readline -lreadline
 #RLFLAGS = -lreadline
-SRCS = $(wildcard *.c) $(wildcard builtins/*.c)
+SRCS = astric.c astric_utils.c check_ambiguous_redirect.c check_command.c check_empty_iofiles.c check_empty_pipe.c check_infiles.c check_parenthesis.c close_builtin.c count_args.c exec_command.c exec_lcommand.c exit_status.c expand_env.c free_all.c ft_atoi.c ft_calloc.c ft_isalnum.c ft_itoa.c ft_joinchar.c ft_joinstr.c ft_split.c ft_split_with_pipe.c ft_split_with_set.c ft_split_with_space.c ft_strchr.c ft_strdup.c ft_strjoin.c ft_strlen.c ft_strlen_to_char.c ft_strncmp.c get_infile.c get_next_line.c get_path.c get_real_command.c handle_errors.c herdoc.c implement_redirections.c init_iofiles.c init_outfiles.c init_shell.c is_fine_with_quotes.c minishell.c parse_file.c parse_iofiles.c run.c run_command.c set_infile.c set_outfile.c subshell.c subshell_funcs.c syntax_errors.c utils.c builtins/cd.c builtins/echo.c builtins/env.c builtins/export.c builtins/pwd.c builtins/run_builtin.c builtins/run_env.c builtins/unset.c builtins/utils.c
 OBJS = $(SRCS:.c=.o)
 NAME = ../minishell_bonus
 NAMEOBJ = minishell.o
