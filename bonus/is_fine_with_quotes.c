@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 16:49:21 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/19 15:09:20 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/06/16 16:58:37 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ int	is_fine_with_quotes(char *command)
 			return (-1);
 		while (command[i] != 0 && (command[i] == ' ' || command[i] == '\t'))
 			i++;
-		if (command[i] == '\\' && (command[i + 1] == '\''
-				|| command[i + 1] == '\"'))
+		if (command[i] == '\\' && (command[i + 1] == '\'' || command[i
+					+ 1] == '\"'))
 			i += 2;
 		discard_quotes(command, &i, &end);
 		i++;

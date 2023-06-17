@@ -27,7 +27,7 @@ char	*remove_quotes(char *s)
 	}
 	free(s);
 	return (res);
-}	
+}
 
 void	read_herdoc(t_shell *shell, char **output, char **cmp, int *i)
 {

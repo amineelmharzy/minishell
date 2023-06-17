@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 13:16:02 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/05/07 14:39:31 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/06/16 16:59:17 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,7 @@ void	parse_quotes(char **save, char *str, int *i)
 {
 	int	start;
 
-	while (str[*i] && (str[*i] == '\''
-			|| str[*i] == '\"'))
+	while (str[*i] && (str[*i] == '\'' || str[*i] == '\"'))
 	{
 		start = str[*i];
 		*save = ft_joinchar(*save, str[(*i)++]);

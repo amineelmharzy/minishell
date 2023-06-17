@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 00:31:33 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/06/12 11:47:49 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/06/17 10:47:57 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ typedef struct s_shell
 	int				is_herdoc;
 	int				is_quoted_herdoc;
 	int				is_infile;
-	int				herdoc_pipe[2];
+	int				herdoc[2];
 	char			cwd[PATH_MAX];
 	char			*command;
 	char			*cmd;
@@ -119,7 +119,7 @@ int					implement_redirection(t_shell *shell);
 char				**ft_split_with_space(char *command, int option);
 void				exec_command(t_shell *shell, int i);
 int					check_infiles(t_shell *shell);
-char				*herdoc(t_shell *shell);
+void				herdoc(t_shell *shell);
 char				*get_next_line(int fd);
 char				*get_infile(t_shell *shell);
 int					init_outfiles(t_shell *shell);
@@ -166,5 +166,9 @@ char				*remove_spaces(char *str);
 int					syntax_err(t_shell *shell);
 void				free_outfiles(t_shell *shell);
 void				handler(int sig);
+int					_wexitstatus(int status);
+int					_wtermsig(int status);
+int					_wifexited(int status);
+int					_wifsignaled(int status);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 00:31:33 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/06/05 17:47:36 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/06/16 17:09:25 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,9 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
-# include <stdint.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
-# include <sys/stat.h>
-# include <sys/types.h>
 # include <unistd.h>
 
 # define BUFFER_SIZE 1
@@ -45,7 +42,7 @@
 # define E_QUOT "unexpected EOF while looking for matching"
 # define E_NOHS "HOME not set"
 
-//int					g_status;
+int					g_status;
 
 char				**ft_split(char *str, char set);
 char				*ft_strjoin(char *s1, char *s2);
@@ -157,7 +154,7 @@ char				*parse_iofiles(t_shell *shell, char *set);
 void				parse_file(t_shell *shell, char **files, char *set, int *i);
 void				print_error(t_shell *shell, char *target, char *error,
 						int status);
-char				**_print_error(t_shell *shell, char *error, int status);
+void				_print_error(t_shell *shell, char *error, int status);
 void				skip_quotes(char *str, int *i);
 int					check_identifier(t_shell *shell, char *str);
 int					check_parenthesis(char *str);
@@ -196,5 +193,10 @@ int					check_last_space(char *str, int i);
 char				*remove_spaces(char *str);
 int					syntax_err(t_shell *shell);
 char				*remove_p(t_shell *shell, char *str, char **save);
+int					_wexitstatus(int status);
+int					_wtermsig(int status);
+int					_wifexited(int status);
+int					_wifsignaled(int status);
+void				_exit_status(t_shell *shell, int status);
 
 #endif

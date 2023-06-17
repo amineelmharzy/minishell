@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 11:37:05 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/06/12 12:00:44 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/06/17 10:48:06 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	init_iofiles(t_shell *shell)
 	{
 		close(0);
 		dup2(shell->stdin_fd, 0);
-		shell->herdoc_output = herdoc(shell);
+		//shell->herdoc_output = herdoc(shell);
 	}
 	if (!check_infiles(shell))
 		return (0);

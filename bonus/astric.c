@@ -109,8 +109,8 @@ char	*expand_astric(char **str)
 	i = -1;
 	chk = 0;
 	regex = ft_calloc(1, 1);
-	while ((*str)[++i] != 0 && (*str)[i] != ' '
-		&& (*str)[i] != '\'' && (*str)[i] != '\"')
+	while ((*str)[++i] != 0 && (*str)[i] != ' ' && (*str)[i] != '\''
+		&& (*str)[i] != '\"')
 	{
 		if ((*str)[i] == '*')
 			chk = 1;

@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 16:15:30 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/05/16 14:41:08 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/06/12 18:03:49 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,12 @@ void	print_error(t_shell *shell, char *target, char *error, int status)
 	shell->exit_status = status;
 }
 
-char	**_print_error(t_shell *shell, char *error, int status)
+void	_print_error(t_shell *shell, char *error, int status)
 {
 	write(2, "minishell: ", 11);
 	write(2, error, ft_strlen(error));
 	write(2, "\n", 1);
 	shell->exit_status = status;
-	return (NULL);
 }
 
 int	iofiles_errors(t_shell *shell, char *set)

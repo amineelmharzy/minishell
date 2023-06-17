@@ -94,8 +94,8 @@ char	*ft_next_line(char *buffer)
 
 char	*get_next_line(int fd)
 {
-	static char		*buffer;
-	char			*line;
+	static char	*buffer;
+	char		*line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);

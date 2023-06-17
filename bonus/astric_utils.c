@@ -125,7 +125,8 @@ void	export_astric(t_env *node)
 	save = ft_calloc(1, 1);
 	while (node->value[++i] != 0)
 	{
-		while (node->value[i] && node->value[i] != ' ' && node->value[i] != '\t')
+		while (node->value[i] && node->value[i] != ' '
+			&& node->value[i] != '\t')
 			s = ft_joinchar(s, node->value[i++]);
 		if (s[0])
 		{

@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 17:57:25 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/06/05 15:45:09 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/06/16 17:16:17 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ void	_subshell_child(t_shell *shell, char **ars, int pfd[2])
 	int	i;
 
 	i = 0;
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 	if (shell->is_pipe == 1)
 	{
 		dup2(pfd[1], 1);

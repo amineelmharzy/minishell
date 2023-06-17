@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/11 14:49:23 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/06/05 17:13:55 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/06/16 16:55:05 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,14 @@ int	check_nearp(char *str, int i)
 				i++;
 			if (!str[i] || str[i] == '(' || str[i] == ')')
 				return (-1);
-			while (str[i] && str[i] != ' ' && str[i] != '\t'
-				&& str[i] != '<' && str[i] != '>'
-				&& str[i] != '(' && str[i] != ')')
+			while (str[i] && str[i] != ' ' && str[i] != '\t' && str[i] != '<'
+				&& str[i] != '>' && str[i] != '(' && str[i] != ')')
 				i++;
 		}
 		else if (str[i] == '|' || str[i] == '&')
 			return (0);
-		else if (str[i] != 0 && str[i] != ' ' && str[i] != '\t'
-			&& str[i] != '(' && str[i] != ')')
+		else if (str[i] != 0 && str[i] != ' ' && str[i] != '\t' && str[i] != '('
+			&& str[i] != ')')
 			return (-1);
 		else
 			i++;
@@ -108,8 +107,8 @@ int	_check_p(char *str, int *i, int *count_o, int *count_c)
 	}
 	else if (str[*i] == ')')
 	{
-		if (++(*count_c) && (check_nearp(str, *i + 1) == -1
-				|| check_otherp(str, *count_c, *count_o, *i + 1)))
+		if (++(*count_c) && (check_nearp(str, *i + 1) == -1 || check_otherp(str,
+					*count_c, *count_o, *i + 1)))
 			return (-1);
 	}
 	return (0);

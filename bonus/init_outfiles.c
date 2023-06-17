@@ -102,8 +102,8 @@ int	init_afiles(t_shell *shell)
 
 int	init_outfiles(t_shell *shell)
 {
-	int		i;
-	int		fd;
+	int	i;
+	int	fd;
 
 	i = -1;
 	if (shell->outfiles)

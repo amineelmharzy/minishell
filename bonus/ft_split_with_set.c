@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 14:48:09 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/06/02 16:45:58 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/06/16 16:57:20 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,9 +78,9 @@ static void	get_command(char **cmd, char *command, char *set, int *i)
 		if (command[*i] != 0)
 			*cmd = ft_joinchar(*cmd, command[(*i)++]);
 	}
-	while (command[*i] != 0
-		&& !(command[*i] == set[0] && command[*i + 1] == set[1])
-		&& command[*i] != '\'' && command[*i] != '\"' && command[*i] != '(')
+	while (command[*i] != 0 && !(command[*i] == set[0] && command[*i
+				+ 1] == set[1]) && command[*i] != '\'' && command[*i] != '\"'
+		&& command[*i] != '(')
 		*cmd = ft_joinchar(*cmd, command[(*i)++]);
 }
 
@@ -107,8 +107,8 @@ char	**ft_split_with_set(t_shell *shell, char *command, char *set)
 	while (command[i] != 0)
 	{
 		get_command(&cmd, command, set, &i);
-		if (!command[i] || (command[i] == set[0]
-				&& command[i + 1] && command[i + 1] == set[1]))
+		if (!command[i] || (command[i] == set[0] && command[i + 1] && command[i
+					+ 1] == set[1]))
 		{
 			if (command[i] == set[0])
 				i += 2;

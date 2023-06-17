@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 10:16:18 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/06/05 16:04:51 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/06/16 17:12:32 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	_run_command(t_shell *shell, char **cmd)
 			close(pfd[1]);
 		}
 		waitpid(pid, &status, 0);
-		shell->exit_status = WEXITSTATUS(status);
+		_exit_status(shell, status);
 		_subshell_parent(shell, ars, cmd, save);
 	}
 }

@@ -2,6 +2,7 @@ CC = cc
 RM = rm -rf
 CFLAGS = -Wall -Wextra -Werror
 RLFLAGS = -L /Users/ael-mhar/readline/lib -I /Users/ael-mhar/readline/include/readline -lreadline
+#RLFLAGS = -lreadline
 SRCS = $(wildcard *.c) $(wildcard builtins/*.c)
 OBJS = $(SRCS:.c=.o)
 NAME = ./minishell

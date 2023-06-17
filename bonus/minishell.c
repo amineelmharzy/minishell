@@ -6,13 +6,11 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 15:41:01 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/06/12 11:15:41 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/06/16 18:12:36 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int		g_status;
 
 int	init_command(t_shell *shell, int i)
 {

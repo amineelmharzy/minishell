@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 19:48:28 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/06/05 16:17:59 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/06/16 16:58:20 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,8 +109,8 @@ char	*get_real_command(t_shell *shell, int sq)
 			str += join_expanded(shell, &real, str, sq);
 		else if (*str == '\"')
 			str += join_expanded(shell, &real, str, 1);
-		else if (*str == '$' && *(str + 1)
-			&& *(str + 1) != ' ' && *(str + 1) != '\"')
+		else if (*str == '$' && *(str + 1) && *(str + 1) != ' ' && *(str
+				+ 1) != '\"')
 			str += join_expanded(shell, &real, str, 2);
 		else
 			real = ft_joinstr(real, expand_astric(&str));

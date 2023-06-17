@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 22:36:08 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/05/07 17:07:34 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/06/16 16:57:58 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,8 @@ int	check_errors(t_shell *shell, int option)
 
 int	get_path(t_shell *shell)
 {
-	int		i;
-	int		ret;
+	int	i;
+	int	ret;
 
 	if (!check_errors(shell, 0))
 		return (0);
@@ -103,7 +103,7 @@ int	get_path(t_shell *shell)
 			return (1);
 		else if (ret == 2)
 			break ;
-		free (shell->rcommand);
+		free(shell->rcommand);
 	}
 	if (ret != 2)
 		print_error(shell, shell->command, E_NCMD, 127);

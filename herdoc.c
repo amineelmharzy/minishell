@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 13:30:11 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/06/12 12:00:39 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/06/17 10:47:14 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	read_herdoc(t_shell *shell, char **output, char **cmp, int *i)
 	}
 }
 
-char	*herdoc(t_shell *shell)
+void	herdoc(t_shell *shell)
 {
 	int		i;
 	char	*output;
@@ -77,5 +77,7 @@ char	*herdoc(t_shell *shell)
 	shell->command = save;
 	if (shell->command && !shell->command[0])
 		free(shell->command);
-	return (output);
+	dup2(shell->herdoc[1], 1);
+	close(shell->herdoc[0]);
+	printf("%s\n", output);
 }
