@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 14:00:07 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/06/16 17:11:06 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/06/17 11:37:59 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,19 +56,10 @@ void	last_child(t_shell *shell, int *fd)
 		dup2((pfd)[0], 0);
 		close((pfd)[1]);
 	}
-	if ((shell->herdoc_output && shell->ifile == 2))
+	if (shell->herdocs && shell->ifile == 2)
 	{
-		pid = fork();
-		if (pid == 0)
-		{
-			dup2((pfd)[1], 1);
-			return (close(pfd[0]), printf("%s", shell->herdoc_output), exit(0));
-		}
-		else if (pid > 0)
-			__last_parent(pfd, pid);
-		else
-			return (close(pfd[0]), close(pfd[1]), _print_error(shell,
-					strerror(errno), 1));
+		dup2(shell->herdoc[0], 0);
+		close(shell->herdoc[1]);
 	}
 }
 
@@ -78,7 +69,19 @@ void	last_parent(t_shell *shell, int pid)
 	int	signal_number;
 
 	waitpid(pid, &status, 0);
-	_exit_status(shell, status);
+	if (_wifexited(status))
+	{
+		shell->exit_status = _wexitstatus(status);
+	}
+	else if (_wifsignaled(status))
+	{
+		signal_number = _wtermsig(status);
+		if (signal_number == SIGINT || signal_number == SIGQUIT)
+		{
+			shell->exit_status = 128 + signal_number;
+			g_status = 0;
+		}
+	}
 	close(0);
 	while (wait(NULL) > 0)
 		;

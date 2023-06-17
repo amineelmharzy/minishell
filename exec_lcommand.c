@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 14:00:07 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/06/16 16:49:26 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/06/17 10:56:57 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,19 +56,10 @@ void	last_child(t_shell *shell, int *fd)
 		dup2((pfd)[0], 0);
 		close((pfd)[1]);
 	}
-	if ((shell->herdoc_output && shell->ifile == 2))
+	if (shell->herdocs && shell->ifile == 2)
 	{
-		pid = fork();
-		if (pid == 0)
-		{
-			dup2((pfd)[1], 1);
-			return (close(pfd[0]), printf("%s", shell->herdoc_output), exit(0));
-		}
-		else if (pid > 0)
-			__last_parent(pfd, pid);
-		else
-			return (close(pfd[0]), close(pfd[1]), _print_error(shell,
-					strerror(errno), 1));
+		dup2(shell->herdoc[0], 0);
+		close(shell->herdoc[1]);
 	}
 }
 

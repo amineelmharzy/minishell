@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 15:41:01 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/06/16 18:12:12 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/06/17 12:06:55 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	init_command(t_shell *shell, int i)
 {
 	shell->parsed_command = 0;
-	if (g_status == 1)
+	if (g_status != 0)
 	{
 		shell->exit_status = g_status;
 		g_status = 0;

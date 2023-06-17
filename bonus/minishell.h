@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 00:31:33 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/06/16 17:09:25 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/06/17 11:32:16 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,10 +77,10 @@ typedef struct s_shell
 	int				is_herdoc;
 	int				is_quoted_herdoc;
 	int				is_infile;
+	int				herdoc[2];
 	char			cwd[PATH_MAX];
 	char			*command;
 	char			*prompt;
-	char			*herdoc_output;
 	char			*infile;
 	char			*outfile;
 	char			*rcommand;
@@ -130,7 +130,7 @@ int					implement_redirection(t_shell *shell);
 char				**ft_split_with_space(char *command, int option);
 void				exec_command(t_shell *shell);
 int					check_infiles(t_shell *shell);
-char				*herdoc(t_shell *shell);
+void				herdoc(t_shell *shell);
 char				*get_next_line(int fd);
 char				*get_infile(t_shell *shell);
 int					init_outfiles(t_shell *shell);

@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 16:48:20 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/06/12 11:28:49 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/06/17 11:36:51 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,24 +60,15 @@ void	child(t_shell *shell)
 	int	pfd[2];
 
 	pipe(pfd);
-	if ((shell->is_infile && !shell->infile && !shell->herdoc_output)
-		|| shell->exit_status != 0)
+	if ((shell->is_infile && !shell->infile && shell->ifile != 2))
 	{
 		dup2(pfd[0], 0);
 		close(pfd[1]);
 	}
-	if (shell->herdocs && shell->herdoc_output && shell->ifile == 2)
+	if (shell->herdocs && shell->ifile == 2)
 	{
-		pid = fork();
-		if (pid == 0)
-		{
-			dup2(pfd[1], 1);
-			close(pfd[0]);
-			printf("%s", shell->herdoc_output);
-			exit(0);
-		}
-		else
-			__parent(pid, pfd);
+		dup2(shell->herdoc[0], 0);
+		close(shell->herdoc[1]);
 	}
 }
 

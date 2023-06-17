@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 19:43:59 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/06/12 18:23:04 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/06/17 11:38:41 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ void	init_shell_variables(t_shell *shell, char **envp)
 	shell->exit_status = 0;
 	shell->stdout_fd = dup(1);
 	shell->stdin_fd = dup(0);
-	shell->herdoc_output = 0;
 	shell->is_herdoc = 0;
 	shell->envp = envp;
 	if (getenv("PATH") == NULL)

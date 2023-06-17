@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 13:30:11 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/05/08 18:49:10 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/06/17 11:52:37 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,23 @@ char	*remove_quotes(char *s)
 			res = ft_joinchar(res, s[i]);
 		i++;
 	}
+	res = ft_joinchar(res, '\n');
 	free(s);
 	return (res);
+}
+
+void	_free_command(char **command, char *s)
+{
+	free(*command);
+	*command = 0;
+	free(s);
 }
 
 void	read_herdoc(t_shell *shell, char **output, char **cmp, int *i)
 {
 	while (shell->herdocs[++(*i)] != 0)
 	{
-		shell->command = readline("> ");
+		shell->command = get_next_line(0);
 		free(*output);
 		*output = ft_calloc(1, 1);
 		while (shell->command)
@@ -43,39 +51,41 @@ void	read_herdoc(t_shell *shell, char **output, char **cmp, int *i)
 				&& ft_strncmp(shell->command, *cmp,
 					ft_strlen(shell->command)) == 0)
 			{
-				free(shell->command);
-				free(*cmp);
+				_free_command(&shell->command, *cmp);
 				break ;
 			}
 			if (!shell->is_quoted_herdoc)
 				*output = ft_joinstr(*output, get_real_command(shell, -1));
 			else
 				*output = ft_joinstr(*output, shell->command);
-			*output = ft_joinchar(*output, '\n');
 			free(*cmp);
-			shell->command = readline("> ");
+			shell->command = get_next_line(0);
 		}
 	}
 }
 
-char	*herdoc(t_shell *shell)
+void	herdoc(t_shell *shell)
 {
 	int		i;
 	char	*output;
-	char	*save;
 	char	*cmp;
 
 	i = -1;
-	save = 0;
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 	output = ft_calloc(1, 1);
 	if (shell->command)
 	{
 		free(shell->command);
-		save = ft_strdup(shell->command);
+		shell->command = 0;
 	}
 	read_herdoc(shell, &output, &cmp, &i);
-	shell->command = save;
 	if (shell->command && !shell->command[0])
 		free(shell->command);
-	return (output);
+	dup2(shell->herdoc[1], 1);
+	close(shell->herdoc[0]);
+	printf("%s", output);
+	close(shell->herdoc[1]);
+	free(output);
+	exit(0);
 }

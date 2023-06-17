@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 22:27:46 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/04/16 18:12:57 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/06/17 11:30:14 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	unset(t_shell *shell)
 				while (shell->path[j] != 0)
 					free(shell->path[j++]);
 				free(shell->path);
-				shell->path = ft_calloc(1, 1);
+				shell->path = ft_calloc(1, sizeof(char *));
 			}
 		}
 		i++;

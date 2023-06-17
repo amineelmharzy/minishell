@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 00:31:33 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/06/17 10:47:57 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/06/17 11:32:12 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ typedef struct s_shell
 	char			cwd[PATH_MAX];
 	char			*command;
 	char			*cmd;
-	char			*herdoc_output;
 	char			*infile;
 	char			*outfile;
 	char			*rcommand;
@@ -170,5 +169,6 @@ int					_wexitstatus(int status);
 int					_wtermsig(int status);
 int					_wifexited(int status);
 int					_wifsignaled(int status);
+void				_exit_status(t_shell *shell, int status);
 
 #endif

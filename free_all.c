@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 19:56:36 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/06/05 17:45:39 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/06/17 11:34:58 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,6 @@ void	free_infiles(t_shell *shell)
 		free(shell->herdocs);
 		shell->herdocs = 0;
 	}
-	if (shell->herdoc_output)
-		free(shell->herdoc_output);
-	shell->herdoc_output = 0;
 	shell->is_infile = 0;
 	shell->is_herdoc = 0;
 }

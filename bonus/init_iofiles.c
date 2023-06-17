@@ -6,21 +6,46 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 11:37:05 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/02/26 19:10:51 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/06/17 11:14:24 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+int	init_herdoc(t_shell *shell)
+{
+	int	pid;
+	int	status;
+
+	if (pipe(shell->herdoc) == -1)
+		return (_print_error(shell, strerror(errno), 1), 0);
+	pid = fork();
+	if (!pid)
+		herdoc(shell);
+	else if (pid > 0)
+	{
+		waitpid(pid, &status, 0);
+		close(shell->herdoc[1]);
+		_exit_status(shell, status);
+		if (shell->exit_status)
+			return (0);
+	}
+	else
+		return (_print_error(shell, strerror(errno), 1), 0);
+	return (1);
+}
+
 int	init_iofiles(t_shell *shell)
 {
+	int	pid;
+	int	status;
+
 	if (!implement_redirection(shell))
 		return (0);
 	if (shell->herdocs)
 	{
-		close(0);
-		dup2(shell->stdin_fd, 0);
-		shell->herdoc_output = herdoc(shell);
+		if (!init_herdoc(shell))
+			return (0);
 	}
 	if (!check_infiles(shell))
 		return (0);
