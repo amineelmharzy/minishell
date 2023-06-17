@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 10:16:18 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/06/16 17:12:32 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/06/17 12:55:09 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	_run_command(t_shell *shell, char **cmd)
 	pid = fork();
 	if (!pid)
 		_subshell_child(shell, ars, pfd);
-	else
+	else if (pid > 0)
 	{
 		if (shell->is_pipe == 1)
 		{
@@ -36,6 +36,8 @@ void	_run_command(t_shell *shell, char **cmd)
 		_exit_status(shell, status);
 		_subshell_parent(shell, ars, cmd, save);
 	}
+	else
+		return (_print_error(shell, strerror(errno), 1));
 }
 
 void	_run_command_(t_shell *shell, int z)

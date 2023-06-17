@@ -32,6 +32,9 @@ re: fclean all
 bonus:
 	make -C bonus/
 
+fbonus:
+	make fclean -C bonus/
+
 install-moacos:
 	brew install $(DEPENDENCIES)
 install-linux:
