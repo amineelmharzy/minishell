@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 15:41:01 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/06/17 12:06:55 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/06/17 19:02:03 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	init_command(t_shell *shell, int i)
 	{
 		if (shell->command)
 			free(shell->command);
-		return (0);
+		return (dup2(shell->stdin_fd, 0), 0);
 	}
 	shell->parsed_command = ft_split_with_space(shell->command, 1);
 	shell->command = shell->parsed_command[0];

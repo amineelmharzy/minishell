@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 11:37:05 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/06/17 11:14:24 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/06/17 19:01:14 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	init_herdoc(t_shell *shell)
 		close(shell->herdoc[1]);
 		_exit_status(shell, status);
 		if (shell->exit_status)
-			return (0);
+			return (dup2(shell->stdin_fd, 0), 0);
 	}
 	else
 		return (_print_error(shell, strerror(errno), 1), 0);

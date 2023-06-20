@@ -6,7 +6,7 @@
 /*   By: ael-mhar <ael-mhar@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:42:59 by ael-mhar          #+#    #+#             */
-/*   Updated: 2023/06/17 11:35:48 by ael-mhar         ###   ########.fr       */
+/*   Updated: 2023/06/17 19:04:33 by ael-mhar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	__chk_empty_cmd(t_shell *shell)
 		close(shell->herdoc[0]);
 		close(shell->herdoc[1]);
 		shell->outfile = 0;
-		return (1);
+		return (dup2(shell->stdin_fd, 0), 1);
 	}
 	return (0);
 }
